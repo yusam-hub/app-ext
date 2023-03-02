@@ -5,6 +5,7 @@ namespace YusamHub\AppExt\Tests;
 use YusamHub\AppExt\Config;
 use YusamHub\AppExt\DotArray;
 use YusamHub\AppExt\Env;
+use YusamHub\AppExt\FileLogger;
 
 class ExampleTest extends \PHPUnit\Framework\TestCase
 {
@@ -53,7 +54,5 @@ class ExampleTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue(app_ext_env("ENV_KEY_INT_ZERO") === 0);
         $this->assertTrue(app_ext_env("ENV_KEY_INT_ONE") === 1);
         $this->assertTrue(app_ext_env("ENV_KEY_FLOAT") === 1.2);
-
-
     }
 }
