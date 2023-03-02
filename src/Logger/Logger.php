@@ -1,6 +1,6 @@
 <?php
 
-namespace YusamHub\AppExt;
+namespace YusamHub\AppExt\Logger;
 
 use Psr\Log\AbstractLogger;
 use Psr\Log\LogLevel;

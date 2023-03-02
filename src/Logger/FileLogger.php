@@ -1,8 +1,8 @@
 <?php
 
-namespace YusamHub\AppExt;
+namespace YusamHub\AppExt\Logger;
 
-use \Psr\Log\LogLevel;
+use Psr\Log\LogLevel;
 
 class FileLogger extends Logger
 {

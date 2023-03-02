@@ -5,7 +5,6 @@ namespace YusamHub\AppExt\Tests;
 use YusamHub\AppExt\Config;
 use YusamHub\AppExt\DotArray;
 use YusamHub\AppExt\Env;
-use YusamHub\AppExt\FileLogger;
 
 class ExampleTest extends \PHPUnit\Framework\TestCase
 {

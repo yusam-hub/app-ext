@@ -2,7 +2,7 @@
 
 require_once(__DIR__ . "/vendor/autoload.php");
 
-use YusamHub\AppExt\FileLogger;
+use YusamHub\AppExt\Logger\FileLogger;
 
 $fileLogger = new FileLogger([
     'logDir' => __DIR__ . '/tmp',
