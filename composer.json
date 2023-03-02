@@ -1,0 +1,29 @@
+{
+    "name": "yusam-hub/app-ext",
+    "description": "yusam-hub/app-ext",
+    "type": "package",
+    "minimum-stability": "stable",
+    "require": {
+        "php": "^7.4|^8.0|^8.1|^8.2",
+        "ext-json": "*",
+        "vlucas/phpdotenv": "^5.5"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "YusamHub\\AppExt\\": "src/"
+        },
+        "files": [
+            "src/functions.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "YusamHub\\AppExt\\Tests\\": "tests/"
+        },
+        "files": [
+        ]
+    }
+}
