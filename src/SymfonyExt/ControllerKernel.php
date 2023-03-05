@@ -111,7 +111,26 @@ class ControllerKernel implements GetSetLoggerInterface, GetSetConsoleInterface
      */
     public function runIndex()
     {
-        $response = $this->fetchResponse();
+        try {
+
+            $response = $this->fetchResponse();
+
+        } catch (\Throwable $e) {
+
+            $responseStatusCode = 500;
+            $responseStatusMessage = "Internal Server Error";
+
+            $this->error(sprintf("RESPONSE (%d): %s", $responseStatusCode, $responseStatusMessage), [
+                'error' => [
+                    'message' => $e->getMessage(),
+                    'code' => $e->getCode(),
+                    'file' => $e->getFile(),
+                    'line' => $e->getLine(),
+                    'class' => get_class($e),
+                ],
+            ]);
+            $response = new Response($responseStatusMessage, $responseStatusCode);
+        }
         $response->send();
         $this->httpKernel->terminate($this->request, $response);
     }
