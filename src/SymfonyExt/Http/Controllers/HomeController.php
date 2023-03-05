@@ -3,8 +3,21 @@
 namespace YusamHub\AppExt\SymfonyExt\Http\Controllers;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
+
 class HomeController extends BaseHttpController
 {
+    public static function routesRegister(RoutingConfigurator $routes): void
+    {
+        $routes
+            ->add(md5(__METHOD__), '/')
+            ->controller(
+                [static::class, 'actionHomeEmpty']
+            )
+            ->methods(['GET', 'HEAD'])
+        ;
+    }
+
     /**
      * @param Request $request
      * @return null
