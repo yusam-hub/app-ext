@@ -11,9 +11,21 @@ abstract class BaseHttpController implements GetSetLoggerInterface
 {
     use GetSetLoggerTrait;
 
+    /**
+     * @param RoutingConfigurator $routes
+     * @return void
+     */
     abstract public static function routesRegister(RoutingConfigurator $routes): void;
 
-    protected static function routesAdd(RoutingConfigurator $routes, array $methods, string $path, string $methodName): RouteConfigurator
+    /**
+     * @param RoutingConfigurator $routes
+     * @param array $methods
+     * @param string $path
+     * @param string $methodName
+     * @param array $requirements
+     * @return RouteConfigurator
+     */
+    protected static function routesAdd(RoutingConfigurator $routes, array $methods, string $path, string $methodName, array $requirements = []): RouteConfigurator
     {
         return $routes
             ->add(md5($path), $path)
@@ -21,6 +33,7 @@ abstract class BaseHttpController implements GetSetLoggerInterface
                 [get_called_class(), $methodName]
             )
             ->methods($methods)
+            ->requirements($requirements)
             ;
     }
 }
