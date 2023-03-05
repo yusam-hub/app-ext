@@ -40,7 +40,7 @@ class ReactHttpServer implements GetSetConsoleInterface, GetSetLoggerInterface
      */
     public function run(): int
     {
-        $this->info(sprintf('Http Server [%s] started at [%s]', __CLASS__, date("Y-m-d H:i:s")));
+        $this->info(sprintf('Server [%s] started at [%s]', __CLASS__, date("Y-m-d H:i:s")));
         $this->info('--socket-mode: ' . $this->httpServerConfig->socketServerMode);
         $this->info('--worker-number: ' . $this->workerNumber);
         $this->info('--testing: ' . $this->testing);
@@ -105,7 +105,7 @@ class ReactHttpServer implements GetSetConsoleInterface, GetSetLoggerInterface
             $loop->removeSignal($signal, $stop_func);
             $this->info(sprintf('Unix signal [%d]', $signal));
             $socket->close();
-            $this->info(sprintf('Http Server [%s] finished at [%s]', __CLASS__, date("Y-m-d H:i:s")));
+            $this->info(sprintf('Server [%s] finished at [%s]', __CLASS__, date("Y-m-d H:i:s")));
             if ($this->httpServerConfig->socketServerMode === $this->httpServerConfig::SOCKET_SERVER_MODE_UNIX_FILE) {
                 unlink(sprintf($this->httpServerConfig->socketServerPathUri,  $this->workerNumber));
             }
