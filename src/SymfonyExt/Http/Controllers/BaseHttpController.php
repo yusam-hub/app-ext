@@ -13,13 +13,14 @@ abstract class BaseHttpController implements GetSetLoggerInterface
 
     abstract public static function routesRegister(RoutingConfigurator $routes): void;
 
-    protected static function routesAdd(RoutingConfigurator $routes, string $path, string $methodName): RouteConfigurator
+    protected static function routesAdd(RoutingConfigurator $routes, array $methods, string $path, string $methodName): RouteConfigurator
     {
         return $routes
             ->add(md5($path), $path)
             ->controller(
                 [get_called_class(), $methodName]
             )
+            ->methods($methods)
             ;
     }
 }

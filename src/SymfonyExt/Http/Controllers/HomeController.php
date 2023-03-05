@@ -9,25 +9,9 @@ class HomeController extends BaseHttpController
 {
     public static function routesRegister(RoutingConfigurator $routes): void
     {
-        static::routesAdd(
-            $routes,
-            '/',
-            'actionHomeEmpty')
-            ->methods(['GET', 'HEAD'])
-        ;
-
-        static::routesAdd(
-            $routes,
-            '/debug/dt-as-string',
-            'actionHomeDebugDateTimeAsString')
-            ->methods(['GET', 'HEAD'])
-        ;
-        static::routesAdd(
-            $routes,
-            '/debug/dt-as-array',
-            'actionHomeDebugDateTimeAsArray')
-            ->methods(['GET', 'HEAD'])
-        ;
+        static::routesAdd($routes, ['GET', 'HEAD'], '/','actionHomeEmpty');
+        static::routesAdd($routes, ['GET', 'HEAD'], '/debug/dt-as-string', 'actionHomeDebugDateTimeAsString');
+        static::routesAdd($routes, ['GET', 'HEAD'], '/debug/dt-as-array', 'actionHomeDebugDateTimeAsArray');
     }
 
     /**
