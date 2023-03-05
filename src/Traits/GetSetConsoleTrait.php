@@ -7,26 +7,26 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 trait GetSetConsoleTrait
 {
-    private ?InputInterface $input = null;
-    private ?OutputInterface $output = null;
+    protected ?InputInterface $consoleInput = null;
+    protected ?OutputInterface $consoleOutput = null;
 
     public function getConsoleInput(): ?InputInterface
     {
-        return $this->input;
+        return $this->consoleInput;
     }
 
     public function setConsoleInput(?InputInterface $input): void
     {
-        $this->input = $input;
+        $this->consoleInput = $input;
     }
 
     public function getConsoleOutput(): ?OutputInterface
     {
-        return $this->output;
+        return $this->consoleOutput;
     }
 
     public function setConsoleOutput(?OutputInterface $output): void
     {
-        $this->output = $output;
+        $this->consoleOutput = $output;
     }
 }
