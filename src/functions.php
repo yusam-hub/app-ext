@@ -1,8 +1,22 @@
 <?php
 
+use Psr\Log\LoggerInterface;
 use YusamHub\AppExt\Config;
 use YusamHub\AppExt\DotArray;
 use YusamHub\AppExt\Env;
+
+if (! function_exists('app_ext_logger')) {
+
+    /**
+     * @param string|null $channel
+     * @param array $extra
+     * @return LoggerInterface
+     */
+    function app_ext_logger(?string $channel = null, array $extra = []): LoggerInterface
+    {
+        return \YusamHub\AppExt\Logging::instance()->channel($channel, $extra);
+    }
+}
 
 if (! function_exists('app_ext_dot_array')) {
 
