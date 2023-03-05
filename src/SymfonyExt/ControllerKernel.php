@@ -107,9 +107,9 @@ class ControllerKernel implements GetSetLoggerInterface, GetSetConsoleInterface
     }
 
     /**
-     * @throws \Exception
+     * @return void
      */
-    public function runIndex()
+    public function runIndex(): void
     {
         try {
 
