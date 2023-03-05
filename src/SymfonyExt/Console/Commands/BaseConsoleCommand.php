@@ -18,13 +18,13 @@ abstract class BaseConsoleCommand extends \Symfony\Component\Console\Command\Com
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
         $outputStyle = new OutputFormatterStyle('red', null, ['bold']);
-        $output->getFormatter()->setStyle('error', $outputStyle);
+        $output->getFormatter()->setStyle('red', $outputStyle);
 
         $outputStyle = new OutputFormatterStyle('yellow', null, ['bold']);
-        $output->getFormatter()->setStyle('warning', $outputStyle);
+        $output->getFormatter()->setStyle('yellow', $outputStyle);
 
         $outputStyle = new OutputFormatterStyle('green', null, ['bold']);
-        $output->getFormatter()->setStyle('success', $outputStyle);
+        $output->getFormatter()->setStyle('green', $outputStyle);
 
         $this->setConsoleInput($input);
         $this->setConsoleOutput($output);
