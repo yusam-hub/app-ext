@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Controller\ArgumentResolver;
 use Symfony\Component\HttpKernel\Controller\ControllerResolver;
 use Symfony\Component\HttpKernel\EventListener\RouterListener;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\Router;
@@ -109,9 +110,19 @@ class ControllerKernel
             )
         );
 
-        $this->httpKernel = new HttpKernel($dispatcher, new ControllerResolver(), new RequestStack(), new ArgumentResolver());
+        try {
+            $this->httpKernel = new HttpKernel($dispatcher, new ControllerResolver(), new RequestStack(), new ArgumentResolver());
 
-        $response = $this->httpKernel->handle($this->request);
+            $response = $this->httpKernel->handle($this->request);
+
+        } catch (\Throwable $e) {
+            if ($e instanceof NotFoundHttpException) {
+                $response = new Response('Not Found', 404);
+                //$this->httpServer->debug(sprintf("RESPONSE (%d): %s", $responseStatusCode, $responseStatusMessage));
+            } else {
+                throw $e;
+            }
+        }
 
         if ($this->runInReactHttp) {
             return new \React\Http\Message\Response(
