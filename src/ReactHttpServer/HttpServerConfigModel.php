@@ -8,7 +8,7 @@ class HttpServerConfigModel
     public int $limitConcurrentRequests = 100;
     public int $limitRequestBodyBuffer = 2097152;
     public int $socketServerMode = self::SOCKET_SERVER_MODE_IP;
-    public string $socketServerPathUri = '/tmp/http-server-socks/server.worker%d.sock';
+    public string $socketServerPathUri = '/tmp/react-http-server-socks/server.worker%d.sock';
     public string $socketServerIpUri = '0.0.0.0:1808%d';
 
     public function __construct(array $config = [])
