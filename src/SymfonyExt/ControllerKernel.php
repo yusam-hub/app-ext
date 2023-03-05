@@ -56,8 +56,8 @@ class ControllerKernel implements GetSetLoggerInterface, GetSetConsoleInterface
     public function fetchResponse()
     {
         $this->debug("REQUEST: " . $this->request->getMethod() . ' ' . $this->request->getRequestUri(), [
-            'query' => $this->request->getQueryString(),
-            'params' => $this->request->attributes->all(),
+            'query' => $this->request->query->all(),
+            'params' => $this->request->request->all(),
         ]);
 
         try {
