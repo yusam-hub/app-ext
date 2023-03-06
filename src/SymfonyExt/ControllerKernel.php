@@ -58,22 +58,7 @@ class ControllerKernel implements GetSetLoggerInterface, GetSetConsoleInterface
     public function fetchResponse()
     {
         $executeStarted = microtime(true);
-        $m = memory_get_usage(self::$memoryRealUsage);
-        $p = memory_get_peak_usage(self::$memoryRealUsage);
-        $memoryStart = [
-            'usage' => [
-                'Bytes' => $m,
-                'Kb' => round($m / 1024, 3),
-                'Mb' => round($m / 1024 / 1024, 3),
-                'Gb' => round($m / 1024 / 1024/ 1024, 3),
-            ],
-            'peak' => [
-                'Bytes' => $p,
-                'Kb' => round($p / 1024, 3),
-                'Mb' => round($p / 1024 / 1024, 3),
-                'Gb' => round($p / 1024 / 1024/ 1024, 3),
-            ]
-        ];
+        $mStart = memory_get_usage(self::$memoryRealUsage);
 
         $requestMessage = "REQUEST: " . $this->request->getMethod() . ' ' . $this->request->getRequestUri();
         $requestContext = [
@@ -117,26 +102,13 @@ class ControllerKernel implements GetSetLoggerInterface, GetSetConsoleInterface
 
         }
 
-        $m = memory_get_usage(self::$memoryRealUsage);
-        $p = memory_get_peak_usage(self::$memoryRealUsage);
+        $mEnd = memory_get_usage(self::$memoryRealUsage);
         $this->debug(sprintf("RESPONSE (%d): %s", $response->getStatusCode(), $response->getContent()), [
             'executed' => microtime(true) - $executeStarted,
             'memory' => [
-                'start' => $memoryStart,
-                'end' => [
-                    'usage' => [
-                        'Bytes' => $m,
-                        'Kb' => round($m / 1024, 3),
-                        'Mb' => round($m / 1024 / 1024, 3),
-                        'Gb' => round($m / 1024 / 1024/ 1024, 3),
-                    ],
-                    'peak' => [
-                        'Bytes' => $p,
-                        'Kb' => round($p / 1024, 3),
-                        'Mb' => round($p / 1024 / 1024, 3),
-                        'Gb' => round($p / 1024 / 1024/ 1024, 3),
-                    ]
-                ]
+                'start' => $mStart,
+                'end' => $mEnd,
+                'diff' => $mEnd - $mStart
             ]
         ]);
 
