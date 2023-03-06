@@ -43,7 +43,6 @@ class ReactHttpServer implements GetSetConsoleInterface, GetSetLoggerInterface
         $this->info(sprintf('Server [%s] started at [%s]', __CLASS__, date("Y-m-d H:i:s")));
         $this->info('--socket-mode: ' . $this->httpServerConfig->socketServerMode);
         $this->info('--worker-number: ' . $this->workerNumber);
-        $this->info('--testing: ' . $this->testing);
 
         $loop = \React\EventLoop\Loop::get();
 
