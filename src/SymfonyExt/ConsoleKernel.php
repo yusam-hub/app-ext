@@ -1,9 +1,10 @@
 <?php
 
-namespace YusamHub\AppExt\SymfonyExt\Console;
+namespace YusamHub\AppExt\SymfonyExt;
 
 use Symfony\Component\Console\Application;
 use Symfony\Component\Finder\Finder;
+
 class ConsoleKernel
 {
     protected Application $application;
@@ -11,17 +12,21 @@ class ConsoleKernel
     protected string $rootDir;
 
     protected array $nameSpaceMap = [
-        '/app' => '\\App'
+        '/app/Console/Commands' => '\\App\\Console\\Commands'
     ];
+
+    protected bool $includePackageCommands;
 
     /**
      * @param string $rootDir
      * @param array $nameSpaceMap
+     * @param bool $includePackageCommands
      */
-    public function __construct(string $rootDir = __DIR__, array $nameSpaceMap = [])
+    public function __construct(string $rootDir = __DIR__, array $nameSpaceMap = [], bool $includePackageCommands = true)
     {
         $this->nameSpaceMap = array_merge($this->nameSpaceMap, $nameSpaceMap);
         $this->rootDir = rtrim($rootDir, DIRECTORY_SEPARATOR);
+        $this->includePackageCommands = $includePackageCommands;
         $this->application = new Application();
     }
 
@@ -30,8 +35,21 @@ class ConsoleKernel
      */
     function run(): void
     {
+        $generatedPaths = [];
+
+        if ($this->includePackageCommands) {
+            $packageRoot = realpath(__DIR__ . '/../..');
+            $folder = str_replace($packageRoot, '', __DIR__) . '/Console/Commands';
+            $namespace = '\\YusamHub\\AppExt\\SymfonyExt\\Console\\Commands';
+            $this->nameSpaceMap[$folder] = $namespace;
+        }
+
+        foreach($this->nameSpaceMap as $folder => $namespace) {
+            $generatedPaths[] = $this->rootDir . $folder;
+        }
+
         $this->loadCommands(
-            $this->rootDir . '/app/Console/Commands'
+            $generatedPaths
         );
 
         exit($this->application->run());
@@ -60,21 +78,21 @@ class ConsoleKernel
 
             foreach($this->nameSpaceMap as $folder => $namespace) {
                 $command = str_replace(
-                    [$folder],
-                    [$namespace],
+                    $folder,
+                    $namespace,
                     $command
                 );
             }
 
-            $command = str_replace(
+            $class = str_replace(
                     ['/', '.php'],
                     ['\\', ''],
                 $command
                 );
 
             try {
-                if (is_subclass_of($command, \Symfony\Component\Console\Command\Command::class) && !(new \ReflectionClass($command))->isAbstract()) {
-                    $this->application->add(new $command());
+                if (is_subclass_of($class, \Symfony\Component\Console\Command\Command::class) && !(new \ReflectionClass($class))->isAbstract()) {
+                    $this->application->add(new $class());
                 }
             } catch (\Throwable $e) {
 

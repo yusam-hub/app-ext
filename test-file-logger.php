@@ -1,6 +1,6 @@
 <?php
 
-require_once(__DIR__ . "/vendor/autoload.php");
+require __DIR__ . '/global-inc.php';
 
 use YusamHub\AppExt\Logger\FileLogger;
 
