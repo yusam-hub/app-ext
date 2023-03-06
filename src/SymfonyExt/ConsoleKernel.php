@@ -41,16 +41,18 @@ class ConsoleKernel
 
         if ($this->includePackageCommands) {
             $packageRoot = realpath(__DIR__ . '/../..');
-            $replacedFolder = str_replace($packageRoot, '', $this->rootDir) . '/Console/Commands';
+            $replacedFolder = str_replace($packageRoot, '', $this->rootDir) . '/src/SymfonyExt/Console/Commands';
+            $namespace = '\\YusamHub\\AppExt\\SymfonyExt\\Console\\Commands';
+
             if (self::$isDebugging) {
                 print_r([
                     'rootDir' => $this->rootDir,
                     'packageRoot' => $packageRoot,
                     'replacedFolder' => $replacedFolder,
+                    'namespace' => $namespace,
                 ]);
             }
 
-            $namespace = '\\YusamHub\\AppExt\\SymfonyExt\\Console\\Commands';
             $this->nameSpaceMap[$replacedFolder] = $namespace;
         }
 
