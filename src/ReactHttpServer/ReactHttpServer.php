@@ -18,21 +18,21 @@ class ReactHttpServer implements GetSetConsoleInterface, GetSetLoggerInterface
     protected HttpServerConfigModel $httpServerConfig;
     protected int $workerNumber;
 
-    protected int $testing;
+    protected string $routesConfigFile;
 
-    public function __construct(HttpServerConfigModel $httpServerConfig, int $workerNumber = 0, int $testing = 0)
+    public function __construct(HttpServerConfigModel $httpServerConfig, string $routesConfigFile, int $workerNumber = 0)
     {
         $this->httpServerConfig = $httpServerConfig;
         $this->workerNumber = $workerNumber;
-        $this->testing = $testing;
+        $this->routesConfigFile = $routesConfigFile;
     }
 
     /**
-     * @return bool
+     * @return string
      */
-    public function isTesting(): bool
+    public function getRoutesConfigFile(): string
     {
-        return $this->testing >= 1;
+        return $this->routesConfigFile;
     }
 
     /**

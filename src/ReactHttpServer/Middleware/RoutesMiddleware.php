@@ -4,6 +4,7 @@ namespace YusamHub\AppExt\ReactHttpServer\Middleware;
 
 use Psr\Http\Message\ServerRequestInterface;
 use React\Http\Message\Response;
+use React\Promise\Promise;
 use Symfony\Component\HttpFoundation\Request;
 use YusamHub\AppExt\ReactHttpServer\ReactHttpServer;
 use YusamHub\AppExt\SymfonyExt\ControllerKernel;
@@ -23,7 +24,6 @@ class RoutesMiddleware
      */
     public function __invoke(ServerRequestInterface $request)
     {
-
         $symphonyRequest = new Request(
             $request->getQueryParams(),
             (array) $request->getParsedBody(),
@@ -45,35 +45,45 @@ class RoutesMiddleware
         );
 
         $controllerKernel = new ControllerKernel(
-            app()->getRootDir() . '/routes',
+            dirname($this->httpServer->getRoutesConfigFile()),
             $symphonyRequest,
-            'default.php',
+            basename($this->httpServer->getRoutesConfigFile()),
             true
         );
         $controllerKernel->setConsoleOutput($this->httpServer->getConsoleOutput());
         $controllerKernel->setConsoleOutputEnabled($this->httpServer->getConsoleOutputEnabled());
         $controllerKernel->setLogger($this->httpServer->getLogger());
 
-        try {
+        return $this->fetchResponse($controllerKernel);
+    }
 
-            return $controllerKernel->fetchResponse();
+    protected function fetchResponse(ControllerKernel $controllerKernel): Promise
+    {
+        return new Promise(function ($resolve) use ($controllerKernel) {
 
-        } catch (\Throwable $e) {
+            try {
 
-            $responseStatusCode = 500;
-            $responseStatusMessage = "Internal Server Error";
+                $response = $controllerKernel->fetchResponse();
 
-            $this->httpServer->error(sprintf("RESPONSE (%d): %s", $responseStatusCode, $responseStatusMessage), [
-                'error' => [
-                    'message' => $e->getMessage(),
-                    'code' => $e->getCode(),
-                    'file' => $e->getFile(),
-                    'line' => $e->getLine(),
-                    'class' => get_class($e),
-                ],
-            ]);
+            } catch (\Throwable $e) {
 
-            return Response::plaintext($responseStatusMessage)->withStatus($responseStatusCode);
-        }
+                $responseStatusCode = 500;
+                $responseStatusMessage = "Internal Server Error";
+
+                $this->httpServer->error(sprintf("RESPONSE (%d): %s", $responseStatusCode, $responseStatusMessage), [
+                    'error' => [
+                        'message' => $e->getMessage(),
+                        'code' => $e->getCode(),
+                        'file' => $e->getFile(),
+                        'line' => $e->getLine(),
+                        'class' => get_class($e),
+                    ],
+                ]);
+
+                $response = Response::plaintext($responseStatusMessage)->withStatus($responseStatusCode);
+            }
+
+            $resolve($response);
+        });
     }
 }
