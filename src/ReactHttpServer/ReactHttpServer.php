@@ -21,6 +21,9 @@ class ReactHttpServer implements GetSetConsoleInterface, GetSetLoggerInterface
     protected int $memoryUsageStart;
     protected int $memoryUsageRealStart;
 
+    protected int $counterPromises = 0;
+    protected int $counterRequests = 0;
+
     public function __construct(HttpServerConfigModel $httpServerConfig, string $routesConfigFile, int $workerNumber = 0)
     {
         $this->httpServerConfig = $httpServerConfig;
@@ -60,6 +63,38 @@ class ReactHttpServer implements GetSetConsoleInterface, GetSetLoggerInterface
     public function getMemoryUsageRealStart(): int
     {
         return $this->memoryUsageRealStart;
+    }
+
+    /**
+     * @return int
+     */
+    public function incCounterPromises(): int
+    {
+        return $this->counterPromises++;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCounterPromises(): int
+    {
+        return $this->counterPromises;
+    }
+
+    /**
+     * @return int
+     */
+    public function incCounterRequests(): int
+    {
+        return $this->counterRequests++;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCounterRequests(): int
+    {
+        return $this->counterRequests;
     }
 
     /**

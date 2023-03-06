@@ -25,6 +25,7 @@ class RoutesMiddleware
     public function __invoke(ServerRequestInterface $request)
     {
         $this->httpServer->getConsoleOutput()->writeln('---------------Middleware---------------');
+        $this->httpServer->getConsoleOutput()->writeln(sprintf('Counter Requests: %d', $this->httpServer->incCounterRequests()));
 
         $symphonyRequest = new Request(
             $request->getQueryParams(),
@@ -59,14 +60,15 @@ class RoutesMiddleware
         $this->httpServer->getConsoleOutput()->writeln(sprintf('MemoryUsage (now: %d, diff: %d, start: %d)', memory_get_usage(), memory_get_usage() - $this->httpServer->getMemoryUsageStart(), $this->httpServer->getMemoryUsageStart()));
         $this->httpServer->getConsoleOutput()->writeln(sprintf('MemoryUsageReal (now: %d, diff: %d, start: %d)', memory_get_usage(true), memory_get_usage(true) - $this->httpServer->getMemoryUsageRealStart(), $this->httpServer->getMemoryUsageRealStart()));
 
+
         return $this->fetchResponse($controllerKernel);
     }
 
     protected function fetchResponse(ControllerKernel $controllerKernel): Promise
     {
         return new Promise(function ($resolve) use ($controllerKernel) {
-
             $this->httpServer->getConsoleOutput()->writeln('---------------Promise---------------');
+            $this->httpServer->getConsoleOutput()->writeln(sprintf('Counter Promises: %d', $this->httpServer->incCounterPromises()));
 
             try {
 
