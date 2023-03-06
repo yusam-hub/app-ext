@@ -41,12 +41,12 @@ class ConsoleKernel
 
         if ($this->includePackageCommands) {
             $packageRoot = realpath(__DIR__ . '/../..');
-            $replacedFolder = str_replace($packageRoot, '', __DIR__) . '/Console/Commands';
+            $replacedFolder = str_replace($packageRoot, '', $this->rootDir) . '/Console/Commands';
             if (self::$isDebugging) {
                 print_r([
+                    'rootDir' => $this->rootDir,
                     'packageRoot' => $packageRoot,
                     'replacedFolder' => $replacedFolder,
-                    'rootDir' => $this->rootDir,
                 ]);
             }
 
