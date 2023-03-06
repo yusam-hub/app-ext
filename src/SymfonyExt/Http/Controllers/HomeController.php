@@ -49,22 +49,22 @@ class HomeController extends BaseHttpController
 
     public function actionHomeDebugEnvAsArray(Request $request): array
     {
-        return $_ENV;
+        return (array) $_ENV;
     }
 
     public function actionHomeDebugServerAsArray(Request $request): array
     {
-        return $_SERVER;
+        return (array) $_SERVER;
     }
 
     public function actionHomeDebugSessionAsArray(Request $request): array
     {
-        return $_SESSION;
+        return (array) $_SESSION;
     }
 
     public function actionHomeDebugCookieAsArray(Request $request): array
     {
-        return $_COOKIE;
+        return (array) $_COOKIE;
     }
 
 }
