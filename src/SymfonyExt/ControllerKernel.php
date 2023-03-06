@@ -55,10 +55,13 @@ class ControllerKernel implements GetSetLoggerInterface, GetSetConsoleInterface
      */
     public function fetchResponse()
     {
-        $this->debug("REQUEST: " . $this->request->getMethod() . ' ' . $this->request->getRequestUri(), [
+        $executeStarted = microtime(true);
+
+        $requestMessage = "REQUEST: " . $this->request->getMethod() . ' ' . $this->request->getRequestUri();
+        $requestContext = [
             'query' => $this->request->query->all(),
             'params' => $this->request->request->all(),
-        ]);
+        ];
 
         try {
             $this->router = new Router(
@@ -86,15 +89,19 @@ class ControllerKernel implements GetSetLoggerInterface, GetSetConsoleInterface
 
             $this->httpKernel = new HttpKernel($dispatcher, new ControllerResolver(), new RequestStack(), new ArgumentResolver());
 
+            $this->debug($requestMessage, $requestContext);
             $response = $this->httpKernel->handle($this->request);
 
         } catch (NotFoundHttpException $e) {
 
+            $this->debug($requestMessage, $requestContext);
             $response = new Response('Not Found', 404);//todo: call controller for NotFound
 
         }
 
-        $this->debug(sprintf("RESPONSE (%d): %s", $response->getStatusCode(), $response->getContent()));
+        $this->debug(sprintf("RESPONSE (%d): %s", $response->getStatusCode(), $response->getContent()), [
+            'executed' => microtime(true) - $executeStarted
+        ]);
 
         if ($this->runInReactHttp) {
             return new \React\Http\Message\Response(
