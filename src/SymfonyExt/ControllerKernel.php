@@ -99,8 +99,22 @@ class ControllerKernel implements GetSetLoggerInterface, GetSetConsoleInterface
 
         }
 
+        $m = memory_get_usage(true);
+        $p = memory_get_peak_usage(true);
         $this->debug(sprintf("RESPONSE (%d): %s", $response->getStatusCode(), $response->getContent()), [
-            'executed' => microtime(true) - $executeStarted
+            'executed' => microtime(true) - $executeStarted,
+            'memoryUsage' => [
+                'Bytes' => $m,
+                'Kb' => round($m / 1024, 3),
+                'Mb' => round($m / 1024 / 1024, 3),
+                'Gb' => round($m / 1024 / 1024/ 1024, 3),
+            ],
+            'memoryPeak' => [
+                'Bytes' => $p,
+                'Kb' => round($p / 1024, 3),
+                'Mb' => round($p / 1024 / 1024, 3),
+                'Gb' => round($p / 1024 / 1024/ 1024, 3),
+            ]
         ]);
 
         if ($this->runInReactHttp) {
