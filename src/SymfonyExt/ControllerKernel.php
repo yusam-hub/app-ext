@@ -24,6 +24,8 @@ class ControllerKernel implements GetSetLoggerInterface, GetSetConsoleInterface
 {
     use GetSetLoggerTrait;
     use GetSetConsoleTrait;
+
+    public static bool $memoryRealUsage = false;
     protected string $routeDir;
     protected Request $request;
     protected string $phpFile;
@@ -56,8 +58,8 @@ class ControllerKernel implements GetSetLoggerInterface, GetSetConsoleInterface
     public function fetchResponse()
     {
         $executeStarted = microtime(true);
-        $m = memory_get_usage(true);
-        $p = memory_get_peak_usage(true);
+        $m = memory_get_usage(self::$memoryRealUsage);
+        $p = memory_get_peak_usage(self::$memoryRealUsage);
         $memoryStart = [
             'usage' => [
                 'Bytes' => $m,
@@ -115,8 +117,8 @@ class ControllerKernel implements GetSetLoggerInterface, GetSetConsoleInterface
 
         }
 
-        $m = memory_get_usage(true);
-        $p = memory_get_peak_usage(true);
+        $m = memory_get_usage(self::$memoryRealUsage);
+        $p = memory_get_peak_usage(self::$memoryRealUsage);
         $this->debug(sprintf("RESPONSE (%d): %s", $response->getStatusCode(), $response->getContent()), [
             'executed' => microtime(true) - $executeStarted,
             'memory' => [
