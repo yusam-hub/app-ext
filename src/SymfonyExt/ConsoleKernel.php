@@ -7,6 +7,8 @@ use Symfony\Component\Finder\Finder;
 
 class ConsoleKernel
 {
+    public static bool $isDebugging = false;
+
     protected Application $application;
 
     protected string $rootDir;
@@ -44,8 +46,20 @@ class ConsoleKernel
             $this->nameSpaceMap[$folder] = $namespace;
         }
 
+        if (self::$isDebugging) {
+            print_r([
+                'nameSpaceMap' => $this->nameSpaceMap
+            ]);
+        }
+
         foreach($this->nameSpaceMap as $folder => $namespace) {
             $generatedPaths[] = $this->rootDir . $folder;
+        }
+
+        if (self::$isDebugging) {
+            print_r([
+                'generatedPaths' => $generatedPaths
+            ]);
         }
 
         $this->loadCommands(
@@ -67,28 +81,45 @@ class ConsoleKernel
             return is_dir($path);
         });
 
-
         if (empty($paths)) {
             return;
         }
 
-        foreach ((new Finder())->in($paths)->files() as $command) {
+        foreach ((new Finder())->in($paths)->files() as $finder) {
 
-            $command = $command->getRealPath() === '' ? '' : array_reverse(explode($this->rootDir, $command->getRealPath(), 2))[0];
+            $foundFile = $finder->getRealPath() === '' ? '' : array_reverse(explode($this->rootDir, $finder->getRealPath(), 2))[0];
+
+            if (self::$isDebugging) {
+                print_r([
+                    'foundFile' => $foundFile
+                ]);
+            }
 
             foreach($this->nameSpaceMap as $folder => $namespace) {
-                $command = str_replace(
+                $foundFile = str_replace(
                     $folder,
                     $namespace,
-                    $command
+                    $foundFile
                 );
+            }
+
+            if (self::$isDebugging) {
+                print_r([
+                    'mappedFoundFile' => $foundFile
+                ]);
             }
 
             $class = str_replace(
                     ['/', '.php'],
                     ['\\', ''],
-                $command
+                $foundFile
                 );
+
+            if (self::$isDebugging) {
+                print_r([
+                    'class' => $class
+                ]);
+            }
 
             try {
                 if (is_subclass_of($class, \Symfony\Component\Console\Command\Command::class) && !(new \ReflectionClass($class))->isAbstract()) {
