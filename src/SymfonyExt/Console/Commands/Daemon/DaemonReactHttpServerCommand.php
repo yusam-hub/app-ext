@@ -57,7 +57,7 @@ abstract class DaemonReactHttpServerCommand extends BaseConsoleCommand
 
         $httpServer->setConsoleOutput($output);
         $httpServer->setConsoleOutputEnabled(true);
-        $httpServer->setLogger($this->getLogger());
+        $httpServer->setLogger($this->getLoggerFromConfig($workerNumber));
 
         return $httpServer->run();
     }
