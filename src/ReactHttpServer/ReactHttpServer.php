@@ -70,7 +70,8 @@ class ReactHttpServer implements GetSetConsoleInterface, GetSetLoggerInterface
      */
     public function incCounterPromises(): int
     {
-        return $this->counterPromises++;
+        $this->counterPromises++;
+        return $this->counterPromises;
     }
 
     /**
@@ -86,7 +87,8 @@ class ReactHttpServer implements GetSetConsoleInterface, GetSetLoggerInterface
      */
     public function incCounterRequests(): int
     {
-        return $this->counterRequests++;
+        $this->counterRequests++;
+        return $this->counterRequests;
     }
 
     /**
