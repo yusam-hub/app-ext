@@ -54,6 +54,9 @@ class RoutesMiddleware
         $controllerKernel->setConsoleOutputEnabled($this->httpServer->getConsoleOutputEnabled());
         $controllerKernel->setLogger($this->httpServer->getLogger());
 
+        $this->httpServer->getConsoleOutput()->writeln(sprintf('Middleware (diff): %.4f', memory_get_usage() - $this->httpServer->getMemoryUsageStart()));
+        $this->httpServer->getConsoleOutput()->writeln(sprintf('Middleware Real (diff): %.4f', memory_get_usage(true) - $this->httpServer->getMemoryUsageRealStart()));
+
         return $this->fetchResponse($controllerKernel);
     }
 
@@ -82,6 +85,10 @@ class RoutesMiddleware
 
                 $response = Response::plaintext($responseStatusMessage)->withStatus($responseStatusCode);
             }
+
+            $this->httpServer->getConsoleOutput()->writeln(sprintf('Promise (diff): %.4f', memory_get_usage() - $this->httpServer->getMemoryUsageStart()));
+            $this->httpServer->getConsoleOutput()->writeln(sprintf('Promise Real (diff): %.4f', memory_get_usage(true) - $this->httpServer->getMemoryUsageRealStart()));
+
 
             $resolve($response);
         });

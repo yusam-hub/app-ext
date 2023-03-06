@@ -17,14 +17,49 @@ class ReactHttpServer implements GetSetConsoleInterface, GetSetLoggerInterface
     public const FAILURE = 1;
     protected HttpServerConfigModel $httpServerConfig;
     protected int $workerNumber;
-
     protected string $routesConfigFile;
+    protected int $memoryUsageStart;
+    protected int $memoryUsageRealStart;
 
     public function __construct(HttpServerConfigModel $httpServerConfig, string $routesConfigFile, int $workerNumber = 0)
     {
         $this->httpServerConfig = $httpServerConfig;
         $this->workerNumber = $workerNumber;
         $this->routesConfigFile = $routesConfigFile;
+        $this->memoryUsageStart = memory_get_usage(false);
+        $this->memoryUsageRealStart = memory_get_usage(true);
+    }
+
+    /**
+     * @return HttpServerConfigModel
+     */
+    public function getHttpServerConfig(): HttpServerConfigModel
+    {
+        return $this->httpServerConfig;
+    }
+
+    /**
+     * @return int
+     */
+    public function getWorkerNumber(): int
+    {
+        return $this->workerNumber;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMemoryUsageStart(): int
+    {
+        return $this->memoryUsageStart;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMemoryUsageRealStart(): int
+    {
+        return $this->memoryUsageRealStart;
     }
 
     /**
