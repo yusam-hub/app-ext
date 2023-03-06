@@ -24,8 +24,9 @@ class RoutesMiddleware
      */
     public function __invoke(ServerRequestInterface $request)
     {
+        $requestId = $this->httpServer->incCounterRequests();
         $this->httpServer->getConsoleOutput()->writeln('---------------Middleware---------------');
-        $this->httpServer->getConsoleOutput()->writeln(sprintf('Counter Requests: %d', $this->httpServer->incCounterRequests()));
+        $this->httpServer->getConsoleOutput()->writeln(sprintf('Counter Requests: %d', $requestId));
 
         $symphonyRequest = new Request(
             $request->getQueryParams(),
@@ -57,18 +58,17 @@ class RoutesMiddleware
         $controllerKernel->setConsoleOutputEnabled($this->httpServer->getConsoleOutputEnabled());
         $controllerKernel->setLogger($this->httpServer->getLogger());
 
-        $this->httpServer->getConsoleOutput()->writeln(sprintf('MemoryUsage (now: %d, diff: %d, start: %d)', memory_get_usage(), memory_get_usage() - $this->httpServer->getMemoryUsageStart(), $this->httpServer->getMemoryUsageStart()));
-        $this->httpServer->getConsoleOutput()->writeln(sprintf('MemoryUsageReal (now: %d, diff: %d, start: %d)', memory_get_usage(true), memory_get_usage(true) - $this->httpServer->getMemoryUsageRealStart(), $this->httpServer->getMemoryUsageRealStart()));
+        $this->httpServer->getConsoleOutput()->writeln(sprintf('#%d# MemoryUsage (now: %d, diff: %d, start: %d)', $requestId, memory_get_usage(), memory_get_usage() - $this->httpServer->getMemoryUsageStart(), $this->httpServer->getMemoryUsageStart()));
+        $this->httpServer->getConsoleOutput()->writeln(sprintf('#%d# MemoryUsageReal (now: %d, diff: %d, start: %d)', $requestId, memory_get_usage(true), memory_get_usage(true) - $this->httpServer->getMemoryUsageRealStart(), $this->httpServer->getMemoryUsageRealStart()));
 
-
-        return $this->fetchResponse($controllerKernel);
+        return $this->fetchResponse($controllerKernel, $requestId);
     }
 
-    protected function fetchResponse(ControllerKernel $controllerKernel): Promise
+    protected function fetchResponse(ControllerKernel $controllerKernel, int $requestId): Promise
     {
-        return new Promise(function ($resolve) use ($controllerKernel) {
+        return new Promise(function ($resolve) use ($controllerKernel, $requestId) {
             $this->httpServer->getConsoleOutput()->writeln('---------------Promise---------------');
-            $this->httpServer->getConsoleOutput()->writeln(sprintf('Counter Promises: %d', $this->httpServer->incCounterPromises()));
+            $this->httpServer->getConsoleOutput()->writeln(sprintf('#%d# Counter Promises: %d', $requestId, $this->httpServer->incCounterPromises()));
 
             try {
 
@@ -92,10 +92,11 @@ class RoutesMiddleware
                 $response = Response::plaintext($responseStatusMessage)->withStatus($responseStatusCode);
             }
 
-            $this->httpServer->getConsoleOutput()->writeln(sprintf('MemoryUsage (now: %d, diff: %d, start: %d)', memory_get_usage(), memory_get_usage() - $this->httpServer->getMemoryUsageStart(), $this->httpServer->getMemoryUsageStart()));
-            $this->httpServer->getConsoleOutput()->writeln(sprintf('MemoryUsageReal (now: %d, diff: %d, start: %d)', memory_get_usage(true), memory_get_usage(true) - $this->httpServer->getMemoryUsageRealStart(), $this->httpServer->getMemoryUsageRealStart()));
+            $this->httpServer->getConsoleOutput()->writeln(sprintf('#%d# MemoryUsage (now: %d, diff: %d, start: %d)', $requestId, memory_get_usage(), memory_get_usage() - $this->httpServer->getMemoryUsageStart(), $this->httpServer->getMemoryUsageStart()));
+            $this->httpServer->getConsoleOutput()->writeln(sprintf('#%d# MemoryUsageReal (now: %d, diff: %d, start: %d)', $requestId, memory_get_usage(true), memory_get_usage(true) - $this->httpServer->getMemoryUsageRealStart(), $this->httpServer->getMemoryUsageRealStart()));
 
             $resolve($response);
+
         });
     }
 }
