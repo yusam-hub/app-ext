@@ -12,6 +12,10 @@ class HomeController extends BaseHttpController
         static::routesAdd($routes, ['GET', 'HEAD'], '/','actionHomeEmpty');
         static::routesAdd($routes, ['GET', 'HEAD'], '/debug/dt-as-string', 'actionHomeDebugDateTimeAsString');
         static::routesAdd($routes, ['GET', 'HEAD'], '/debug/dt-as-array', 'actionHomeDebugDateTimeAsArray');
+        static::routesAdd($routes, ['GET', 'HEAD'], '/debug/env', 'actionHomeDebugEnvAsArray');
+        static::routesAdd($routes, ['GET', 'HEAD'], '/debug/server', 'actionHomeDebugServerAsArray');
+        static::routesAdd($routes, ['GET', 'HEAD'], '/debug/session', 'actionHomeDebugSessionAsArray');
+        static::routesAdd($routes, ['GET', 'HEAD'], '/debug/cookie', 'actionHomeDebugCookieAsArray');
     }
 
     /**
@@ -42,4 +46,25 @@ class HomeController extends BaseHttpController
             date("Y-m-d H:i:s")
         ];
     }
+
+    public function actionHomeDebugEnvAsArray(Request $request): array
+    {
+        return $_ENV;
+    }
+
+    public function actionHomeDebugServerAsArray(Request $request): array
+    {
+        return $_SERVER;
+    }
+
+    public function actionHomeDebugSessionAsArray(Request $request): array
+    {
+        return $_SESSION;
+    }
+
+    public function actionHomeDebugCookieAsArray(Request $request): array
+    {
+        return $_COOKIE;
+    }
+
 }
