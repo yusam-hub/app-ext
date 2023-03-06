@@ -15,15 +15,16 @@ class OpenApiGenerateJsonCommand extends BaseConsoleCommand
         $this
             ->setName('open-api:generate-json')
             ->setDescription('Generate json file from controllers path where includes @OA')
-            ->addOption('scan', null, InputOption::VALUE_OPTIONAL, 'Scan controllers path where includes @OA', './tmp/')
-            ->addOption('file', null,InputOption::VALUE_OPTIONAL, 'File for save generated json', './tmp/open-api.json')
+            ->addOption('scan', null, InputOption::VALUE_OPTIONAL, 'Scan controllers path where includes @OA', './tmp/public/swagger-ui')
+            ->addOption('file', null,InputOption::VALUE_OPTIONAL, 'File for save generated json', './tmp/public/swagger-ui/open-api.json')
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $scan = $input->getOption('scan');
-        $file = $input->getOption('file');
+        $scan = strval($input->getOption('scan'));
+        $file = strval($input->getOption('file'));
+
         $output->writeln(sprintf('<yellow>--scan=%s</yellow>', $scan));
         $output->writeln(sprintf('<yellow>--file=%s</yellow>', $file));
 
