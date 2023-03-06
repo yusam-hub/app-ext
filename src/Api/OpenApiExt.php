@@ -28,13 +28,12 @@ class OpenApiExt
     ];
 
     /**
-     * @param array $paths
-     * @param array $replaceKeyValuePair
+     * @param array $config
      */
-    public function __construct(array $paths, array $replaceKeyValuePair = [])
+    public function __construct(array $config = [])
     {
-        $this->paths = array_merge($this->paths, $paths);
-        $this->replaceKeyValuePair = array_merge($this->replaceKeyValuePair, $replaceKeyValuePair);
+        $this->paths = array_merge($this->paths, $config['paths']??[]);
+        $this->replaceKeyValuePair = array_merge($this->replaceKeyValuePair, $config['replaceKeyValuePair']??[]);
     }
 
     /**

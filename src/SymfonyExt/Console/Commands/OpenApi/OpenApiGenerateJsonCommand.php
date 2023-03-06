@@ -32,7 +32,11 @@ class OpenApiGenerateJsonCommand extends BaseConsoleCommand
                 @unlink($file);
             }
 
-            $openApiExt = new OpenApiExt([$scan], []);
+            $openApiExt = new OpenApiExt([
+                'paths' => [
+                    $scan
+                ]
+            ]);
 
             $json = $openApiExt->generateOpenApi();
 
