@@ -37,6 +37,7 @@ class HomeController extends BaseHttpController
             'requestUri' => $request->getRequestUri(),
             'query' => $request->query->all(),
             'params' => $request->request->all(),
+            'body' => $request->getContent(),
         ];
     }
 
