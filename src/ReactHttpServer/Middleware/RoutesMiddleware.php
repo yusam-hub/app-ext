@@ -32,8 +32,8 @@ class RoutesMiddleware
                 'HTTP_HOST' => $request->getUri()->getHost(),
                 'REQUEST_SCHEME' => $request->getUri()->getScheme(),
                 'QUERY_STRING' => $request->getUri()->getQuery(),
-                'REQUEST_URI' => $request->getUri()->getPath() . (!empty($request->getUri()->getQuery()) ? '?' . $request->getUri()->getQuery() : ''),
-                'DOCUMENT_URI' => $request->getUri()->getPath(),
+                'REQUEST_URI' => rtrim($request->getUri()->getPath(), '/') . (!empty($request->getUri()->getQuery()) ? '?' . $request->getUri()->getQuery() : ''),
+                'DOCUMENT_URI' => rtrim($request->getUri()->getPath(), '/'),
             ]
         );
 
