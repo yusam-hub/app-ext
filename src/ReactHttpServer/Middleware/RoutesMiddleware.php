@@ -37,11 +37,17 @@ class RoutesMiddleware
             ]
         );
 
+        foreach($request->getHeaders() as $key => $values)
+        {
+            $serverKey = 'HTTP_'.strtoupper($key);
+            $serverKey = str_replace("-",'_', $serverKey);
+            $serverParams[$serverKey] = $request->getHeader($key);
+        }
+
         if ($this->httpServer->getHttpServerConfig()->isDebugging) {
             $this->httpServer->getConsoleOutput()->writeln('---------------Middleware---------------');
             $this->httpServer->getConsoleOutput()->writeln(sprintf('Counter Requests: %d', $requestId));
             $this->httpServer->getConsoleOutput()->writeln(sprintf("#%d# Server params: %s", $requestId, json_encode($serverParams, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)));
-            $this->httpServer->getConsoleOutput()->writeln(sprintf("#%d# Headers params: %s", $requestId, json_encode( $request->getHeaders(), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)));
         }
 
         $symphonyRequest = new Request(
