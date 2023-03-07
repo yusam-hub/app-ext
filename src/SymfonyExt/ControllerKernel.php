@@ -52,6 +52,29 @@ class ControllerKernel implements GetSetLoggerInterface, GetSetConsoleInterface
     }
 
     /**
+     * @return bool
+     */
+    protected function isCorsSuccess(): bool
+    {
+        if (!app_ext_config('cors.enabled')) {
+            return true;
+        }
+
+        $origin = $this->request->headers->get('origin');
+
+        if (!empty($origin)) {
+            $allowOrigins = (array) app_ext_config('cors.allowOrigins',['*']);
+            if (!empty(array_filter($allowOrigins, function($v) use($origin){return $v === '*' || strtolower($origin) === strtolower($v);}))) {
+                $denyOrigins = (array) app_ext_config('cors.denyOrigins',[]);
+                if (empty(array_filter($denyOrigins, function($v) use($origin){return $v === '*' || strtolower($origin) === strtolower($v);}))) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
      * @return \React\Http\Message\Response|Response
      * @throws \Exception|\Throwable
      */
@@ -66,41 +89,53 @@ class ControllerKernel implements GetSetLoggerInterface, GetSetConsoleInterface
             'params' => $this->request->request->all(),
         ];
 
-        try {
-            $this->router = new Router(
-                new PhpFileLoader(
-                    new FileLocator($this->routeDir)
-                ),
-                $this->phpFile,
-                [
-                    // 'cache_dir' => app()->getRootDir() . '/storage/app/caches/routes'
-                ],
-                $this->requestContext
-            );
-
-            $dispatcher = new EventDispatcher();
-
-            $dispatcher->addSubscriber(
-                new RouterListener(
-                    new UrlMatcher(
-                        $this->router->getRouteCollection(),
-                        new RequestContext()
+        if ($this->isCorsSuccess()) {
+            try {
+                $this->router = new Router(
+                    new PhpFileLoader(
+                        new FileLocator($this->routeDir)
                     ),
-                    new RequestStack()
-                )
-            );
+                    $this->phpFile,
+                    [
+                        // 'cache_dir' => app()->getRootDir() . '/storage/app/caches/routes'
+                    ],
+                    $this->requestContext
+                );
 
-            $this->httpKernel = new HttpKernel($dispatcher, new ControllerResolverKernel($this), new RequestStack(), new ArgumentResolver());
+                $dispatcher = new EventDispatcher();
 
-            $this->debug($requestMessage, $requestContext);
-            $response = $this->httpKernel->handle($this->request);
+                $dispatcher->addSubscriber(
+                    new RouterListener(
+                        new UrlMatcher(
+                            $this->router->getRouteCollection(),
+                            new RequestContext()
+                        ),
+                        new RequestStack()
+                    )
+                );
 
-        } catch (NotFoundHttpException $e) {
+                $this->httpKernel = new HttpKernel($dispatcher, new ControllerResolverKernel($this), new RequestStack(), new ArgumentResolver());
 
-            $this->debug($requestMessage, $requestContext);
-            $response = new Response('Not Found', 404);//todo: call controller for NotFound
+                $this->debug($requestMessage, $requestContext);
+
+                $response = $this->httpKernel->handle($this->request);
+
+            } catch (NotFoundHttpException $e) {
+
+                $this->debug($requestMessage, $requestContext);
+                $response = new Response('Not Found', Response::HTTP_NOT_FOUND);//todo: call controller for NotFound
+
+            }
+
+            $response->headers->set('Access-Control-Allow-Origin', '*');
+
+        } else {
+
+            $response = new Response('CORS request did not succeed', Response::HTTP_NOT_ACCEPTABLE);
 
         }
+
+
 
         $mEnd = memory_get_usage(self::$memoryRealUsage);
         $this->debug(sprintf("RESPONSE (%d): %s", $response->getStatusCode(), $response->getContent()), [
