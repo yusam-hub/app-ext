@@ -2,6 +2,7 @@
 
 namespace YusamHub\AppExt\SymfonyExt;
 
+use Asm89\Stack\CorsService;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -147,6 +148,14 @@ class ControllerKernel implements GetSetLoggerInterface, GetSetConsoleInterface
             ]);
             $response = new Response($responseStatusMessage, $responseStatusCode);
         }
+
+        $cors = new CorsService(app_ext_config('cors'));
+        $cors->addActualRequestHeaders($response, $this->request);
+        $cors->handlePreflightRequest($this->request);
+        $cors->isOriginAllowed($this->request);
+        $cors->isCorsRequest($this->request);
+        $cors->isPreflightRequest($this->request);
+
         $response->send();
         $this->httpKernel->terminate($this->request, $response);
     }
