@@ -122,7 +122,11 @@ class ControllerKernel implements GetSetLoggerInterface, GetSetConsoleInterface
 
                 $this->debug($requestMessage, $requestContext);
 
-                $response = $this->httpKernel->handle($this->request);
+                if ($this->request->getMethod() == 'OPTIONS') {
+                    $response = new Response();
+                } else {
+                    $response = $this->httpKernel->handle($this->request);
+                }
 
             } catch (NotFoundHttpException $e) {
 
