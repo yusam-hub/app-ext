@@ -135,7 +135,7 @@ class ControllerKernel implements GetSetLoggerInterface, GetSetConsoleInterface
 
         } else {
 
-            $response = new Response('CORS request did not succeed', Response::HTTP_NOT_ACCEPTABLE);
+            $response = new Response(sprintf('CORS request did not succeed for origin: [%s]', strval($origin)), Response::HTTP_NOT_ACCEPTABLE);
 
         }
 
