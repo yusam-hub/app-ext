@@ -5,6 +5,7 @@ class HttpServerConfigModel
 {
     const SOCKET_SERVER_MODE_IP = 1;
     const SOCKET_SERVER_MODE_UNIX_FILE = 2;
+    public bool $isDebugging = true;
     public int $limitConcurrentRequests = 100;
     public int $limitRequestBodyBuffer = 2097152;
     public int $socketServerMode = self::SOCKET_SERVER_MODE_IP;

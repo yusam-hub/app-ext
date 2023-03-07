@@ -37,9 +37,11 @@ class RoutesMiddleware
             ]
         );
 
-        $this->httpServer->getConsoleOutput()->writeln('---------------Middleware---------------');
-        $this->httpServer->getConsoleOutput()->writeln(sprintf('Counter Requests: %d', $requestId));
-        $this->httpServer->getConsoleOutput()->writeln(sprintf("#%d# Server params: %s", $requestId, json_encode($serverParams, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)));
+        if ($this->httpServer->getHttpServerConfig()->isDebugging) {
+            $this->httpServer->getConsoleOutput()->writeln('---------------Middleware---------------');
+            $this->httpServer->getConsoleOutput()->writeln(sprintf('Counter Requests: %d', $requestId));
+            $this->httpServer->getConsoleOutput()->writeln(sprintf("#%d# Server params: %s", $requestId, json_encode($serverParams, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)));
+        }
 
         $symphonyRequest = new Request(
             $request->getQueryParams(),
@@ -61,17 +63,20 @@ class RoutesMiddleware
         $controllerKernel->setConsoleOutputEnabled($this->httpServer->getConsoleOutputEnabled());
         $controllerKernel->setLogger($this->httpServer->getLogger());
 
-        $this->httpServer->getConsoleOutput()->writeln(sprintf('#%d# MemoryUsage (now: %d, diff: %d, start: %d)', $requestId, memory_get_usage(), memory_get_usage() - $this->httpServer->getMemoryUsageStart(), $this->httpServer->getMemoryUsageStart()));
-        $this->httpServer->getConsoleOutput()->writeln(sprintf('#%d# MemoryUsageReal (now: %d, diff: %d, start: %d)', $requestId, memory_get_usage(true), memory_get_usage(true) - $this->httpServer->getMemoryUsageRealStart(), $this->httpServer->getMemoryUsageRealStart()));
-
+        if ($this->httpServer->getHttpServerConfig()->isDebugging) {
+            $this->httpServer->getConsoleOutput()->writeln(sprintf('#%d# MemoryUsage (now: %d, diff: %d, start: %d)', $requestId, memory_get_usage(), memory_get_usage() - $this->httpServer->getMemoryUsageStart(), $this->httpServer->getMemoryUsageStart()));
+            $this->httpServer->getConsoleOutput()->writeln(sprintf('#%d# MemoryUsageReal (now: %d, diff: %d, start: %d)', $requestId, memory_get_usage(true), memory_get_usage(true) - $this->httpServer->getMemoryUsageRealStart(), $this->httpServer->getMemoryUsageRealStart()));
+        }
         return $this->fetchResponse($controllerKernel, $requestId);
     }
 
     protected function fetchResponse(ControllerKernel $controllerKernel, int $requestId): Promise
     {
         return new Promise(function ($resolve) use ($controllerKernel, $requestId) {
-            $this->httpServer->getConsoleOutput()->writeln('---------------Promise---------------');
-            $this->httpServer->getConsoleOutput()->writeln(sprintf('#%d# Counter Promises: %d', $requestId, $this->httpServer->incCounterPromises()));
+            if ($this->httpServer->getHttpServerConfig()->isDebugging) {
+                $this->httpServer->getConsoleOutput()->writeln('---------------Promise---------------');
+                $this->httpServer->getConsoleOutput()->writeln(sprintf('#%d# Counter Promises: %d', $requestId, $this->httpServer->incCounterPromises()));
+            }
 
             try {
 
@@ -95,8 +100,10 @@ class RoutesMiddleware
                 $response = Response::plaintext($responseStatusMessage)->withStatus($responseStatusCode);
             }
 
-            $this->httpServer->getConsoleOutput()->writeln(sprintf('#%d# MemoryUsage (now: %d, diff: %d, start: %d)', $requestId, memory_get_usage(), memory_get_usage() - $this->httpServer->getMemoryUsageStart(), $this->httpServer->getMemoryUsageStart()));
-            $this->httpServer->getConsoleOutput()->writeln(sprintf('#%d# MemoryUsageReal (now: %d, diff: %d, start: %d)', $requestId, memory_get_usage(true), memory_get_usage(true) - $this->httpServer->getMemoryUsageRealStart(), $this->httpServer->getMemoryUsageRealStart()));
+            if ($this->httpServer->getHttpServerConfig()->isDebugging) {
+                $this->httpServer->getConsoleOutput()->writeln(sprintf('#%d# MemoryUsage (now: %d, diff: %d, start: %d)', $requestId, memory_get_usage(), memory_get_usage() - $this->httpServer->getMemoryUsageStart(), $this->httpServer->getMemoryUsageStart()));
+                $this->httpServer->getConsoleOutput()->writeln(sprintf('#%d# MemoryUsageReal (now: %d, diff: %d, start: %d)', $requestId, memory_get_usage(true), memory_get_usage(true) - $this->httpServer->getMemoryUsageRealStart(), $this->httpServer->getMemoryUsageRealStart()));
+            }
 
             $resolve($response);
 
