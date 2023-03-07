@@ -9,14 +9,14 @@ class HomeController extends BaseHttpController
 {
     public static function routesRegister(RoutingConfigurator $routes): void
     {
-        static::routesAdd($routes, ['GET', 'HEAD'], '/','actionHomeEmpty');
-        static::routesAdd($routes, ['GET', 'POST', 'PUT', 'DELETE', 'HEAD'], '/debug/test', 'actionTest');
-        static::routesAdd($routes, ['GET', 'HEAD'], '/debug/dt-as-string', 'actionHomeDebugDateTimeAsString');
-        static::routesAdd($routes, ['GET', 'HEAD'], '/debug/dt-as-array', 'actionHomeDebugDateTimeAsArray');
-        static::routesAdd($routes, ['GET', 'HEAD'], '/debug/env', 'actionHomeDebugEnvAsArray');
-        static::routesAdd($routes, ['GET', 'HEAD'], '/debug/server', 'actionHomeDebugServerAsArray');
-        static::routesAdd($routes, ['GET', 'HEAD'], '/debug/session', 'actionHomeDebugSessionAsArray');
-        static::routesAdd($routes, ['GET', 'HEAD'], '/debug/cookie', 'actionHomeDebugCookieAsArray');
+        static::routesAdd($routes, ['OPTIONS', 'GET'], '/','actionHomeEmpty');
+        static::routesAdd($routes, ['OPTIONS', 'GET', 'POST', 'PUT', 'DELETE', 'HEAD'], '/debug/test', 'actionTest');
+        static::routesAdd($routes, ['OPTIONS', 'GET'], '/debug/dt-as-string', 'actionHomeDebugDateTimeAsString');
+        static::routesAdd($routes, ['OPTIONS', 'GET'], '/debug/dt-as-array', 'actionHomeDebugDateTimeAsArray');
+        static::routesAdd($routes, ['OPTIONS', 'GET'], '/debug/env', 'actionHomeDebugEnvAsArray');
+        static::routesAdd($routes, ['OPTIONS', 'GET'], '/debug/server', 'actionHomeDebugServerAsArray');
+        static::routesAdd($routes, ['OPTIONS', 'GET'], '/debug/session', 'actionHomeDebugSessionAsArray');
+        static::routesAdd($routes, ['OPTIONS', 'GET'], '/debug/cookie', 'actionHomeDebugCookieAsArray');
     }
 
     /**
