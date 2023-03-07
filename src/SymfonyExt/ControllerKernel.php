@@ -139,8 +139,6 @@ class ControllerKernel implements GetSetLoggerInterface, GetSetConsoleInterface
 
         }
 
-
-
         $mEnd = memory_get_usage(self::$memoryRealUsage);
         $this->debug(sprintf("RESPONSE (%d): %s", $response->getStatusCode(), $response->getContent()), [
             'executed' => microtime(true) - $executeStarted,
