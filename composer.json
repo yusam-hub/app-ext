@@ -21,7 +21,6 @@
         "symfony/config": "^5.4",
 
         "react/http": "^1.8",
-        "asm89/stack-cors": "^2.1",
 
         "zircote/swagger-php": "^3.3",
         "swagger-api/swagger-ui": "^3.5"
