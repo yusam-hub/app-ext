@@ -38,7 +38,6 @@ class RoutesMiddleware
         }
 
         $serverParams = array_merge(
-            $request->getServerParams(),
             $serverParams,
             [
                 'REQUEST_METHOD' => $request->getMethod(),
@@ -46,7 +45,8 @@ class RoutesMiddleware
                 'QUERY_STRING' => $request->getUri()->getQuery(),
                 'REQUEST_URI' => rtrim($request->getUri()->getPath(), '/') . (!empty($request->getUri()->getQuery()) ? '?' . $request->getUri()->getQuery() : ''),
                 'DOCUMENT_URI' => rtrim($request->getUri()->getPath(), '/'),
-            ]
+            ],
+            $request->getServerParams(),
         );
 
         if ($this->httpServer->getHttpServerConfig()->isDebugging) {
