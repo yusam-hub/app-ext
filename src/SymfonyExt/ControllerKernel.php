@@ -90,7 +90,7 @@ class ControllerKernel implements GetSetLoggerInterface, GetSetConsoleInterface
                 )
             );
 
-            $this->httpKernel = new HttpKernel($dispatcher, new ControllerResolver(), new RequestStack(), new ArgumentResolver());
+            $this->httpKernel = new HttpKernel($dispatcher, new ControllerResolverKernel($this), new RequestStack(), new ArgumentResolver());
 
             $this->debug($requestMessage, $requestContext);
             $response = $this->httpKernel->handle($this->request);
