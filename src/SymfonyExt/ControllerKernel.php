@@ -128,6 +128,16 @@ class ControllerKernel implements GetSetLoggerInterface, GetSetConsoleInterface
      */
     public function runIndex(): void
     {
+        $cors = new CorsService(app_ext_config('cors'));
+
+        if ($cors->isPreflightRequest($this->request)) {
+            $response = $cors->handlePreflightRequest($this->request);
+            $cors->varyHeader($response, 'Access-Control-Request-Method');
+            $response->send();
+            $this->httpKernel->terminate($this->request, $response);
+            return;
+        }
+
         try {
 
             $response = $this->fetchResponse();
@@ -149,12 +159,9 @@ class ControllerKernel implements GetSetLoggerInterface, GetSetConsoleInterface
             $response = new Response($responseStatusMessage, $responseStatusCode);
         }
 
-        $cors = new CorsService(app_ext_config('cors'));
-        $cors->addActualRequestHeaders($response, $this->request);
-        $cors->handlePreflightRequest($this->request);
-        $cors->isOriginAllowed($this->request);
-        $cors->isCorsRequest($this->request);
-        $cors->isPreflightRequest($this->request);
+        if ($this->request->getMethod() === 'OPTIONS') {
+            $cors->varyHeader($response, 'Access-Control-Request-Method');
+        }
 
         $response->send();
         $this->httpKernel->terminate($this->request, $response);
