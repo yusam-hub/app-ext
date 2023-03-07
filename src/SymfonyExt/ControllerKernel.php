@@ -52,9 +52,10 @@ class ControllerKernel implements GetSetLoggerInterface, GetSetConsoleInterface
     }
 
     /**
+     * @param $origin
      * @return bool
      */
-    protected function isCorsSuccess(): bool
+    protected function isCorsSuccess(&$origin): bool
     {
         if (!app_ext_config('cors.enabled')) {
             return true;
@@ -89,7 +90,8 @@ class ControllerKernel implements GetSetLoggerInterface, GetSetConsoleInterface
             'params' => $this->request->request->all(),
         ];
 
-        if ($this->isCorsSuccess()) {
+        if ($this->isCorsSuccess($origin)) {
+
             try {
                 $this->router = new Router(
                     new PhpFileLoader(
@@ -127,7 +129,9 @@ class ControllerKernel implements GetSetLoggerInterface, GetSetConsoleInterface
 
             }
 
-            $response->headers->set('Access-Control-Allow-Origin', '*');
+            if (!empty($origin)) {
+                $response->headers->set('Access-Control-Allow-Origin', '*');
+            }
 
         } else {
 
