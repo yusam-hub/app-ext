@@ -39,9 +39,12 @@ class RoutesMiddleware
 
         foreach($request->getHeaders() as $key => $values)
         {
-            $serverKey = 'HTTP_'.strtoupper($key);
-            $serverKey = str_replace("-",'_', $serverKey);
-            $serverParams[$serverKey] = $request->getHeader($key);
+            $value = $request->getHeader($key)[0]??'';
+            if (!empty($value)) {
+                $serverKey = 'HTTP_'.strtoupper($key);
+                $serverKey = str_replace("-",'_', $serverKey);
+                $serverParams[$serverKey] = $value;
+            }
         }
 
         if ($this->httpServer->getHttpServerConfig()->isDebugging) {
