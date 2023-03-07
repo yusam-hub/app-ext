@@ -71,8 +71,10 @@ class ControllerKernel implements GetSetLoggerInterface, GetSetConsoleInterface
                     return true;
                 }
             }
+            return false;
         }
-        return false;
+
+        return true;
     }
 
     /**
