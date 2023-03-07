@@ -25,18 +25,8 @@ class RoutesMiddleware
     public function __invoke(ServerRequestInterface $request)
     {
         $requestId = $this->httpServer->incCounterRequests();
-        $serverParams = array_merge(
-            $request->getServerParams(),
-            [
-                'REQUEST_METHOD' => $request->getMethod(),
-                'HTTP_HOST' => $request->getUri()->getHost(),
-                'REQUEST_SCHEME' => $request->getUri()->getScheme(),
-                'QUERY_STRING' => $request->getUri()->getQuery(),
-                'REQUEST_URI' => rtrim($request->getUri()->getPath(), '/') . (!empty($request->getUri()->getQuery()) ? '?' . $request->getUri()->getQuery() : ''),
-                'DOCUMENT_URI' => rtrim($request->getUri()->getPath(), '/'),
-            ]
-        );
 
+        $serverParams = [];
         foreach($request->getHeaders() as $key => $values)
         {
             $value = $request->getHeader($key)[0]??'';
@@ -46,6 +36,18 @@ class RoutesMiddleware
                 $serverParams[$serverKey] = $value;
             }
         }
+
+        $serverParams = array_merge(
+            $request->getServerParams(),
+            $serverParams,
+            [
+                'REQUEST_METHOD' => $request->getMethod(),
+                'REQUEST_SCHEME' => $request->getUri()->getScheme(),
+                'QUERY_STRING' => $request->getUri()->getQuery(),
+                'REQUEST_URI' => rtrim($request->getUri()->getPath(), '/') . (!empty($request->getUri()->getQuery()) ? '?' . $request->getUri()->getQuery() : ''),
+                'DOCUMENT_URI' => rtrim($request->getUri()->getPath(), '/'),
+            ]
+        );
 
         if ($this->httpServer->getHttpServerConfig()->isDebugging) {
             $this->httpServer->getConsoleOutput()->writeln('---------------Middleware---------------');
