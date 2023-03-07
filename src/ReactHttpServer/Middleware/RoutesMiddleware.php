@@ -25,8 +25,21 @@ class RoutesMiddleware
     public function __invoke(ServerRequestInterface $request)
     {
         $requestId = $this->httpServer->incCounterRequests();
+        $serverParams = array_merge(
+            $request->getServerParams(),
+            [
+                'REQUEST_METHOD' => $request->getMethod(),
+                'HTTP_HOST' => $request->getUri()->getHost(),
+                'REQUEST_SCHEME' => $request->getUri()->getScheme(),
+                'QUERY_STRING' => $request->getUri()->getQuery(),
+                'REQUEST_URI' => $request->getUri()->getPath() . (!empty($request->getUri()->getQuery()) ? '?' . $request->getUri()->getQuery() : ''),
+                'DOCUMENT_URI' => $request->getUri()->getPath(),
+            ]
+        );
+
         $this->httpServer->getConsoleOutput()->writeln('---------------Middleware---------------');
         $this->httpServer->getConsoleOutput()->writeln(sprintf('Counter Requests: %d', $requestId));
+        $this->httpServer->getConsoleOutput()->writeln(sprintf("#%d# Server params: %s", $requestId, json_encode($serverParams, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)));
 
         $symphonyRequest = new Request(
             $request->getQueryParams(),
@@ -34,17 +47,7 @@ class RoutesMiddleware
             [],
             $request->getCookieParams(),
             $request->getUploadedFiles(),
-            array_merge(
-                $request->getServerParams(),
-                [
-                    'REQUEST_METHOD' => $request->getMethod(),
-                    'HTTP_HOST' => $request->getUri()->getHost(),
-                    'REQUEST_SCHEME' => $request->getUri()->getScheme(),
-                    'QUERY_STRING' => $request->getUri()->getQuery(),
-                    'REQUEST_URI' => $request->getUri()->getPath() . (!empty($request->getUri()->getQuery()) ? '?' . $request->getUri()->getQuery() : ''),
-                    'DOCUMENT_URI' => $request->getUri()->getPath(),
-                ]
-            ),
+            $serverParams,
             $request->getBody()->getContents()
         );
 
