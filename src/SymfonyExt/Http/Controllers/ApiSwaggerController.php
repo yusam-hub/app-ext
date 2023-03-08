@@ -16,8 +16,8 @@ abstract class ApiSwaggerController extends BaseHttpController
      */
     public static function routesRegister(RoutingConfigurator $routes): void
     {
-        static::routesAdd($routes, ['OPTIONS', 'GET'],'/swagger-ui/{module}', 'getSwaggerUiModule', ['module' => '^'.implode('|', self::$swaggerModules).'$']);
-        static::routesAdd($routes, ['OPTIONS', 'GET'],'/swagger-ui/{module}/open-api', 'getSwaggerUiModuleOpenApi', ['module' => '^'.implode('|', self::$swaggerModules).'$']);
+        static::routesAdd($routes, ['OPTIONS', 'GET'],'/swagger-ui/{module}', 'getSwaggerUiHtml', ['module' => '^'.implode('|', self::$swaggerModules).'$']);
+        static::routesAdd($routes, ['OPTIONS', 'GET'],'/swagger-ui/{module}/open-api', 'getSwaggerUiOpenApi', ['module' => '^'.implode('|', self::$swaggerModules).'$']);
     }
 
     /**
