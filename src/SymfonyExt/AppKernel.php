@@ -18,6 +18,7 @@ class AppKernel
 
         return self::$instance ;
     }
+    protected bool $isDebugging;
     protected string $rootDir;
     protected string $appDir;
     protected string $configDir;
@@ -29,14 +30,19 @@ class AppKernel
 
     public function __construct(array $params = [])
     {
-        $this->rootDir = rtrim($params['rootDir']??'', DIRECTORY_SEPARATOR);
-        $this->appDir = rtrim($params['appDir']??'', DIRECTORY_SEPARATOR);
-        $this->configDir = rtrim($params['configDir']??'', DIRECTORY_SEPARATOR);
-        $this->storageDir = rtrim($params['storageDir']??'', DIRECTORY_SEPARATOR);
-        $this->publicDir = rtrim($params['publicDir']??'', DIRECTORY_SEPARATOR);
-        $this->envDir = rtrim($params['envDir']??'', DIRECTORY_SEPARATOR);
-        $this->databaseDir = rtrim($params['databaseDir']??'', DIRECTORY_SEPARATOR);
-        $this->routesDir = rtrim($params['routesDir']??'', DIRECTORY_SEPARATOR);
+        foreach($params as $key => $value) {
+            if (property_exists($this, $key)) {
+                $this->{$key} = $value;
+            }
+        }
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDebugging(): bool
+    {
+        return $this->isDebugging;
     }
 
     /**
@@ -49,28 +55,12 @@ class AppKernel
     }
 
     /**
-     * @param string $rootDir
-     */
-    public function setRootDir(string $rootDir): void
-    {
-        $this->rootDir = $rootDir;
-    }
-
-    /**
      * @param string $path
      * @return string
      */
     public function getAppDir(string $path = ''): string
     {
         return $this->appDir . $path;
-    }
-
-    /**
-     * @param string $appDir
-     */
-    public function setAppDir(string $appDir): void
-    {
-        $this->appDir = $appDir;
     }
 
     /**
@@ -83,28 +73,12 @@ class AppKernel
     }
 
     /**
-     * @param string $configDir
-     */
-    public function setConfigDir(string $configDir): void
-    {
-        $this->configDir = $configDir;
-    }
-
-    /**
      * @param string $path
      * @return string
      */
     public function getStorageDir(string $path = ''): string
     {
         return $this->storageDir . $path;
-    }
-
-    /**
-     * @param string $storageDir
-     */
-    public function setStorageDir(string $storageDir): void
-    {
-        $this->storageDir = $storageDir;
     }
 
     /**
@@ -117,28 +91,12 @@ class AppKernel
     }
 
     /**
-     * @param string $publicDir
-     */
-    public function setPublicDir(string $publicDir): void
-    {
-        $this->publicDir = $publicDir;
-    }
-
-    /**
      * @param string $path
      * @return string
      */
     public function getEnvDir(string $path = ''): string
     {
         return $this->envDir . $path;
-    }
-
-    /**
-     * @param string $envDir
-     */
-    public function setEnvDir(string $envDir): void
-    {
-        $this->envDir = $envDir;
     }
 
     /**
@@ -151,14 +109,6 @@ class AppKernel
     }
 
     /**
-     * @param string $databaseDir
-     */
-    public function setDatabaseDir(string $databaseDir): void
-    {
-        $this->databaseDir = $databaseDir;
-    }
-
-    /**
      * @param string $path
      * @return string
      */
@@ -167,11 +117,4 @@ class AppKernel
         return $this->routesDir . $path;
     }
 
-    /**
-     * @param string $routesDir
-     */
-    public function setRoutesDir(string $routesDir): void
-    {
-        $this->routesDir = $routesDir;
-    }
 }
