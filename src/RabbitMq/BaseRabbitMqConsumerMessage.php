@@ -11,6 +11,6 @@ class BaseRabbitMqConsumerMessage implements RabbitMqConsumerMessageInterface
 {
     public function onMessage(Message $message, Channel $channel, Client $client): bool
     {
-        // TODO: Implement onMessage() method.
+        return true;
     }
 }

@@ -6,12 +6,17 @@ use Bunny\Async\Client;
 use Bunny\Channel;
 use Bunny\Message;
 use Bunny\Protocol\MethodBasicConsumeOkFrame;
+use React\EventLoop\Loop;
+use React\EventLoop\LoopInterface;
 use YusamHub\AppExt\Interfaces\RabbitMqConsumerMessageInterface;
 
 class RabbitMqConsumer extends BaseRabbitMq
 {
     protected RabbitMqConsumerConfigModel $rabbitMqConsumerConfigModel;
     protected ?RabbitMqConsumerMessageInterface $rabbitMqConsumerMessage;
+
+    protected LoopInterface $reactLoop;
+    protected \Bunny\Async\Client $asyncClient;
 
     /**
      * @param RabbitMqConsumerConfigModel $rabbitMqConsumerConfigModel
@@ -26,6 +31,25 @@ class RabbitMqConsumer extends BaseRabbitMq
         $this->rabbitMqConsumerConfigModel = $rabbitMqConsumerConfigModel;
         $this->rabbitMqConsumerMessage = $rabbitMqConsumerMessage;
         parent::__construct($connectionName);
+        $this->reactLoop = Loop::get();
+        $this->asyncClient = new \Bunny\Async\Client($this->reactLoop, $this->connectionConfig);
+
+    }
+
+    /**
+     * @return LoopInterface
+     */
+    public function getReactLoop(): LoopInterface
+    {
+        return $this->reactLoop;
+    }
+
+    /**
+     * @return Client
+     */
+    public function getAsyncClient(): Client
+    {
+        return $this->asyncClient;
     }
 
     /**
@@ -158,6 +182,12 @@ class RabbitMqConsumer extends BaseRabbitMq
         $this->reactLoop->run();
     }
 
+    /**
+     * @param Message $message
+     * @param Channel $channel
+     * @param Client $client
+     * @return void
+     */
     protected function consumeCallbackHandle(Message $message, Channel $channel, Client $client)
     {
         $this->debug("Received message", [
@@ -176,7 +206,7 @@ class RabbitMqConsumer extends BaseRabbitMq
                 ->ack($message)
                 ->then(
                     function() use ($message) {
-                        $this->error("ASK message success", [
+                        $this->debug("ASK message success", [
                             'consumerTag' => $message->consumerTag,
                             'deliveryTag' => $message->deliveryTag,
                             'content' => $message->content

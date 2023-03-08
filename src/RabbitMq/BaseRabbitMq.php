@@ -14,8 +14,7 @@ abstract class BaseRabbitMq implements GetSetConsoleInterface, GetSetLoggerInter
 {
     use GetSetConsoleTrait;
     use GetSetLoggerTrait;
-    protected LoopInterface $reactLoop;
-    protected Client $asyncClient;
+
     protected string $connectionName;
     protected array $connectionConfig;
     public function __construct(?string $connectionName = null)
@@ -25,24 +24,6 @@ abstract class BaseRabbitMq implements GetSetConsoleInterface, GetSetLoggerInter
         }
         $this->connectionName = $connectionName;
         $this->connectionConfig = app_ext_config("rabbit-mq.connections." . $connectionName);
-        $this->reactLoop = Loop::get();
-        $this->asyncClient = new Client($this->reactLoop, $this->connectionConfig);
-    }
-
-    /**
-     * @return LoopInterface
-     */
-    public function getReactLoop(): LoopInterface
-    {
-        return $this->reactLoop;
-    }
-
-    /**
-     * @return Client
-     */
-    public function getAsyncClient(): Client
-    {
-        return $this->asyncClient;
     }
 
     /**
