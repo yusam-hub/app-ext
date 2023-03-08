@@ -8,7 +8,13 @@ use YusamHub\AppExt\Api\OpenApiExt;
 use YusamHub\AppExt\Api\SwaggerUiExt;
 abstract class ApiSwaggerController extends BaseHttpController
 {
-    protected static array $swaggerModules = [];
+    /**
+     * @return array
+     */
+    protected static function getSwaggerModules(): array
+    {
+        return [];
+    }
 
     /**
      * @param RoutingConfigurator $routes
@@ -16,9 +22,14 @@ abstract class ApiSwaggerController extends BaseHttpController
      */
     public static function routesRegister(RoutingConfigurator $routes): void
     {
-        static::routesAdd($routes, ['OPTIONS', 'GET'],'/swagger-ui/{module}', 'getSwaggerUiHtml', ['module' => '^'.implode('|', self::$swaggerModules).'$']);
-        static::routesAdd($routes, ['OPTIONS', 'GET'],'/swagger-ui/{module}/open-api', 'getSwaggerUiOpenApi', ['module' => '^'.implode('|', self::$swaggerModules).'$']);
+        static::routesAdd($routes, ['OPTIONS', 'GET'],'/swagger-ui/{module}', 'getSwaggerUiHtml', [
+            'module' => '^'.implode('|', static::getSwaggerModules()).'$'
+        ]);
+        static::routesAdd($routes, ['OPTIONS', 'GET'],'/swagger-ui/{module}/open-api', 'getSwaggerUiOpenApi', [
+            'module' => '^'.implode('|', static::getSwaggerModules()).'$'
+        ]);
     }
+
 
     /**
      * @param Request $request
