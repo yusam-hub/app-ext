@@ -30,6 +30,41 @@ abstract class ApiSwaggerController extends BaseHttpController
         ]);
     }
 
+    /**
+     * @return string
+     */
+    protected function getPublicSwaggerUiDir(): string
+    {
+        return app()->getPublicDir('/swagger-ui');
+    }
+
+    /**
+     * @return string
+     */
+    protected function getPublicSwaggerUiUri(): string
+    {
+        return '/swagger-ui';
+    }
+
+    /**
+     * @param Request $request
+     * @param string $module
+     * @return array
+     */
+    protected function getReplaceKeyValuePairForModule(Request $request, string $module): array
+    {
+        return [
+            '__OA_INFO_TITLE__' => sprintf('Api %s Server', ucfirst($module)),
+            '__OA_INFO_VERSION__' => '1.0.0',
+            '__OA_SERVER_HOSTNAME__' => $request->getHost(),
+            '__OA_SERVER_PATH__' => '/api/' . strtolower($module),
+            '__OA_SERVER_SCHEMA__' => $request->getScheme(),
+            '__OA_SECURITY_SCHEME_TOKEN_HEADER_NAME__' => 'X-Token',
+            '__OA_SECURITY_SCHEME_SIGN_HEADER_NAME__' => 'X-Sign',
+            '__OA_METHOD_GET_HOME_PATH__' => '/',
+        ];
+    }
+
 
     /**
      * @param Request $request
@@ -43,16 +78,7 @@ abstract class ApiSwaggerController extends BaseHttpController
             'paths' => [
                 __DIR__ . DIRECTORY_SEPARATOR . ucfirst($module)
             ],
-            'replaceKeyValuePair' => [
-                '__OA_INFO_TITLE__' => sprintf('Api %s Server', ucfirst($module)),
-                '__OA_INFO_VERSION__' => '1.0.0',
-                '__OA_SERVER_HOSTNAME__' => $request->getHost(),
-                '__OA_SERVER_PATH__' => '/api/' . strtolower($module),
-                '__OA_SERVER_SCHEMA__' => $request->getScheme(),
-                '__OA_SECURITY_SCHEME_TOKEN_HEADER_NAME__' => 'X-Token',
-                '__OA_SECURITY_SCHEME_SIGN_HEADER_NAME__' => 'X-Sign',
-                '__OA_METHOD_GET_HOME_PATH__' => '/',
-            ]
+            'replaceKeyValuePair' => $this->getReplaceKeyValuePairForModule($request, $module)
         ]);
 
         try {
@@ -74,6 +100,6 @@ abstract class ApiSwaggerController extends BaseHttpController
      */
     public function getSwaggerUiHtml(Request $request, string $module): string
     {
-        return SwaggerUiExt::replaceIndexHtml(app()->getPublicDir('/swagger-ui') , '/swagger-ui',sprintf('/%s/open-api', strtolower($module)));
+        return SwaggerUiExt::replaceIndexHtml($this->getPublicSwaggerUiDir(), $this->getPublicSwaggerUiUri(), sprintf('/%s/open-api', strtolower($module)));
     }
 }
