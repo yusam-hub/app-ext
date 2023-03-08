@@ -5,7 +5,7 @@ require __DIR__ . '/global-inc.php';
 use YusamHub\AppExt\Logger\FileLogger;
 
 $fileLogger = new FileLogger([
-    'logDir' => __DIR__ . '/tmp',
+    'logDir' => __DIR__ . '/tmp/logs',
     'fileMaxSize' => 1024,
     'level' => \Psr\Log\LogLevel::ERROR
 ]);
