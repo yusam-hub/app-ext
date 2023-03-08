@@ -25,6 +25,7 @@ class AppKernel
     protected string $publicDir;
     protected string $envDir;
     protected string $databaseDir;
+    protected string $routesDir;
 
     public function __construct(array $params = [])
     {
@@ -35,6 +36,7 @@ class AppKernel
         $this->publicDir = rtrim($params['publicDir']??'', DIRECTORY_SEPARATOR);
         $this->envDir = rtrim($params['envDir']??'', DIRECTORY_SEPARATOR);
         $this->databaseDir = rtrim($params['databaseDir']??'', DIRECTORY_SEPARATOR);
+        $this->routesDir = rtrim($params['routesDir']??'', DIRECTORY_SEPARATOR);
     }
 
     /**
@@ -156,4 +158,20 @@ class AppKernel
         $this->databaseDir = $databaseDir;
     }
 
+    /**
+     * @param string $path
+     * @return string
+     */
+    public function getRoutesDir(string $path = ''): string
+    {
+        return $this->routesDir . $path;
+    }
+
+    /**
+     * @param string $routesDir
+     */
+    public function setRoutesDir(string $routesDir): void
+    {
+        $this->routesDir = $routesDir;
+    }
 }
