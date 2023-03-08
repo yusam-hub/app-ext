@@ -3,11 +3,52 @@
     "description": "yusam-hub/app-ext",
     "type": "package",
     "minimum-stability": "stable",
+    "repositories": {
+        "yusam-hub/debug": {
+            "type": "git",
+            "url": "https://github.com/yusam-hub/debug.git"
+        },
+        "yusam-hub/curl-ext": {
+            "type": "git",
+            "url": "https://github.com/yusam-hub/curl-ext"
+        },
+        "yusam-hub/db-ext": {
+            "type": "git",
+            "url": "https://github.com/yusam-hub/db-ext.git"
+        },
+        "yusam-hub/json-ext": {
+            "type": "git",
+            "url": "https://github.com/yusam-hub/json-ext.git"
+        },
+        "yusam-hub/captcha": {
+            "type": "git",
+            "url": "https://github.com/yusam-hub/captcha.git"
+        },
+        "yusam-hub/daemon": {
+            "type": "git",
+            "url": "https://github.com/yusam-hub/daemon.git"
+        },
+        "yusam-hub/redis-ext": {
+            "type": "git",
+            "url": "https://github.com/yusam-hub/redis-ext.git"
+        }
+    },
     "require": {
         "php": "^7.4|^8.0|^8.1|^8.2",
 
         "ext-json": "*",
         "ext-pcntl": "*",
+        "ext-gd": "*",
+        "ext-pdo": "*",
+        "ext-redis": "*",
+
+        "yusam-hub/debug": "dev-master",
+        "yusam-hub/curl-ext": "dev-master",
+        "yusam-hub/db-ext": "dev-master",
+        "yusam-hub/json-ext": "dev-master",
+        "yusam-hub/captcha": "dev-master",
+        "yusam-hub/daemon": "dev-master",
+        "yusam-hub/redis-ext": "dev-master",
 
         "psr/log": "^1.1",
 

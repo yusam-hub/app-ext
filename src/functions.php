@@ -4,15 +4,29 @@ use Psr\Log\LoggerInterface;
 use YusamHub\AppExt\Config;
 use YusamHub\AppExt\DotArray;
 use YusamHub\AppExt\Env;
+use YusamHub\AppExt\SymfonyExt\AppKernel;
+use YusamHub\AppExt\SymfonyExt\DbKernel;
+use YusamHub\DbExt\PdoExt;
 
 if (! function_exists('app')) {
 
     /**
-     * @return \YusamHub\AppExt\SymfonyExt\AppKernel
+     * @return AppKernel
      */
-    function app(): \YusamHub\AppExt\SymfonyExt\AppKernel
+    function app(): AppKernel
     {
-        return \YusamHub\AppExt\SymfonyExt\AppKernel::instance(app_ext_config('app'));
+        return AppKernel::instance(app_ext_config('app'));
+    }
+}
+
+if (! function_exists('db')) {
+
+    /**
+     * @return DbKernel
+     */
+    function db(): DbKernel
+    {
+        return DbKernel::instance(app_ext_config('database'));
     }
 }
 
@@ -119,4 +133,38 @@ if (! function_exists('app_ext_evn_map_value')) {
         }
         return $value;
     }
+}
+
+if (! function_exists('app_ext_create_pdo')) {
+
+    function app_ext_create_pdo(?string $connectionName = null): \PDO
+    {
+        if (is_null($connectionName)) {
+            $connectionName = app_ext_config("database.default");
+        }
+
+        $dsn = sprintf(
+            'mysql:host=%s;dbname=%s',
+            app_ext_config("database.connections.{$connectionName}.host") . ':' . app_ext_config("database.connections.{$connectionName}.port"),
+            app_ext_config("database.connections.{$connectionName}.dbName")
+        );
+
+        return new \PDO(
+            $dsn,
+            app_ext_config("database.connections.{$connectionName}.user"),
+            app_ext_config("database.connections.{$connectionName}.password"),
+            [
+                \PDO::ATTR_PERSISTENT => true
+            ]
+        );
+    }
+}
+
+if (! function_exists('pdo_ext')) {
+
+    function pdo_ext(?string $connectionName = null): PdoExt
+    {
+        return new PdoExt(app_ext_create_pdo($connectionName));
+    }
+
 }
