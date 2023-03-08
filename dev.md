@@ -15,3 +15,11 @@
     docker exec -it yusam-php74 sh -c "ps | grep 'daemon:react-http-server'"
     docker exec -it yusam-php74 sh -c "ps | grep 'daemon:rabbit-mq-consumer'"
     docker exec -it yusam-php74 sh -c "pkill 6025"
+
+#### curl
+
+    docker exec -it yusam-php74 sh -c "curl --help"
+    docker exec -it yusam-php74 sh -c "curl --unix-socket /tmp/react-http-server-socks/server.worker0.sock -vvv -X GET http://localhost/debug/test"
+    docker exec -it yusam-php74 sh -c "curl --unix-socket /tmp/react-http-server-socks/server.worker0.sock -vvv -X POST http://localhost/debug/test -F foo=test"
+    docker exec -it yusam-php74 sh -c "curl --unix-socket /tmp/react-http-server-socks/server.worker0.sock -vvv -X POST http://localhost/debug/test --data foo=test"
+    docker exec -it yusam-php74 sh -c "curl --unix-socket /tmp/react-http-server-socks/server.worker0.sock -vvv -X POST http://localhost/debug/test --data 'foo=test' -H 'X-Token: testing' -H 'X-Sign: testing'"

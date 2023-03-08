@@ -177,17 +177,18 @@ if (! function_exists('app_ext_get_error_context')) {
      */
     function app_ext_get_error_context(\Throwable $e, bool $includeTrace = false): array
     {
-        $traces = [];
-        if ($includeTrace) {
-            $traces = $e->getTrace();
-        }
-        return [
+        $out = [
             'message' => $e->getMessage(),
             'code' => $e->getCode(),
-            'file' => $e->getFile(),
-            'line' => $e->getLine(),
+            'file' => $e->getFile() . ":" . $e->getLine(),
             'class' => get_class($e),
-            'traces' => $traces,
         ];
+        if ($e instanceof \YusamHub\AppExt\Exceptions\Interfaces\AppExtRuntimeExceptionInterface) {
+            $out = array_merge($out, ['data' => $e->getData()]);
+        }
+        if ($includeTrace) {
+            $out = array_merge($out, ['trace' => $e->getTrace()]);
+        }
+        return $out;
     }
 }

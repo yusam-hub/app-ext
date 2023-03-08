@@ -7,7 +7,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Controller\ArgumentResolver;
-use Symfony\Component\HttpKernel\Controller\ControllerResolver;
 use Symfony\Component\HttpKernel\EventListener\RouterListener;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
@@ -15,6 +14,7 @@ use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\Router;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Routing\Loader\PhpFileLoader;
+use YusamHub\AppExt\Exceptions\Interfaces\HttpAppExtRuntimeExceptionInterface;
 use YusamHub\AppExt\Interfaces\GetSetConsoleInterface;
 use YusamHub\AppExt\Interfaces\GetSetLoggerInterface;
 use YusamHub\AppExt\Traits\GetSetConsoleTrait;
@@ -33,7 +33,6 @@ class ControllerKernel implements GetSetLoggerInterface, GetSetConsoleInterface
     protected RequestContext $requestContext;
     protected Router $router;
     private HttpKernel $httpKernel;
-
 
     /**
      * @param string $routeDir
@@ -118,7 +117,7 @@ class ControllerKernel implements GetSetLoggerInterface, GetSetConsoleInterface
                     )
                 );
 
-                $this->httpKernel = new HttpKernel($dispatcher, new ControllerResolverKernel($this), new RequestStack(), new ArgumentResolver());
+                $this->httpKernel = new HttpKernel($dispatcher, new ControllerResolverKernel($this, $this->request), new RequestStack(), new ArgumentResolver());
 
                 $this->debug($requestMessage, $requestContext);
 
@@ -130,8 +129,13 @@ class ControllerKernel implements GetSetLoggerInterface, GetSetConsoleInterface
 
             } catch (NotFoundHttpException $e) {
 
-                $this->debug($requestMessage, $requestContext);
+                $this->debug($e->getMessage(), app_ext_get_error_context($e));
                 $response = new Response('Not Found', Response::HTTP_NOT_FOUND);//todo: call controller for NotFound
+
+            } catch (HttpAppExtRuntimeExceptionInterface $e) {
+
+                $this->debug($e->getMessage(), app_ext_get_error_context($e));
+                $response = new Response($e->getMessage(), $e->getStatusCode());//todo: if accept application/json return json with data
 
             }
 

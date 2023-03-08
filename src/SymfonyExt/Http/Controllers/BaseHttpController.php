@@ -3,9 +3,11 @@
 namespace YusamHub\AppExt\SymfonyExt\Http\Controllers;
 
 use Symfony\Component\Routing\Loader\Configurator\RouteConfigurator;
-use YusamHub\AppExt\Interfaces\GetSetLoggerInterface;
-use YusamHub\AppExt\Traits\GetSetLoggerTrait;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
+use YusamHub\AppExt\Interfaces\GetSetLoggerInterface;
+use YusamHub\AppExt\SymfonyExt\Http\Traits\HttpMiddlewareInterface;
+use YusamHub\AppExt\SymfonyExt\Http\Traits\HttpMiddlewareTrait;
+use YusamHub\AppExt\Traits\GetSetLoggerTrait;
 
 abstract class BaseHttpController implements GetSetLoggerInterface
 {
