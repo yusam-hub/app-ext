@@ -74,7 +74,6 @@ abstract class ApiSwaggerController extends BaseHttpController
      */
     public function getSwaggerUiOpenApi(Request $request, string $module): string
     {
-
         $openApiExt = new OpenApiExt([
             'paths' => [
                 __DIR__ . DIRECTORY_SEPARATOR . ucfirst($module)
