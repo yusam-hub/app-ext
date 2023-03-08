@@ -29,4 +29,19 @@ abstract class BaseConsoleCommand extends \Symfony\Component\Console\Command\Com
         $this->setConsoleInput($input);
         $this->setConsoleOutput($output);
     }
+
+    protected function tagRed(string $value): string
+    {
+        return sprintf('<red>%s</red>', $value);
+    }
+
+    protected function tagYellow(string $value): string
+    {
+        return sprintf('<yellow>%s</yellow>', $value);
+    }
+
+    protected function tagGreen(string $value): string
+    {
+        return sprintf('<green>%s</green>', $value);
+    }
 }
