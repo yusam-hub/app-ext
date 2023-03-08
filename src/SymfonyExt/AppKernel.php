@@ -21,10 +21,8 @@ class AppKernel
     protected bool $isDebugging;
     protected string $rootDir;
     protected string $appDir;
-    protected string $configDir;
     protected string $storageDir;
     protected string $publicDir;
-    protected string $envDir;
     protected string $databaseDir;
     protected string $routesDir;
 
@@ -67,15 +65,6 @@ class AppKernel
      * @param string $path
      * @return string
      */
-    public function getConfigDir(string $path = ''): string
-    {
-        return $this->configDir . $path;
-    }
-
-    /**
-     * @param string $path
-     * @return string
-     */
     public function getStorageDir(string $path = ''): string
     {
         return $this->storageDir . $path;
@@ -88,15 +77,6 @@ class AppKernel
     public function getPublicDir(string $path = ''): string
     {
         return $this->publicDir . $path;
-    }
-
-    /**
-     * @param string $path
-     * @return string
-     */
-    public function getEnvDir(string $path = ''): string
-    {
-        return $this->envDir . $path;
     }
 
     /**

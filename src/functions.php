@@ -5,6 +5,17 @@ use YusamHub\AppExt\Config;
 use YusamHub\AppExt\DotArray;
 use YusamHub\AppExt\Env;
 
+if (! function_exists('app')) {
+
+    /**
+     * @return \YusamHub\AppExt\SymfonyExt\AppKernel
+     */
+    function app(): \YusamHub\AppExt\SymfonyExt\AppKernel
+    {
+        return \YusamHub\AppExt\SymfonyExt\AppKernel::instance(app_ext_config('app'));
+    }
+}
+
 if (! function_exists('app_ext_logger')) {
 
     /**
