@@ -10,8 +10,17 @@ return [
         'testing' => 0
     ],
     'signs' => [
-        //0 => 'testing',
-    ]
+        0 => 'testing',
+    ],
+    'signHandle' => function(\Symfony\Component\HttpFoundation\Request $request, int $apiAuthorizedId, string $apiAuthorizedSign) {
+        $signValue = (string) $request->headers->get(app_ext_config('api.signKeyName'));
+        if ($signValue !== $apiAuthorizedSign) {
+            throw new \YusamHub\AppExt\Exceptions\HttpUnauthorizedAppExtRuntimeException([
+                'message' => 'Invalid sign value',
+                'authorizedId' => $apiAuthorizedId
+            ]);
+        }
+    }
     //'infoTitle' => 'Api %s Server',
     //'infoVersion' => '1.0.0',
 ];

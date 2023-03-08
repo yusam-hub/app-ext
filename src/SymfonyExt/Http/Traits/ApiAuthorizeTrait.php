@@ -21,22 +21,13 @@ trait ApiAuthorizeTrait
         }
         $this->apiAuthorizedId = intval($tokens[$tokenValue]);
 
-        /*$signs = (array) app_ext_config('api.signs');//todo: брать из БД
+        $signs = (array) app_ext_config('api.signs');//todo: брать из БД
         if (isset($signs[$this->apiAuthorizedId])) {
-            $signValue = (string) $request->headers->get(app_ext_config('api.signKeyName'));
-
-            $content = ($request->getMethod() === 'GET') ? json_encode($request->query->all()) : json_encode($request->request->all());
-            $calcSignValue = md5(
-                $request->getRequestUri() . $content. $signs[$this->apiAuthorizedId]
-            );//todo: for text or file
-
-            if ($signValue !== $calcSignValue) {
-                throw new HttpUnauthorizedAppExtRuntimeException([
-                    'message' => 'Invalid sign value',
-                    'authorizedId' => $this->apiAuthorizedId
-                ]);
+            $signHandle = app_ext_config('api.signHandle');
+            if (is_callable($signHandle)) {
+                $signHandle($request, $this->apiAuthorizedId, $signs[$this->apiAuthorizedId]);
             }
-        }*/
+        }
     }
 
     /**
