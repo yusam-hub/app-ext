@@ -25,28 +25,25 @@ class AppKernel
     protected string $publicDir;
     protected string $envDir;
     protected string $databaseDir;
-    protected string $databaseMigrationDir;
-    protected string $storageLogDir;
 
     public function __construct(array $params = [])
     {
-        $this->rootDir = $params['rootDir']??'';
-        $this->appDir = $params['appDir']??'';
-        $this->configDir = $params['configDir']??'';
-        $this->storageDir = $params['storageDir']??'';
-        $this->publicDir = $params['publicDir']??'';
-        $this->envDir = $params['envDir']??'';
-        $this->databaseDir = $params['databaseDir']??'';
-        $this->databaseMigrationDir = $params['databaseMigrationDir']??'';
-        $this->storageLogDir = $params['storageLogDir']??'';
+        $this->rootDir = rtrim($params['rootDir']??'', DIRECTORY_SEPARATOR);
+        $this->appDir = rtrim($params['appDir']??'', DIRECTORY_SEPARATOR);
+        $this->configDir = rtrim($params['configDir']??'', DIRECTORY_SEPARATOR);
+        $this->storageDir = rtrim($params['storageDir']??'', DIRECTORY_SEPARATOR);
+        $this->publicDir = rtrim($params['publicDir']??'', DIRECTORY_SEPARATOR);
+        $this->envDir = rtrim($params['envDir']??'', DIRECTORY_SEPARATOR);
+        $this->databaseDir = rtrim($params['databaseDir']??'', DIRECTORY_SEPARATOR);
     }
 
     /**
+     * @param string $path
      * @return string
      */
-    public function getRootDir(): string
+    public function getRootDir(string $path = ''): string
     {
-        return $this->rootDir;
+        return $this->rootDir . $path;
     }
 
     /**
@@ -58,11 +55,12 @@ class AppKernel
     }
 
     /**
+     * @param string $path
      * @return string
      */
-    public function getAppDir(): string
+    public function getAppDir(string $path = ''): string
     {
-        return $this->appDir;
+        return $this->appDir . $path;
     }
 
     /**
@@ -74,11 +72,12 @@ class AppKernel
     }
 
     /**
+     * @param string $path
      * @return string
      */
-    public function getConfigDir(): string
+    public function getConfigDir(string $path = ''): string
     {
-        return $this->configDir;
+        return $this->configDir . $path;
     }
 
     /**
@@ -90,11 +89,12 @@ class AppKernel
     }
 
     /**
+     * @param string $path
      * @return string
      */
-    public function getStorageDir(): string
+    public function getStorageDir(string $path = ''): string
     {
-        return $this->storageDir;
+        return $this->storageDir . $path;
     }
 
     /**
@@ -106,11 +106,12 @@ class AppKernel
     }
 
     /**
+     * @param string $path
      * @return string
      */
-    public function getPublicDir(): string
+    public function getPublicDir(string $path = ''): string
     {
-        return $this->publicDir;
+        return $this->publicDir . $path;
     }
 
     /**
@@ -122,11 +123,12 @@ class AppKernel
     }
 
     /**
+     * @param string $path
      * @return string
      */
-    public function getEnvDir(): string
+    public function getEnvDir(string $path = ''): string
     {
-        return $this->envDir;
+        return $this->envDir . $path;
     }
 
     /**
@@ -138,11 +140,12 @@ class AppKernel
     }
 
     /**
+     * @param string $path
      * @return string
      */
-    public function getDatabaseDir(): string
+    public function getDatabaseDir(string $path = ''): string
     {
-        return $this->databaseDir;
+        return $this->databaseDir . $path;
     }
 
     /**
@@ -151,38 +154,6 @@ class AppKernel
     public function setDatabaseDir(string $databaseDir): void
     {
         $this->databaseDir = $databaseDir;
-    }
-
-    /**
-     * @return string
-     */
-    public function getDatabaseMigrationDir(): string
-    {
-        return $this->databaseMigrationDir;
-    }
-
-    /**
-     * @param string $databaseMigrationDir
-     */
-    public function setDatabaseMigrationDir(string $databaseMigrationDir): void
-    {
-        $this->databaseMigrationDir = $databaseMigrationDir;
-    }
-
-    /**
-     * @return string
-     */
-    public function getStorageLogDir(): string
-    {
-        return $this->storageLogDir;
-    }
-
-    /**
-     * @param string $storageLogDir
-     */
-    public function setStorageLogDir(string $storageLogDir): void
-    {
-        $this->storageLogDir = $storageLogDir;
     }
 
 }
