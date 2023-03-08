@@ -22,7 +22,7 @@ class FileLogger extends Logger
 
     public function __construct(array $config = [])
     {
-        $this->logDir = rtrim($config['logDir']??'', DIRECTORY_SEPARATOR);
+        $this->logDir = realpath(rtrim($config['logDir']??'', DIRECTORY_SEPARATOR));
         $this->name = $config['name']??self::FILE_NAME_DEFAULT;
         $this->fileMaxSize = $config['fileMaxSize']??self::FILE_SIZE_MB;
         $this->fileRotatorCount = $config['fileRotatorCount']??self::FILE_ROTATOR_COUNT;

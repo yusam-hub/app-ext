@@ -38,7 +38,7 @@ class Env
                 ->immutable()
                 ->make();
 
-            \Dotenv\Dotenv::create($this->repository, rtrim($this::$ENV_DIR, DIRECTORY_SEPARATOR), $this::$ENV_FILE)->safeLoad();
+            \Dotenv\Dotenv::create($this->repository, realpath(rtrim($this::$ENV_DIR, DIRECTORY_SEPARATOR)), $this::$ENV_FILE)->safeLoad();
         }
     }
 

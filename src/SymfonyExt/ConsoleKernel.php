@@ -27,7 +27,7 @@ class ConsoleKernel
     public function __construct(string $rootDir = __DIR__, array $nameSpaceMap = [], bool $includePackageCommands = true)
     {
         $this->nameSpaceMap = array_merge($this->nameSpaceMap, $nameSpaceMap);
-        $this->rootDir = rtrim($rootDir, DIRECTORY_SEPARATOR);
+        $this->rootDir = realpath(rtrim($rootDir, DIRECTORY_SEPARATOR));
         $this->includePackageCommands = $includePackageCommands;
         $this->application = new Application();
     }

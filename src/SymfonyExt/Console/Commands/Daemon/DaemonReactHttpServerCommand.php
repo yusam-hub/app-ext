@@ -10,7 +10,7 @@ use YusamHub\AppExt\ReactHttpServer\HttpServerConfigModel;
 use YusamHub\AppExt\ReactHttpServer\ReactHttpServer;
 use YusamHub\AppExt\SymfonyExt\Console\Commands\BaseConsoleCommand;
 
-abstract class DaemonReactHttpServerCommand extends BaseConsoleCommand
+class DaemonReactHttpServerCommand extends BaseConsoleCommand
 {
     protected function configure(): void
     {

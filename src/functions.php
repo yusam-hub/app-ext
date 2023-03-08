@@ -168,3 +168,26 @@ if (! function_exists('pdo_ext')) {
     }
 
 }
+
+if (! function_exists('app_ext_get_error_context')) {
+    /**
+     * @param Throwable $e
+     * @param bool $includeTrace
+     * @return array
+     */
+    function app_ext_get_error_context(\Throwable $e, bool $includeTrace = false): array
+    {
+        $traces = [];
+        if ($includeTrace) {
+            $traces = $e->getTrace();
+        }
+        return [
+            'message' => $e->getMessage(),
+            'code' => $e->getCode(),
+            'file' => $e->getFile(),
+            'line' => $e->getLine(),
+            'class' => get_class($e),
+            'traces' => $traces,
+        ];
+    }
+}

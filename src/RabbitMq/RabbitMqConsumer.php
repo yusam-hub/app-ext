@@ -1,0 +1,219 @@
+<?php
+
+namespace YusamHub\AppExt\RabbitMq;
+
+use Bunny\Async\Client;
+use Bunny\Channel;
+use Bunny\Message;
+use Bunny\Protocol\MethodBasicConsumeOkFrame;
+use YusamHub\AppExt\Interfaces\RabbitMqConsumerMessageInterface;
+
+class RabbitMqConsumer extends BaseRabbitMq
+{
+    protected RabbitMqConsumerConfigModel $rabbitMqConsumerConfigModel;
+    protected ?RabbitMqConsumerMessageInterface $rabbitMqConsumerMessage;
+
+    /**
+     * @param RabbitMqConsumerConfigModel $rabbitMqConsumerConfigModel
+     * @param RabbitMqConsumerMessageInterface|null $rabbitMqConsumerMessage
+     * @param string|null $connectionName
+     */
+    public function __construct(
+        RabbitMqConsumerConfigModel $rabbitMqConsumerConfigModel,
+        ?RabbitMqConsumerMessageInterface $rabbitMqConsumerMessage = null,
+        ?string $connectionName = null)
+    {
+        $this->rabbitMqConsumerConfigModel = $rabbitMqConsumerConfigModel;
+        $this->rabbitMqConsumerMessage = $rabbitMqConsumerMessage;
+        parent::__construct($connectionName);
+    }
+
+    /**
+     * @return void
+     */
+    public function daemon(): void
+    {
+        $this->info(sprintf('Daemon [%s] started at [%s]', get_class($this), date("Y-m-d H:i:s")));
+
+        $this->info('config: host: ' . $this->connectionConfig['host']);
+        $this->info('config: port: ' . $this->connectionConfig['port']);
+        $this->info('config: vhost: ' . $this->connectionConfig['vhost']);
+        $this->info('config: user: ' . $this->connectionConfig['user']);
+
+        $this
+            ->asyncClient
+            ->connect()
+            ->then(
+                function (Client $client)
+                {
+                    $this->debug('Connect success');
+                    return $client->channel();
+                },
+                function($reason)
+                {
+                    $reasonMsg = "Unknown error";
+                    if (is_string($reason)) {
+                        $reasonMsg = $reason;
+                    } else if ($reason instanceof \Throwable) {
+                        $reasonMsg = $reason->getMessage();
+                    }
+                    $this->error('Connect fail', [
+                        'reason' => $reasonMsg
+                    ]);
+                }
+            )
+            ->then(function (Channel $channel)
+            {
+                return $channel
+                    ->qos($this->rabbitMqConsumerConfigModel->prefetchSize, $this->rabbitMqConsumerConfigModel->prefetchCount)
+                    ->then(function () use ($channel) {
+                        $this->debug('Qos success', [
+                            'prefetchSize' => $this->rabbitMqConsumerConfigModel->prefetchSize,
+                            'prefetchCount' => $this->rabbitMqConsumerConfigModel->prefetchCount
+                        ]);
+                        return $channel;
+                    });
+            })
+            ->then(function (Channel $channel)
+            {
+                return $channel
+                    ->exchangeDeclare(
+                        $this->rabbitMqConsumerConfigModel->exchangeName,
+                        'topic',
+                        false,
+                        true,
+                        false,
+                        false,
+                        false,
+                        []
+                    )
+                    ->then(function () use ($channel) {
+                        $this->debug('Exchange declare success', [
+                            'exchangeName' => $this->rabbitMqConsumerConfigModel->exchangeName,
+                        ]);
+                        return $channel;
+                    });
+            })
+            ->then(function (Channel $channel) {
+                return $channel
+                    ->queueDeclare(
+                        $this->rabbitMqConsumerConfigModel->queueName,
+                        false,
+                        true,
+                        false,
+                        false
+                    )
+                    ->then(function () use ($channel) {
+                        $this->debug('Queue declare success', [
+                            'queueName' => $this->rabbitMqConsumerConfigModel->queueName,
+                        ]);
+                        return $channel;
+                    });
+            })
+            ->then(function (Channel $channel) {
+                return $channel
+                    ->queueBind(
+                        $this->rabbitMqConsumerConfigModel->queueName,
+                        $this->rabbitMqConsumerConfigModel->exchangeName,
+                        $this->rabbitMqConsumerConfigModel->routingKey,
+                        false,
+                        []
+                    )
+                    ->then(function () use ($channel) {
+                        $this->debug('Queue bind success', [
+                            'routingKey' => $this->rabbitMqConsumerConfigModel->routingKey,
+                        ]);
+                        return $channel;
+                    });
+            })
+            ->then(function (Channel $channel) use (&$channelRef) {
+
+                $channelRef = $channel;
+
+                $this->debug('Waiting for messages');
+
+                $channel
+                    ->consume(
+                        \Closure::fromCallable([$this, 'consumeCallbackHandle']),
+                        $this->rabbitMqConsumerConfigModel->queueName,
+                        $this->rabbitMqConsumerConfigModel->consumerTag,
+                    )
+                    ->then(function (MethodBasicConsumeOkFrame $response) use (&$consumerTagRef) {
+                        $consumerTagRef = $response->consumerTag;
+                    })
+                    ->done();
+            })
+            ->done();
+
+        $stop_func = function (int $signal) use (&$channelRef, &$consumerTagRef) {
+            $this->info(sprintf('Daemon received unix signal [%d]', $signal));
+            $channelRef->cancel($consumerTagRef)->done(function() {
+                $this->info(sprintf('Daemon [%s] finished at [%s]', get_class($this), date("Y-m-d H:i:s")));
+                exit();
+            });
+        };
+
+        $this->reactLoop->addSignal(SIGTERM, $stop_func);
+
+        $this->reactLoop->run();
+    }
+
+    protected function consumeCallbackHandle(Message $message, Channel $channel, Client $client)
+    {
+        $this->debug("Received message", [
+            'consumerTag' => $message->consumerTag,
+            'deliveryTag' => $message->deliveryTag,
+            'content' => $message->content
+        ]);
+
+        try {
+
+            if (!$this->onMessage($message, $channel, $client)) {
+                $channel->reject($message, false);
+            }
+
+            $channel
+                ->ack($message)
+                ->then(
+                    function() use ($message) {
+                        $this->error("ASK message success", [
+                            'consumerTag' => $message->consumerTag,
+                            'deliveryTag' => $message->deliveryTag,
+                            'content' => $message->content
+                        ]);
+                    },
+                    function($reason) use ($message) {
+                        $reasonMsg = "";
+                        if (is_string($reason)) {
+                            $reasonMsg = $reason;
+                        } else if ($reason instanceof \Throwable) {
+                            $reasonMsg = $reason->getMessage();
+                        }
+                        $this->error("ASK message fail", [
+                            'consumerTag' => $message->consumerTag,
+                            'deliveryTag' => $message->deliveryTag,
+                            'reasonMsg' => $reasonMsg
+                        ]);
+                    }
+                )
+                ->done();
+
+        } catch (\Throwable $e) {
+            $this->error($e->getMessage(), app_ext_get_error_context($e));
+        }
+    }
+
+    /**
+     * @param Message $message
+     * @param Channel $channel
+     * @param Client $client
+     * @return bool
+     */
+    protected function onMessage(Message $message, Channel $channel, Client $client): bool
+    {
+        if (!is_null($this->rabbitMqConsumerMessage)) {
+            return $this->rabbitMqConsumerMessage->onMessage($message, $channel, $client);
+        }
+        return true;
+    }
+}

@@ -40,7 +40,7 @@ class Config
             throw new \RuntimeException(sprintf("FileKey [%s] not found", $fileKey));
         }
         if (!isset($this->dotList[$fileKey])) {
-            $fullFilename = $this::$CONFIG_DIR . DIRECTORY_SEPARATOR . $fileKey . ".php";
+            $fullFilename = realpath(rtrim($this::$CONFIG_DIR, DIRECTORY_SEPARATOR)) . DIRECTORY_SEPARATOR . $fileKey . ".php";
             if (file_exists($fullFilename)) {
                 $this->dotList[$fileKey] = app_ext_dot_array(include $fullFilename);
             } else {

@@ -1,6 +1,6 @@
 <?php
 
-require __DIR__ . '/global-inc.php';
+require __DIR__ . '/../global-inc.php';
 
 use YusamHub\AppExt\Logger\FileLogger;
 
