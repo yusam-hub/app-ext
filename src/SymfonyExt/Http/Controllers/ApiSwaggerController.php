@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 use YusamHub\AppExt\Api\OpenApiExt;
 use YusamHub\AppExt\Api\SwaggerUiExt;
+
 abstract class ApiSwaggerController extends BaseHttpController
 {
     /**
@@ -22,10 +23,10 @@ abstract class ApiSwaggerController extends BaseHttpController
      */
     public static function routesRegister(RoutingConfigurator $routes): void
     {
-        static::routesAdd($routes, ['OPTIONS', 'GET'],'/swagger-ui/{module}', 'getSwaggerUiHtml', [
+        static::routesAdd($routes, ['OPTIONS', 'GET'],app_ext_config('api.publicSwaggerUiUri') . '/{module}', 'getSwaggerUiHtml', [
             'module' => '^'.implode('|', static::getSwaggerModules()).'$'
         ]);
-        static::routesAdd($routes, ['OPTIONS', 'GET'],'/swagger-ui/{module}/open-api', 'getSwaggerUiOpenApi', [
+        static::routesAdd($routes, ['OPTIONS', 'GET'],app_ext_config('api.publicSwaggerUiUri') . '/{module}/open-api', 'getSwaggerUiOpenApi', [
             'module' => '^'.implode('|', static::getSwaggerModules()).'$'
         ]);
     }
@@ -35,7 +36,7 @@ abstract class ApiSwaggerController extends BaseHttpController
      */
     protected function getPublicSwaggerUiDir(): string
     {
-        return app()->getPublicDir('/swagger-ui');
+        return app_ext_config('api.publicSwaggerUiDir');
     }
 
     /**
@@ -43,7 +44,7 @@ abstract class ApiSwaggerController extends BaseHttpController
      */
     protected function getPublicSwaggerUiUri(): string
     {
-        return '/swagger-ui';
+        return app_ext_config('api.publicSwaggerUiUri');
     }
 
     /**
@@ -54,13 +55,13 @@ abstract class ApiSwaggerController extends BaseHttpController
     protected function getReplaceKeyValuePairForModule(Request $request, string $module): array
     {
         return [
-            '__OA_INFO_TITLE__' => sprintf('Api %s Server', ucfirst($module)),
-            '__OA_INFO_VERSION__' => '1.0.0',
+            '__OA_INFO_TITLE__' => sprintf(app_ext_config('api.infoTitle','Api %s Server'), ucfirst($module)),
+            '__OA_INFO_VERSION__' => app_ext_config('api.infoVersion', '1.0.0'),
             '__OA_SERVER_HOSTNAME__' => $request->getHost(),
-            '__OA_SERVER_PATH__' => '/api/' . strtolower($module),
+            '__OA_SERVER_PATH__' => app_ext_config('api.apiBaseUri') . '/' . strtolower($module),
             '__OA_SERVER_SCHEMA__' => $request->getScheme(),
-            '__OA_SECURITY_SCHEME_TOKEN_HEADER_NAME__' => 'X-Token',
-            '__OA_SECURITY_SCHEME_SIGN_HEADER_NAME__' => 'X-Sign',
+            '__OA_SECURITY_SCHEME_TOKEN_HEADER_NAME__' => app_ext_config('api.tokenKeyName', 'X-Token'),
+            '__OA_SECURITY_SCHEME_SIGN_HEADER_NAME__' => app_ext_config('api.signKeyName', 'X-Sign'),
             '__OA_METHOD_GET_HOME_PATH__' => '/',
         ];
     }
