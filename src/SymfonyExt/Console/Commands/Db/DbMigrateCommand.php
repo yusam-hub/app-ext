@@ -22,6 +22,9 @@ class DbMigrateCommand extends BaseConsoleCommand
         foreach(db()->getConnectionNames() as $connectionName)
         {
             $migrations = new PdoExtMigrations(db()->{$connectionName}, app()->getDatabaseDir('/migrations/' . $connectionName), app()->getStorageDir('/app/migrations/migrations_' . $connectionName . '.txt'));
+            $migrations->setEchoLineClosure(function(string $message) use($output){
+                $output->writeln($message);
+            });
             $migrations->migrate();
         }
 
