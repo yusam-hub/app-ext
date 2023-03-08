@@ -29,10 +29,10 @@ class RabbitMqPublisher extends BaseRabbitMq
     {
         $this->info(sprintf('Client [%s] started at [%s]', get_class($this), date("Y-m-d H:i:s")));
 
-        $this->info('config: host: ' . $this->connectionConfig['host']);
-        $this->info('config: port: ' . $this->connectionConfig['port']);
-        $this->info('config: vhost: ' . $this->connectionConfig['vhost']);
-        $this->info('config: user: ' . $this->connectionConfig['user']);
+        $this->info('Config: host: ' . $this->connectionConfig['host']);
+        $this->info('Config: port: ' . $this->connectionConfig['port']);
+        $this->info('Config: vhost: ' . $this->connectionConfig['vhost']);
+        $this->info('Config: user: ' . $this->connectionConfig['user']);
 
         $this->debug('Trying to send message', [
             'message' => $message,

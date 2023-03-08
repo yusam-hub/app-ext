@@ -47,7 +47,8 @@ class DaemonRabbitMqConsumerCommand extends BaseConsoleCommand
 
         $rabbitMqConsumer = new RabbitMqConsumer(
             new RabbitMqConsumerConfigModel(),
-            new $classMessage()
+            new $classMessage(),
+            $workerNumber
         );
 
         $rabbitMqConsumer->setConsoleOutput($output);

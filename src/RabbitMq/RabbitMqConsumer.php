@@ -12,24 +12,33 @@ use YusamHub\AppExt\Interfaces\RabbitMqConsumerMessageInterface;
 
 class RabbitMqConsumer extends BaseRabbitMq
 {
+    protected int $workerNumber;
+    protected int $memoryUsageStart;
+    protected int $memoryUsageRealStart;
     protected RabbitMqConsumerConfigModel $rabbitMqConsumerConfigModel;
     protected ?RabbitMqConsumerMessageInterface $rabbitMqConsumerMessage;
-
     protected LoopInterface $reactLoop;
     protected \Bunny\Async\Client $asyncClient;
+
+
 
     /**
      * @param RabbitMqConsumerConfigModel $rabbitMqConsumerConfigModel
      * @param RabbitMqConsumerMessageInterface|null $rabbitMqConsumerMessage
+     * @param int $workerNumber
      * @param string|null $connectionName
      */
     public function __construct(
         RabbitMqConsumerConfigModel $rabbitMqConsumerConfigModel,
         ?RabbitMqConsumerMessageInterface $rabbitMqConsumerMessage = null,
+        int $workerNumber = 0,
         ?string $connectionName = null)
     {
         $this->rabbitMqConsumerConfigModel = $rabbitMqConsumerConfigModel;
         $this->rabbitMqConsumerMessage = $rabbitMqConsumerMessage;
+        $this->workerNumber = $workerNumber;
+        $this->memoryUsageStart = memory_get_usage(false);
+        $this->memoryUsageRealStart = memory_get_usage(true);
         parent::__construct($connectionName);
         $this->reactLoop = Loop::get();
         $this->asyncClient = new \Bunny\Async\Client($this->reactLoop, $this->connectionConfig);
@@ -58,11 +67,13 @@ class RabbitMqConsumer extends BaseRabbitMq
     public function daemon(): void
     {
         $this->info(sprintf('Daemon [%s] started at [%s]', get_class($this), date("Y-m-d H:i:s")));
-
-        $this->info('config: host: ' . $this->connectionConfig['host']);
-        $this->info('config: port: ' . $this->connectionConfig['port']);
-        $this->info('config: vhost: ' . $this->connectionConfig['vhost']);
-        $this->info('config: user: ' . $this->connectionConfig['user']);
+        $this->info('--worker-number: ' . $this->workerNumber);
+        $this->info('MemoryUsageStart: ' . $this->memoryUsageStart);
+        $this->info('MemoryUsageRealStart: ' . $this->memoryUsageRealStart);
+        $this->info('Config: host: ' . $this->connectionConfig['host']);
+        $this->info('Config: port: ' . $this->connectionConfig['port']);
+        $this->info('Config: vhost: ' . $this->connectionConfig['vhost']);
+        $this->info('Config: user: ' . $this->connectionConfig['user']);
 
         $this
             ->asyncClient
@@ -177,6 +188,21 @@ class RabbitMqConsumer extends BaseRabbitMq
             });
         };
 
+        $stop_func = function ($signal) use (&$channelRef, &$consumerTagRef, &$stop_func) {
+
+            $this->reactLoop->removeSignal($signal, $stop_func);
+
+            $this->info(sprintf('Daemon received unix signal [%d]', $signal));
+
+            $channelRef
+                ->cancel($consumerTagRef)
+                ->done(
+                    function() {
+                        $this->info(sprintf('Daemon [%s] finished at [%s]', get_class($this), date("Y-m-d H:i:s")));
+                        exit();
+                    });
+        };
+
         $this->reactLoop->addSignal(SIGTERM, $stop_func);
 
         $this->reactLoop->run();
@@ -211,6 +237,8 @@ class RabbitMqConsumer extends BaseRabbitMq
                             'deliveryTag' => $message->deliveryTag,
                             'content' => $message->content
                         ]);
+                        $this->debug(sprintf('MemoryUsage (now: %d, diff: %d, start: %d)', memory_get_usage(), memory_get_usage() - $this->memoryUsageStart, $this->memoryUsageStart));
+                        $this->debug(sprintf('MemoryUsageReal (now: %d, diff: %d, start: %d)', memory_get_usage(true), memory_get_usage(true) - $this->memoryUsageRealStart, $this->memoryUsageRealStart));
                     },
                     function($reason) use ($message) {
                         $reasonMsg = "";
@@ -224,6 +252,9 @@ class RabbitMqConsumer extends BaseRabbitMq
                             'deliveryTag' => $message->deliveryTag,
                             'reasonMsg' => $reasonMsg
                         ]);
+                        $this->error(sprintf('MemoryUsage (now: %d, diff: %d, start: %d)', memory_get_usage(), memory_get_usage() - $this->memoryUsageStart, $this->memoryUsageStart));
+                        $this->error(sprintf('MemoryUsageReal (now: %d, diff: %d, start: %d)', memory_get_usage(true), memory_get_usage(true) - $this->memoryUsageRealStart, $this->memoryUsageRealStart));
+
                     }
                 )
                 ->done();
