@@ -26,7 +26,7 @@ return [
 
         if (!in_array($tokenValue, array_keys($tokens))) {
             throw new \YusamHub\AppExt\Exceptions\HttpUnauthorizedAppExtRuntimeException([
-                'message' => 'Invalid token value'
+                'detail' => 'Invalid token value'
             ]);
         }
         return intval($tokens[$tokenValue]);
@@ -41,7 +41,7 @@ return [
             if ($signValue !== $signs[$apiAuthorizedId]) //просто проверяем совпадение, не подписываем параметры, для этого нужен новый пакет для генерации подписи на основе контента или заголовка
             {
                 throw new \YusamHub\AppExt\Exceptions\HttpUnauthorizedAppExtRuntimeException([
-                    'message' => 'Invalid sign value',
+                    'detail' => 'Invalid sign value',
                     'authorizedId' => $apiAuthorizedId
                 ]);
             }
