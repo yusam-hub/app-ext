@@ -55,12 +55,14 @@ class RoutesMiddleware
             $this->httpServer->getConsoleOutput()->writeln(sprintf("#%d# Server params: %s", $requestId, json_encode($serverParams, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)));
         }
 
+        print_r($request->getUploadedFiles());
+
         $symphonyRequest = new Request(
             $request->getQueryParams(),
             (array) $request->getParsedBody(),
             [],
             $request->getCookieParams(),
-            $request->getUploadedFiles(),
+            [],
             $serverParams,
             $request->getBody()->getContents()
         );
