@@ -3,6 +3,7 @@
 namespace YusamHub\AppExt\ReactHttpServer\Middleware;
 
 use Psr\Http\Message\ServerRequestInterface;
+use React\Http\Io\UploadedFile;
 use React\Http\Message\Response;
 use React\Promise\Promise;
 use Symfony\Component\HttpFoundation\Request;
@@ -56,14 +57,36 @@ class RoutesMiddleware
         }
 
         print_r($request->getUploadedFiles());
+        $files = [];
+        /**
+         * @var UploadedFile $file
+         */
+       /* [name] => MyFile.txt (comes from the browser, so treat as tainted)
+            [type] => text/plain  (not sure where it gets this from - assume the browser, so treat as tainted)
+            [tmp_name] => /tmp/php/php1h4j1o (could be anywhere on your system, depending on your config settings, but the user has no control, so this isn't tainted)
+            [error] => UPLOAD_ERR_OK  (= 0)
+            [size] => 123   (the size in bytes)*/
+        foreach($request->getUploadedFiles() as $key => $file) {
+            $tmp_name = $this->httpServer->getHttpServerConfig()->tmpFileDir . DIRECTORY_SEPARATOR . md5(microtime() . $requestId);
+            $files[$key] = [
+                'name' => $file->getClientFilename(),
+                'type' => $file->getClientMediaType(),
+                'tmp_name' => $tmp_name,
+                'error' => $file->getError(),
+                'size' => $file->getSize()
+            ];
+        }
         var_dump($_FILES);
+        /**
+         * todo: нужно файл сохранить в tmp и передать как массив по Request
+         */
 
         $symphonyRequest = new Request(
             $request->getQueryParams(),
             (array) $request->getParsedBody(),
             [],
             $request->getCookieParams(),
-            [],
+            $files,
             $serverParams,
             $request->getBody()->getContents()
         );

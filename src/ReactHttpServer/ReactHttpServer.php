@@ -132,11 +132,26 @@ class ReactHttpServer implements GetSetConsoleInterface, GetSetLoggerInterface
             $this->error('React http error: ' . get_class($this), app_ext_get_error_context($e, true));
         });
 
+        $this->info('Checking dir: ' . $this->httpServerConfig->tmpFileDir);
+        if (!file_exists($this->httpServerConfig->tmpFileDir)) {
+            $this->info('Creating dir: ' . $this->httpServerConfig->tmpFileDir);
+            $f = mkdir(pathinfo($this->httpServerConfig->socketServerPathUri, PATHINFO_DIRNAME), 0777, true);
+            if ($f) {
+                $this->info('Success dir: ' . $this->httpServerConfig->tmpFileDir);
+            } else {
+                $this->error(sprintf('Dir [%s] not created', $this->httpServerConfig->tmpFileDir));
+                return self::FAILURE;
+            }
+        } else {
+            $this->info('Success dir: ' . $this->httpServerConfig->tmpFileDir);
+        }
+
         if ($this->httpServerConfig->socketServerMode === $this->httpServerConfig::SOCKET_SERVER_MODE_IP) {
             $uri = sprintf($this->httpServerConfig->socketServerIpUri,  $this->workerNumber);
             $socket = new \React\Socket\SocketServer($uri, [], $loop);
         } else {
             $dir = pathinfo($this->httpServerConfig->socketServerPathUri, PATHINFO_DIRNAME);
+
             $this->info('Checking dir: ' . $dir);
             if (!file_exists($dir)) {
                 $this->info('Creating dir: ' . $dir);
