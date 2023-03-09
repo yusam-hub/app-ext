@@ -4,6 +4,7 @@ namespace YusamHub\AppExt\SymfonyExt\Http\Controllers\Api\Debug;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
+use YusamHub\AppExt\Exceptions\HttpAppExtRuntimeException;
 use YusamHub\AppExt\SymfonyExt\Http\Controllers\BaseHttpController;
 use YusamHub\AppExt\SymfonyExt\Http\Interfaces\ControllerMiddlewareInterface;
 use YusamHub\AppExt\SymfonyExt\Http\Traits\ApiAuthorizeTrait;
@@ -126,9 +127,6 @@ class DebugController extends BaseHttpController implements ControllerMiddleware
             'query' => $request->query->all(),
             'params' => $request->request->all(),
             'content' => $request->getContent(),
-            'headers' => $request->headers->all(),
-            'cookies' => $request->cookies->all(),
-            'server' => $request->server->all(),
         ];
     }
 
@@ -193,22 +191,48 @@ class DebugController extends BaseHttpController implements ControllerMiddleware
 
     public function actionEnvAsArray(Request $request): array
     {
+        if (!app_ext_config('app.isDebugging')) {
+            throw new HttpAppExtRuntimeException([
+                'message' => 'App is not in debugging mode'
+            ]);
+        }
         return (array) $_ENV;
     }
 
     public function actionServerAsArray(Request $request): array
     {
-        return (array) $_SERVER;
+        if (!app_ext_config('app.isDebugging')) {
+            throw new HttpAppExtRuntimeException([
+                'message' => 'App is not in debugging mode'
+            ]);
+        }
+        return [
+            '_SERVER' => (array) $_SERVER,
+            '_REQUEST_SERVER' => $request->server->all()
+        ];
     }
 
     public function actionSessionAsArray(Request $request): array
     {
+        if (!app_ext_config('app.isDebugging')) {
+            throw new HttpAppExtRuntimeException([
+                'message' => 'App is not in debugging mode'
+            ]);
+        }
         return (array) $_SESSION;
     }
 
     public function actionCookieAsArray(Request $request): array
     {
-        return (array) $_COOKIE;
+        if (!app_ext_config('app.isDebugging')) {
+            throw new HttpAppExtRuntimeException([
+                'message' => 'App is not in debugging mode'
+            ]);
+        }
+        return [
+            '_COOKIE' => (array) $_COOKIE,
+            '_REQUEST_COOKIE' => $request->cookies->all()
+        ];
     }
 
 }
