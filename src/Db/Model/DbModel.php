@@ -23,7 +23,7 @@ abstract class DbModel extends JsonObject
         $row = db()
             ->connection($model->connectionName)
             ->fetchOne(
-                strtr("SELECT * FROM " . $model->tableName . " WHERE :primaryKey = ? LIMIT 0,1", [
+                strtr("SELECT * FROM `" . $model->tableName . "` WHERE `:primaryKey` = ? LIMIT 0,1", [
                     ':primaryKey' => $model->primaryKey,
                 ]),
                 [
@@ -39,8 +39,39 @@ abstract class DbModel extends JsonObject
     }
 
     /**
+     * @param array $attributes
+     * @return DbModel|null|object
+     * @throws \ReflectionException
+     */
+    public static function findModelByAttributes(array $attributes)
+    {
+        $model = new static();
+        $where = [];
+        $bindings = [];
+        foreach($attributes as $key => $value) {
+            $where[] = sprintf("`%s` = ?", $key);
+            $bindings[] = $value;
+        }
+        $row = db()
+            ->connection($model->connectionName)
+            ->fetchOne(
+                strtr("SELECT * FROM `" . $model->tableName . "`:where LIMIT 0,1", [
+                    ':where' => !empty($where) ? ' WHERE '. implode('AND', $where) : '',
+                ]),
+                $bindings,
+                get_class($model)
+            );
+        if ($row instanceof DbModel) {
+            $row->originalValues = $row->toArray();
+            return $row;
+        }
+        return null;
+    }
+
+    /**
      * @param $pk
      * @return object|DbModel
+     * @throws \ReflectionException
      */
     public static function findModelOrFail($pk)
     {
@@ -49,6 +80,20 @@ abstract class DbModel extends JsonObject
             throw new AppExtRuntimeException("Model not found", [
                 (new static())->primaryKey => $pk,
             ]);
+        }
+        return $model;
+    }
+
+    /**
+     * @param array $attributes
+     * @return DbModel|null|object
+     * @throws \ReflectionException
+     */
+    public static function findModelByAttributesOrFail(array $attributes)
+    {
+        $model = static::findModelByAttributes($attributes);
+        if (is_null($model)) {
+            throw new AppExtRuntimeException("Model not found", $attributes);
         }
         return $model;
     }
