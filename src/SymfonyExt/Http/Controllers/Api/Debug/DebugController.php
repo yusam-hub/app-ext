@@ -4,9 +4,7 @@ namespace YusamHub\AppExt\SymfonyExt\Http\Controllers\Api\Debug;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
-use YusamHub\AppExt\Exceptions\HttpAppExtRuntimeException;
 use YusamHub\AppExt\Exceptions\HttpBadRequestAppExtRuntimeException;
-use YusamHub\AppExt\Exceptions\HttpUnauthorizedAppExtRuntimeException;
 use YusamHub\AppExt\SymfonyExt\Http\Controllers\BaseHttpController;
 use YusamHub\AppExt\SymfonyExt\Http\Interfaces\ControllerMiddlewareInterface;
 use YusamHub\AppExt\SymfonyExt\Http\Traits\ApiAuthorizeTrait;
@@ -33,8 +31,6 @@ class DebugController extends BaseHttpController implements ControllerMiddleware
         static::routesAdd($routes, ['OPTIONS', 'GET'], '/api/debug/test/exception', 'actionTestException');
 
         static::routesAdd($routes, ['OPTIONS', 'POST'], '/api/debug/test/file', 'actionTestFile');
-
-
     }
 
     /**
@@ -71,7 +67,7 @@ class DebugController extends BaseHttpController implements ControllerMiddleware
      *        @OA\Property(property="status", type="string", example="ok"),
      *        @OA\Property(property="data", type="array", example="array", @OA\Items(
      *        )),
-     *        example={},
+     *        example={"status":"ok","data":{}},
      *   ))),
      *   @OA\Response(response=401, description="Unauthorized", @OA\MediaType(mediaType="application/json", @OA\Schema(ref="#/components/schemas/ResponseErrorDefault"))),
      * );
@@ -111,7 +107,7 @@ class DebugController extends BaseHttpController implements ControllerMiddleware
      *        @OA\Property(property="status", type="string", example="ok"),
      *        @OA\Property(property="data", type="array", example="array", @OA\Items(
      *        )),
-     *        example={},
+     *        example={"status":"ok","data":{}},
      *   ))),
      *   @OA\Response(response=400, description="Bad Request", @OA\MediaType(mediaType="application/json", @OA\Schema(ref="#/components/schemas/ResponseErrorDefault"))),
      *   @OA\Response(response=401, description="Unauthorized", @OA\MediaType(mediaType="application/json", @OA\Schema(ref="#/components/schemas/ResponseErrorDefault"))),
@@ -143,7 +139,7 @@ class DebugController extends BaseHttpController implements ControllerMiddleware
      *        @OA\Property(property="status", type="string", example="ok"),
      *        @OA\Property(property="data", type="array", example="array", @OA\Items(
      *        )),
-     *        example={},
+     *        example={"status":"ok","data":{}},
      *   ))),
      *   @OA\Response(response=400, description="Bad Request", @OA\MediaType(mediaType="application/json", @OA\Schema(ref="#/components/schemas/ResponseErrorDefault"))),
      * );
@@ -196,7 +192,7 @@ class DebugController extends BaseHttpController implements ControllerMiddleware
      *        @OA\Property(property="status", type="string", example="ok"),
      *        @OA\Property(property="data", type="array", example="array", @OA\Items(
      *        )),
-     *        example={},
+     *        example={"status":"ok","data":{}},
      *   ))),
      *   @OA\Response(response=400, description="Bad Request", @OA\MediaType(mediaType="application/json", @OA\Schema(ref="#/components/schemas/ResponseErrorDefault"))),
      *   @OA\Response(response=401, description="Unauthorized", @OA\MediaType(mediaType="application/json", @OA\Schema(ref="#/components/schemas/ResponseErrorDefault"))),
