@@ -30,7 +30,7 @@ class DebugController extends BaseHttpController implements ControllerMiddleware
 
         static::routesAdd($routes, ['OPTIONS', 'GET', 'POST'], '/api/debug/test/params', 'actionTestParams');
 
-        static::routesAdd($routes, ['OPTIONS', 'GET'], '/api/debug/exception', 'actionTestException');
+        static::routesAdd($routes, ['OPTIONS', 'GET'], '/api/debug/test/exception', 'actionTestException');
 
         static::routesAdd($routes, ['OPTIONS', 'POST'], '/api/debug/test/file', 'actionTestFile');
 
