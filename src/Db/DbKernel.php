@@ -1,6 +1,7 @@
 <?php
 
-namespace YusamHub\AppExt\SymfonyExt;
+namespace YusamHub\AppExt\Db;
+
 use YusamHub\DbExt\PdoExt;
 
 class DbKernel
@@ -37,11 +38,23 @@ class DbKernel
      */
     public function __get($name): ?PdoExt
     {
+       return $this->connection($name);
+    }
+
+    /**
+     * @param string|null $name
+     * @return PdoExt|null
+     */
+    public function connection(?string $name = null): ?PdoExt
+    {
+        if (empty($name)) {
+            $name = $this->config['default'];
+        }
         if (isset($this->dbInstances[$name])) {
             return $this->dbInstances[$name];
         }
         if (isset($this->config['connections'][$name])) {
-             return $this->dbInstances[$name] = new PdoExt(app_ext_create_pdo($name));
+            return $this->dbInstances[$name] = new PdoExt(app_ext_create_pdo($name));
         }
         throw new \RuntimeException(sprintf("Unable to find database connection name [%s]", $name));
     }

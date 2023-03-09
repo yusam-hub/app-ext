@@ -2,10 +2,10 @@
 
 use Psr\Log\LoggerInterface;
 use YusamHub\AppExt\Config;
+use YusamHub\AppExt\Db\DbKernel;
 use YusamHub\AppExt\DotArray;
 use YusamHub\AppExt\Env;
 use YusamHub\AppExt\SymfonyExt\AppKernel;
-use YusamHub\AppExt\SymfonyExt\DbKernel;
 use YusamHub\DbExt\PdoExt;
 
 if (! function_exists('app')) {
