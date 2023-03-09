@@ -32,6 +32,18 @@ abstract class ApiSwaggerController extends BaseHttpController
     }
 
     /**
+     * @param Request $request
+     * @param string $module
+     * @return string[]
+     */
+    protected function getOpenApiScanPaths(Request $request, string $module): array
+    {
+        return [
+            __DIR__ . DIRECTORY_SEPARATOR . ucfirst($module)
+        ];
+    }
+
+    /**
      * @return string
      */
     protected function getPublicSwaggerUiDir(): string
@@ -75,9 +87,7 @@ abstract class ApiSwaggerController extends BaseHttpController
     public function getSwaggerUiOpenApi(Request $request, string $module): string
     {
         $openApiExt = new OpenApiExt([
-            'paths' => [
-                __DIR__ . DIRECTORY_SEPARATOR . ucfirst($module)
-            ],
+            'paths' => $this->getOpenApiScanPaths($request, $module),
             'replaceKeyValuePair' => $this->getReplaceKeyValuePairForModule($request, $module)
         ]);
 
