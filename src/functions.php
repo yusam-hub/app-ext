@@ -192,3 +192,11 @@ if (! function_exists('app_ext_get_error_context')) {
         return $out;
     }
 }
+
+if (! function_exists('app_ext_get_files')) {
+
+    function app_ext_get_files(\Symfony\Component\HttpFoundation\Request $request): array
+    {
+        return (array) $request->attributes->get('_files');
+    }
+}

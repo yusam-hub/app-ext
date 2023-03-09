@@ -183,8 +183,7 @@ class DebugController extends BaseHttpController implements ControllerMiddleware
             'query' => $request->query->all(),
             'params' => $request->request->all(),
             'attributes' => $request->attributes->all(),
-            'files' => $request->files->all(),
-            '_FILES' => $_FILES
+            'files' => app_ext_get_files($request)
         ];
     }
 
