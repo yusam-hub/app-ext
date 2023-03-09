@@ -18,7 +18,8 @@ class DebugController extends BaseHttpController implements ControllerMiddleware
     use ApiAuthorizeTrait;
 
     protected array $apiAuthorizePathExcludes = [
-        '/api/debug'
+        '/api/debug',
+        '/api/debug/exception'
     ];
 
     public static function routesRegister(RoutingConfigurator $routes): void
@@ -137,7 +138,6 @@ class DebugController extends BaseHttpController implements ControllerMiddleware
      *   tags={"Test"},
      *   path="/test/exception",
      *   summary="GET exception",
-     *   security={{"XTokenScheme":{}},{"XSignScheme":{}}},
      *   deprecated=false,
      *   @OA\Response(response=200, description="OK", @OA\MediaType(mediaType="application/json", @OA\Schema(
      *        @OA\Property(property="status", type="string", example="ok"),
