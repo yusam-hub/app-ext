@@ -65,13 +65,14 @@ class RoutesMiddleware
             if ($file->getError() === 0 && $file->getSize() > 0) {
                 $tmp_name = $this->httpServer->getHttpServerConfig()->tmpFileDir . DIRECTORY_SEPARATOR . md5(microtime() . $requestId);
                 file_put_contents($tmp_name, $file->getStream());
-                $files[$key] = [
+                /*$files[$key] = [
                     'name' => $file->getClientFilename(),
                     'type' => $file->getClientMediaType(),
                     'tmp_name' => $tmp_name,
                     'error' => $file->getError(),
                     'size' => $file->getSize()
-                ];
+                ];*/
+                $files[$key] = new \Symfony\Component\HttpFoundation\File\UploadedFile($tmp_name, $file->getClientFilename(), $file->getClientMediaType());
             }
         }
 
@@ -85,11 +86,10 @@ class RoutesMiddleware
                 '_react_files' => $files,
             ],
             $request->getCookieParams(),
-            [],
+            $files,
             $serverParams,
             $request->getBody()->getContents()
         );
-        $symphonyRequest->files->add($files);
 
         $controllerKernel = new ControllerKernel(
             dirname($this->httpServer->getRoutesConfigFile()),
