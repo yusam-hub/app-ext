@@ -135,6 +135,7 @@ class ControllerKernel implements GetSetLoggerInterface, GetSetConsoleInterface
                     $response->setContent(json_ext_json_encode_unescaped(json_ext_error('Not Found')));
                     $response->headers->set("Content-Type", JSON_EXT_CONTENT_TYPE);
                 }
+
             } catch (HttpAppExtRuntimeExceptionInterface $e) {
 
                 $this->debug($e->getMessage(), app_ext_get_error_context($e));
@@ -152,6 +153,7 @@ class ControllerKernel implements GetSetLoggerInterface, GetSetConsoleInterface
                     $response->setContent(json_ext_json_encode_unescaped(json_ext_error(Response::$statusTexts[Response::HTTP_INTERNAL_SERVER_ERROR])));
                     $response->headers->set("Content-Type", JSON_EXT_CONTENT_TYPE);
                 }
+
             }
 
             if (!empty($origin)) {
@@ -198,15 +200,7 @@ class ControllerKernel implements GetSetLoggerInterface, GetSetConsoleInterface
             $responseStatusCode = Response::HTTP_INTERNAL_SERVER_ERROR;
             $responseStatusMessage = Response::$statusTexts[$responseStatusCode];
 
-            $this->error(sprintf("RESPONSE (%d): %s", $responseStatusCode, $responseStatusMessage), [
-                'error' => [
-                    'message' => $e->getMessage(),
-                    'code' => $e->getCode(),
-                    'file' => $e->getFile(),
-                    'line' => $e->getLine(),
-                    'class' => get_class($e),
-                ],
-            ]);
+            $this->error(sprintf("RESPONSE (%d): %s", $responseStatusCode, $responseStatusMessage), app_ext_get_error_context($e, true));
             $response = new Response($responseStatusMessage, $responseStatusCode);
         }
 
