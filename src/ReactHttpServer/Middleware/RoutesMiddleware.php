@@ -68,6 +68,7 @@ class RoutesMiddleware
             [size] => 123   (the size in bytes)*/
         foreach($request->getUploadedFiles() as $key => $file) {
             $tmp_name = $this->httpServer->getHttpServerConfig()->tmpFileDir . DIRECTORY_SEPARATOR . md5(microtime() . $requestId);
+            file_put_contents($tmp_name, $file->getStream());
             $files[$key] = [
                 'name' => $file->getClientFilename(),
                 'type' => $file->getClientMediaType(),
