@@ -4,6 +4,8 @@ namespace YusamHub\AppExt\SymfonyExt\Http\Controllers\Api\Debug;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
+use YusamHub\AppExt\Exceptions\HttpAppExtRuntimeException;
+use YusamHub\AppExt\Exceptions\HttpUnauthorizedAppExtRuntimeException;
 use YusamHub\AppExt\SymfonyExt\Http\Controllers\BaseHttpController;
 use YusamHub\AppExt\SymfonyExt\Http\Interfaces\ControllerMiddlewareInterface;
 use YusamHub\AppExt\SymfonyExt\Http\Traits\ApiAuthorizeTrait;
@@ -26,7 +28,11 @@ class DebugController extends BaseHttpController implements ControllerMiddleware
 
         static::routesAdd($routes, ['OPTIONS', 'GET', 'POST'], '/api/debug/test/params', 'actionTestParams');
 
+        static::routesAdd($routes, ['OPTIONS', 'GET'], '/api/debug/exception', 'actionTestException');
+
         static::routesAdd($routes, ['OPTIONS', 'POST'], '/api/debug/test/file', 'actionTestFile');
+
+
     }
 
     /**
@@ -43,7 +49,7 @@ class DebugController extends BaseHttpController implements ControllerMiddleware
      * @OA\Get(
      *   tags={"Test"},
      *   path="/test/params",
-     *   summary="GET",
+     *   summary="GET params",
      *   security={{"XTokenScheme":{}},{"XSignScheme":{}}},
      *   deprecated=false,
      *   @OA\Parameter(name="Test-Header-Value",
@@ -73,7 +79,7 @@ class DebugController extends BaseHttpController implements ControllerMiddleware
      * @OA\Post(
      *   tags={"Test"},
      *   path="/test/params",
-     *   summary="Post",
+     *   summary="Post params",
      *   security={{"XTokenScheme":{}},{"XSignScheme":{}}},
      *   deprecated=false,
      *   @OA\Parameter(name="Test-Header-Value",
@@ -123,6 +129,35 @@ class DebugController extends BaseHttpController implements ControllerMiddleware
             'server' => $request->server->all(),
             'cookies' => $request->cookies->all(),
         ];
+    }
+
+    /**
+     * @OA\Get(
+     *   tags={"Test"},
+     *   path="/test/exception",
+     *   summary="GET exception",
+     *   security={{"XTokenScheme":{}},{"XSignScheme":{}}},
+     *   deprecated=false,
+     *   @OA\Response(response=200, description="OK", @OA\MediaType(mediaType="application/json", @OA\Schema(
+     *        @OA\Property(property="status", type="string", example="ok"),
+     *        @OA\Property(property="data", type="array", example="array", @OA\Items(
+     *        )),
+     *        example={},
+     *   ))),
+     *   @OA\Response(response=401, description="Unauthorized", @OA\MediaType(mediaType="application/json", @OA\Schema(ref="#/components/schemas/ResponseErrorDefault"))),
+     * );
+     */
+
+    /**
+     * @param Request $request
+     * @return array
+     */
+    public function actionTestException(Request $request): array
+    {
+        throw new HttpUnauthorizedAppExtRuntimeException([
+            'field' => 'invalid'
+        ]);
+        return [];
     }
 
     /**
