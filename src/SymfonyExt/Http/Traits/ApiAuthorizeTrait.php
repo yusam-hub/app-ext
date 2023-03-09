@@ -10,6 +10,12 @@ trait ApiAuthorizeTrait
 
     protected function apiAuthorizeHandle(Request $request): void
     {
+        if (property_exists($this, 'apiAuthorizePathExcludes')) {
+            if (in_array($request->getRequestUri(), $this->apiAuthorizePathExcludes)) {
+                return;
+            }
+        }
+
         $tokenHandle = app_ext_config('api.tokenHandle');
         if (is_callable($tokenHandle)) {
             $this->apiAuthorizedId = $tokenHandle($request);

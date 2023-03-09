@@ -14,6 +14,10 @@ class DebugController extends BaseHttpController implements ControllerMiddleware
     use ControllerMiddlewareTrait;
     use ApiAuthorizeTrait;
 
+    protected array $apiAuthorizePathExcludes = [
+        '/api/debug'
+    ];
+
     public static function routesRegister(RoutingConfigurator $routes): void
     {
         static::controllerMiddlewareRegister('apiAuthorizeHandle');
