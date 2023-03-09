@@ -4,7 +4,6 @@ namespace YusamHub\AppExt\SymfonyExt\Http\Controllers\Api\Debug;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
-use YusamHub\AppExt\Exceptions\HttpAppExtRuntimeException;
 use YusamHub\AppExt\SymfonyExt\Http\Controllers\BaseHttpController;
 use YusamHub\AppExt\SymfonyExt\Http\Interfaces\ControllerMiddlewareInterface;
 use YusamHub\AppExt\SymfonyExt\Http\Traits\ApiAuthorizeTrait;
@@ -26,14 +25,8 @@ class DebugController extends BaseHttpController implements ControllerMiddleware
         static::routesAdd($routes, ['OPTIONS', 'GET'],'/api/debug', 'getApiHome');
 
         static::routesAdd($routes, ['OPTIONS', 'GET', 'POST'], '/api/debug/test/params', 'actionTestParams');
-        static::routesAdd($routes, ['OPTIONS', 'POST'], '/api/debug/test/file', 'actionTestFile');
 
-        static::routesAdd($routes, ['OPTIONS', 'GET'], '/api/debug/dt-as-string', 'actionDateTimeAsString');
-        static::routesAdd($routes, ['OPTIONS', 'GET'], '/api/debug/dt-as-array', 'actionDateTimeAsArray');
-        static::routesAdd($routes, ['OPTIONS', 'GET'], '/api/debug/env', 'actionEnvAsArray');
-        static::routesAdd($routes, ['OPTIONS', 'GET'], '/api/debug/server', 'actionServerAsArray');
-        static::routesAdd($routes, ['OPTIONS', 'GET'], '/api/debug/session', 'actionSessionAsArray');
-        static::routesAdd($routes, ['OPTIONS', 'GET'], '/api/debug/cookie', 'actionCookieAsArray');
+        static::routesAdd($routes, ['OPTIONS', 'POST'], '/api/debug/test/file', 'actionTestFile');
     }
 
     /**
@@ -120,7 +113,6 @@ class DebugController extends BaseHttpController implements ControllerMiddleware
     public function actionTestParams(Request $request): array
     {
         return [
-            'dateTime' => date("Y-m-d H:i:s"),
             'method' => $request->getMethod(),
             'host' => $request->getHost(),
             'requestUri' => $request->getRequestUri(),
@@ -128,6 +120,8 @@ class DebugController extends BaseHttpController implements ControllerMiddleware
             'params' => $request->request->all(),
             'content' => $request->getContent(),
             'attributes' => $request->attributes->all(),
+            'server' => $request->server->all(),
+            'cookies' => $request->cookies->all(),
         ];
     }
 
@@ -176,81 +170,15 @@ class DebugController extends BaseHttpController implements ControllerMiddleware
     public function actionTestFile(Request $request): array
     {
         return [
-            'dateTime' => date("Y-m-d H:i:s"),
             'method' => $request->getMethod(),
             'host' => $request->getHost(),
             'requestUri' => $request->getRequestUri(),
             'query' => $request->query->all(),
             'params' => $request->request->all(),
             'attributes' => $request->attributes->all(),
-            'files' => app_ext_get_files($request)
+            'server' => $request->server->all(),
+            'cookies' => $request->cookies->all(),
+            'files' => app_ext_get_files($request),
         ];
     }
-
-    /**
-     * @param Request $request
-     * @return string
-     */
-    public function actionDateTimeAsString(Request $request): string
-    {
-        return date("Y-m-d H:i:s");
-    }
-
-    /**
-     * @param Request $request
-     * @return array
-     */
-    public function actionDateTimeAsArray(Request $request): array
-    {
-        return [
-            date("Y-m-d H:i:s")
-        ];
-    }
-
-    public function actionEnvAsArray(Request $request): array
-    {
-        if (!app_ext_config('app.isDebugging')) {
-            throw new HttpAppExtRuntimeException([
-                'message' => 'App is not in debugging mode'
-            ]);
-        }
-        return (array) $_ENV;
-    }
-
-    public function actionServerAsArray(Request $request): array
-    {
-        if (!app_ext_config('app.isDebugging')) {
-            throw new HttpAppExtRuntimeException([
-                'message' => 'App is not in debugging mode'
-            ]);
-        }
-        return [
-            '_SERVER' => (array) $_SERVER,
-            '_REQUEST_SERVER' => $request->server->all()
-        ];
-    }
-
-    public function actionSessionAsArray(Request $request): array
-    {
-        if (!app_ext_config('app.isDebugging')) {
-            throw new HttpAppExtRuntimeException([
-                'message' => 'App is not in debugging mode'
-            ]);
-        }
-        return (array) $_SESSION;
-    }
-
-    public function actionCookieAsArray(Request $request): array
-    {
-        if (!app_ext_config('app.isDebugging')) {
-            throw new HttpAppExtRuntimeException([
-                'message' => 'App is not in debugging mode'
-            ]);
-        }
-        return [
-            '_COOKIE' => (array) $_COOKIE,
-            '_REQUEST_COOKIE' => $request->cookies->all()
-        ];
-    }
-
 }
