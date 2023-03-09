@@ -7,10 +7,10 @@ return [
     'tokenKeyName' => 'X-Token',
     'signKeyName' => 'X-Sign',
     'tokens' => [
-        //'testing' => 0 //по токену находим ID
+        'testing' => 0 //по токену находим ID
     ],
     'signs' => [
-        //0 => 'testing', //по ID находим ключ подписи для ID
+        0 => 'testing', //по ID находим ключ подписи для ID
     ],
     'tokenHandle' => function(\Symfony\Component\HttpFoundation\Request $request) {
         if ($request->getRequestUri() === '/') {
