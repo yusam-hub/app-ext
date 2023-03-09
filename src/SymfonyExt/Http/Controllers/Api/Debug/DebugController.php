@@ -18,6 +18,8 @@ class DebugController extends BaseHttpController implements ControllerMiddleware
     {
         static::controllerMiddlewareRegister('apiAuthorizeHandle');
 
+        static::routesAdd($routes, ['OPTIONS', 'GET'],'/api/debug', 'getApiHome');
+
         static::routesAdd($routes, ['OPTIONS', 'GET', 'POST'], '/api/debug/test/params', 'actionTestParams');
         static::routesAdd($routes, ['OPTIONS', 'POST'], '/api/debug/test/file', 'actionTestFile');
 
@@ -28,6 +30,16 @@ class DebugController extends BaseHttpController implements ControllerMiddleware
         static::routesAdd($routes, ['OPTIONS', 'GET'], '/api/debug/session', 'actionSessionAsArray');
         static::routesAdd($routes, ['OPTIONS', 'GET'], '/api/debug/cookie', 'actionCookieAsArray');
     }
+
+    /**
+     * @param Request $request
+     * @return array
+     */
+    public function getApiHome(Request $request): array
+    {
+        return [];
+    }
+
 
     /**
      * @OA\Get(
