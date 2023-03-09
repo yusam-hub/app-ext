@@ -7,6 +7,7 @@ return [
         'limitRequestBodyBuffer' => intval(app_ext_env('HTTP_SERVER_LIMIT_REQUEST_BODY_BUFFER', 2097152)),
         'socketServerMode' => \YusamHub\AppExt\ReactHttpServer\HttpServerConfigModel::SOCKET_SERVER_MODE_UNIX_FILE,
         'socketServerPathUri' => '/tmp/react-http-server-socks/server.worker%d.sock',
+        'tmpFileDir' => '/tmp/react-http-server-files',
         'socketServerIpUri' => '0.0.0.0:1808%d',
     ],
 ];
