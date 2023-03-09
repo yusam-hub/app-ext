@@ -56,6 +56,7 @@ class RoutesMiddleware
         }
 
         print_r($request->getUploadedFiles());
+        var_dump($_FILES);
 
         $symphonyRequest = new Request(
             $request->getQueryParams(),
