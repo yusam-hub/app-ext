@@ -54,7 +54,12 @@ class DbKernel
             return $this->dbInstances[$name];
         }
         if (isset($this->config['connections'][$name])) {
-            return $this->dbInstances[$name] = new PdoExt(app_ext_create_pdo($name));
+            $this->dbInstances[$name] = pdo_ext($name);
+            $this->dbInstances[$name]->isDebugging = true;
+            $this->dbInstances[$name]->onDebugLogCallback(function(string $sql, array $bindings){
+                app_ext_logger()->debug($sql, $bindings);
+            });
+            return $this->dbInstances[$name];
         }
         throw new \RuntimeException(sprintf("Unable to find database connection name [%s]", $name));
     }

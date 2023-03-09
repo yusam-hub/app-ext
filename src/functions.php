@@ -135,36 +135,14 @@ if (! function_exists('app_ext_evn_map_value')) {
     }
 }
 
-if (! function_exists('app_ext_create_pdo')) {
-
-    function app_ext_create_pdo(?string $connectionName = null): \PDO
-    {
-        if (is_null($connectionName)) {
-            $connectionName = app_ext_config("database.default");
-        }
-
-        $dsn = sprintf(
-            'mysql:host=%s;dbname=%s',
-            app_ext_config("database.connections.{$connectionName}.host") . ':' . app_ext_config("database.connections.{$connectionName}.port"),
-            app_ext_config("database.connections.{$connectionName}.dbName")
-        );
-
-        return new \PDO(
-            $dsn,
-            app_ext_config("database.connections.{$connectionName}.user"),
-            app_ext_config("database.connections.{$connectionName}.password"),
-            [
-                \PDO::ATTR_PERSISTENT => true
-            ]
-        );
-    }
-}
-
 if (! function_exists('pdo_ext')) {
 
     function pdo_ext(?string $connectionName = null): PdoExt
     {
-        return new PdoExt(app_ext_create_pdo($connectionName));
+        if (is_null($connectionName)) {
+            $connectionName = app_ext_config("database.default");
+        }
+        return db_ext_mysql_pdo_ext_create_from_config(app_ext_config("database.connections.{$connectionName}"), true);
     }
 
 }
