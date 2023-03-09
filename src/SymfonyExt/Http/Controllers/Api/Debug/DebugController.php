@@ -127,6 +127,7 @@ class DebugController extends BaseHttpController implements ControllerMiddleware
             'query' => $request->query->all(),
             'params' => $request->request->all(),
             'content' => $request->getContent(),
+            'attributes' => $request->attributes->all(),
         ];
     }
 
@@ -181,6 +182,7 @@ class DebugController extends BaseHttpController implements ControllerMiddleware
             'requestUri' => $request->getRequestUri(),
             'query' => $request->query->all(),
             'params' => $request->request->all(),
+            'attributes' => $request->attributes->all(),
             'files' => $request->files->all(),
             '_FILES' => $_FILES
         ];

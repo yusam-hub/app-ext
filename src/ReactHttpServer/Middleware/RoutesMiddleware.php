@@ -61,17 +61,19 @@ class RoutesMiddleware
          * @var UploadedFile $file
          */
         foreach($request->getUploadedFiles() as $key => $file) {
-            $tmp_name = $this->httpServer->getHttpServerConfig()->tmpFileDir . DIRECTORY_SEPARATOR . md5(microtime() . $requestId);
-            file_put_contents($tmp_name, $file->getStream());
-            $files[$key] = [
-                'name' => $file->getClientFilename(),
-                'type' => $file->getClientMediaType(),
-                'tmp_name' => $tmp_name,
-                'error' => $file->getError(),
-                'size' => $file->getSize()
-            ];
+
+            if ($file->getError() === 0 && $file->getSize() > 0) {
+                $tmp_name = $this->httpServer->getHttpServerConfig()->tmpFileDir . DIRECTORY_SEPARATOR . md5(microtime() . $requestId);
+                file_put_contents($tmp_name, $file->getStream());
+                $files[$key] = [
+                    'name' => $file->getClientFilename(),
+                    'type' => $file->getClientMediaType(),
+                    'tmp_name' => $tmp_name,
+                    'error' => $file->getError(),
+                    'size' => $file->getSize()
+                ];
+            }
         }
-        var_dump($files);
         /**
          * todo: нужно файл сохранить в tmp и передать как массив по Request
          */
@@ -79,7 +81,9 @@ class RoutesMiddleware
         $symphonyRequest = new Request(
             $request->getQueryParams(),
             (array) $request->getParsedBody(),
-            [],
+            [
+                'files' => $files,
+            ],
             $request->getCookieParams(),
             $files,
             $serverParams,
