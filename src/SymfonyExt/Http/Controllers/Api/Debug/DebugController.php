@@ -19,7 +19,7 @@ class DebugController extends BaseHttpController implements ControllerMiddleware
 
     protected array $apiAuthorizePathExcludes = [
         '/api/debug',
-        '/api/debug/exception'
+        '/api/debug/test/exception'
     ];
 
     public static function routesRegister(RoutingConfigurator $routes): void
