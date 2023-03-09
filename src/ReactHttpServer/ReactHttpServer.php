@@ -129,7 +129,7 @@ class ReactHttpServer implements GetSetConsoleInterface, GetSetLoggerInterface
         );
 
         $http->on('error', function (\Throwable $e) {
-            $this->error(get_class($this), app_ext_get_error_context($e, true));
+            $this->error('Server: ' . get_class($this), app_ext_get_error_context($e, true));
         });
 
         if ($this->httpServerConfig->socketServerMode === $this->httpServerConfig::SOCKET_SERVER_MODE_IP) {
