@@ -99,15 +99,7 @@ class RoutesMiddleware
                 $responseStatusCode = 500;
                 $responseStatusMessage = "Internal Server Error";
 
-                $this->httpServer->error(sprintf("RESPONSE (%d): %s", $responseStatusCode, $responseStatusMessage), [
-                    'error' => [
-                        'message' => $e->getMessage(),
-                        'code' => $e->getCode(),
-                        'file' => $e->getFile(),
-                        'line' => $e->getLine(),
-                        'class' => get_class($e),
-                    ],
-                ]);
+                $this->httpServer->error(sprintf("RESPONSE (%d): %s", $responseStatusCode, $responseStatusMessage), app_ext_get_error_context($e));
 
                 $response = Response::plaintext($responseStatusMessage)->withStatus($responseStatusCode);
             }

@@ -137,6 +137,11 @@ class ControllerKernel implements GetSetLoggerInterface, GetSetConsoleInterface
                 $this->debug($e->getMessage(), app_ext_get_error_context($e));
                 $response = new Response($e->getMessage(), $e->getStatusCode());//todo: if accept application/json return json with data
 
+            } catch (\Throwable $e) {
+
+                $this->debug($e->getMessage(), app_ext_get_error_context($e, true));
+                $response = new Response(Response::$statusTexts[Response::HTTP_INTERNAL_SERVER_ERROR],Response::HTTP_INTERNAL_SERVER_ERROR);//todo: if accept application/json return json with data
+
             }
 
             if (!empty($origin)) {

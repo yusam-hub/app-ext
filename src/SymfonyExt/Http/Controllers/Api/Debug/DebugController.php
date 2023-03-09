@@ -137,10 +137,26 @@ class DebugController extends BaseHttpController implements ControllerMiddleware
      *   summary="Post file",
      *   security={{"XTokenScheme":{}},{"XSignScheme":{}}},
      *   deprecated=false,
-     *   @OA\RequestBody(required=true,
+     *   @OA\Parameter(name="Test-Header-Value",
+     *     in="header",
+     *     required=false,
+     *     example="",
+     *     description="",
+     *     @OA\Schema(type="string")
+     *   ),
+     *   @OA\Parameter(name="testQueryValue",
+     *     in="query",
+     *     required=false,
+     *     example="",
+     *     @OA\Schema(type="string")
+     *   ),
+     *   @OA\RequestBody(required=false,
      *      @OA\MediaType(
      *        mediaType="multipart/form-data",
      *        @OA\Schema(
+     *            @OA\Property(property="testKey1", type="string", description=""),
+     *            @OA\Property(property="testKey2", type="string", description=""),
+     *            @OA\Property(property="testKey3", type="string", description=""),
      *            @OA\Property(property="file", type="string", format="binary", description="Any file"),
      *        )
      *      )
