@@ -13,8 +13,7 @@ abstract class BaseModel extends JsonObject
      /**
      * @param $pk
      * @return BaseModel|null|object
-     * @throws \ReflectionException
-     */
+      */
     public static function findModel($pk)
     {
         $model = new static();
@@ -26,11 +25,11 @@ abstract class BaseModel extends JsonObject
                 ]),
                 [
                     $pk
-                ]
+                ],
+                get_class($model)
             );
-        if (is_array($row)) {
-            $model->import($row);
-            return $model;
+        if (is_object($row)) {
+            return $row;
         }
         return null;
     }
@@ -38,7 +37,6 @@ abstract class BaseModel extends JsonObject
     /**
      * @param $pk
      * @return object|BaseModel
-     * @throws \ReflectionException
      */
     public static function findModelOrFail($pk)
     {
