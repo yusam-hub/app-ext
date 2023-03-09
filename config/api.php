@@ -1,7 +1,5 @@
 <?php
 
-use YusamHub\AppExt\Exceptions\HttpUnauthorizedAppExtRuntimeException;
-
 return [
     'publicSwaggerUiDir' => app()->getPublicDir('/swagger-ui'),
     'publicSwaggerUiUri' => '/swagger-ui',
@@ -27,7 +25,7 @@ return [
         $tokenValue = (string) $request->headers->get(app_ext_config('api.tokenKeyName'));
 
         if (!in_array($tokenValue, array_keys($tokens))) {
-            throw new HttpUnauthorizedAppExtRuntimeException([
+            throw new \YusamHub\AppExt\Exceptions\HttpUnauthorizedAppExtRuntimeException([
                 'message' => 'Invalid token value'
             ]);
         }
