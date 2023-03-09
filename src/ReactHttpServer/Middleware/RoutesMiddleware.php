@@ -74,21 +74,22 @@ class RoutesMiddleware
                 ];
             }
         }
-        /**
-         * todo: нужно файл сохранить в tmp и передать как массив по Request
-         */
 
+        /**
+         * todo: нужно переопределить Request нормально туда добавить files
+         */
         $symphonyRequest = new Request(
             $request->getQueryParams(),
             (array) $request->getParsedBody(),
             [
-                'files' => $files,
+                '_react_files' => $files,
             ],
             $request->getCookieParams(),
-            $files,
+            [],
             $serverParams,
             $request->getBody()->getContents()
         );
+        $symphonyRequest->files->add($files);
 
         $controllerKernel = new ControllerKernel(
             dirname($this->httpServer->getRoutesConfigFile()),
