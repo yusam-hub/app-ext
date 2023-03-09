@@ -149,10 +149,10 @@ class HttpKernel implements HttpKernelInterface, TerminableInterface
             $response = new Response();
         } elseif(is_array($response) || (is_object($response) && !$response instanceof Response)) {
             $response = new Response(
-                json_encode((array) $response,JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
+                json_ext_json_encode_unescaped((array) $response),
                 200,
                 [
-                    'Content-Type' => 'application/json',
+                    'Content-Type' => JSON_EXT_CONTENT_TYPE,
                 ]
             );
         }

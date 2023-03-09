@@ -36,7 +36,7 @@ class RequestBodyParserMiddleware
             return $next($this->multipart->parse($request));
         }
 
-        if ($type === 'application/json') {
+        if ($type === JSON_EXT_CONTENT_TYPE) {
             return $next($this->parseJson($request));
         }
 

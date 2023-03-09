@@ -19,8 +19,6 @@ use YusamHub\AppExt\Interfaces\GetSetConsoleInterface;
 use YusamHub\AppExt\Interfaces\GetSetLoggerInterface;
 use YusamHub\AppExt\Traits\GetSetConsoleTrait;
 use YusamHub\AppExt\Traits\GetSetLoggerTrait;
-use YusamHub\CurlExt\CurlExt;
-use YusamHub\CurlExt\CurlExtInterface;
 
 class ControllerKernel implements GetSetLoggerInterface, GetSetConsoleInterface
 {
@@ -133,36 +131,26 @@ class ControllerKernel implements GetSetLoggerInterface, GetSetConsoleInterface
 
                 $this->debug($e->getMessage(), app_ext_get_error_context($e));
                 $response = new Response('Not Found', Response::HTTP_NOT_FOUND);
-                if (strtolower(strval($this->request->headers->get('accept'))) === CurlExtInterface::CONTENT_TYPE_APPLICATION_JSON) {
-                    $response->setContent(json_ext_json_encode_unescaped([
-                        'status' => 'error',
-                        'message' => 'Not Found',
-                    ]));
-                    $response->headers->set("Content-Type", CurlExtInterface::CONTENT_TYPE_APPLICATION_JSON);
+                if (strtolower(strval($this->request->headers->get('accept'))) === JSON_EXT_CONTENT_TYPE) {
+                    $response->setContent(json_ext_json_encode_unescaped(json_ext_error('Not Found')));
+                    $response->headers->set("Content-Type", JSON_EXT_CONTENT_TYPE);
                 }
             } catch (HttpAppExtRuntimeExceptionInterface $e) {
 
                 $this->debug($e->getMessage(), app_ext_get_error_context($e));
                 $response = new Response($e->getMessage(), $e->getStatusCode());
-                if (strtolower(strval($this->request->headers->get('accept'))) === CurlExtInterface::CONTENT_TYPE_APPLICATION_JSON) {
-                    $response->setContent(json_ext_json_encode_unescaped([
-                        'status' => 'error',
-                        'message' => $e->getMessage(),
-                        'errorData' => $e->getData(),
-                    ]));
-                    $response->headers->set("Content-Type", CurlExtInterface::CONTENT_TYPE_APPLICATION_JSON);
+                if (strtolower(strval($this->request->headers->get('accept'))) === JSON_EXT_CONTENT_TYPE) {
+                    $response->setContent(json_ext_json_encode_unescaped(json_ext_throwable($e)));
+                    $response->headers->set("Content-Type", JSON_EXT_CONTENT_TYPE);
                 }
 
             } catch (\Throwable $e) {
 
                 $this->error($e->getMessage(), app_ext_get_error_context($e, true));
                 $response = new Response(Response::$statusTexts[Response::HTTP_INTERNAL_SERVER_ERROR],Response::HTTP_INTERNAL_SERVER_ERROR);
-                if (strtolower(strval($this->request->headers->get('accept'))) === CurlExtInterface::CONTENT_TYPE_APPLICATION_JSON) {
-                    $response->setContent(json_ext_json_encode_unescaped([
-                        'status' => 'error',
-                        'message' => Response::$statusTexts[Response::HTTP_INTERNAL_SERVER_ERROR],
-                    ]));
-                    $response->headers->set("Content-Type", CurlExtInterface::CONTENT_TYPE_APPLICATION_JSON);
+                if (strtolower(strval($this->request->headers->get('accept'))) === JSON_EXT_CONTENT_TYPE) {
+                    $response->setContent(json_ext_json_encode_unescaped(json_ext_error(Response::$statusTexts[Response::HTTP_INTERNAL_SERVER_ERROR])));
+                    $response->headers->set("Content-Type", JSON_EXT_CONTENT_TYPE);
                 }
             }
 
@@ -207,8 +195,8 @@ class ControllerKernel implements GetSetLoggerInterface, GetSetConsoleInterface
 
         } catch (\Throwable $e) {
 
-            $responseStatusCode = 500;
-            $responseStatusMessage = "Internal Server Error";
+            $responseStatusCode = Response::HTTP_INTERNAL_SERVER_ERROR;
+            $responseStatusMessage = Response::$statusTexts[$responseStatusCode];
 
             $this->error(sprintf("RESPONSE (%d): %s", $responseStatusCode, $responseStatusMessage), [
                 'error' => [
