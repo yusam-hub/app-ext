@@ -5,6 +5,7 @@ namespace YusamHub\AppExt\SymfonyExt\Http\Controllers\Api\Debug;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 use YusamHub\AppExt\Exceptions\HttpAppExtRuntimeException;
+use YusamHub\AppExt\Exceptions\HttpBadRequestAppExtRuntimeException;
 use YusamHub\AppExt\Exceptions\HttpUnauthorizedAppExtRuntimeException;
 use YusamHub\AppExt\SymfonyExt\Http\Controllers\BaseHttpController;
 use YusamHub\AppExt\SymfonyExt\Http\Interfaces\ControllerMiddlewareInterface;
@@ -144,7 +145,7 @@ class DebugController extends BaseHttpController implements ControllerMiddleware
      *        )),
      *        example={},
      *   ))),
-     *   @OA\Response(response=401, description="Unauthorized", @OA\MediaType(mediaType="application/json", @OA\Schema(ref="#/components/schemas/ResponseErrorDefault"))),
+     *   @OA\Response(response=400, description="Bad Request", @OA\MediaType(mediaType="application/json", @OA\Schema(ref="#/components/schemas/ResponseErrorDefault"))),
      * );
      */
 
@@ -154,7 +155,7 @@ class DebugController extends BaseHttpController implements ControllerMiddleware
      */
     public function actionTestException(Request $request): array
     {
-        throw new HttpUnauthorizedAppExtRuntimeException([
+        throw new HttpBadRequestAppExtRuntimeException([
             'field' => 'invalid'
         ]);
         return [];
