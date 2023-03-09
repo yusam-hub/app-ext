@@ -128,11 +128,8 @@ class ReactHttpServer implements GetSetConsoleInterface, GetSetLoggerInterface
             new RoutesMiddleware($this)
         );
 
-        $http->on('error', function (\Exception $e) {
-            $this->error($e->getMessage());
-            if ($e->getPrevious() !== null) {
-                $this->error('PREVIOUS: ' . $e->getPrevious()->getMessage());
-            }
+        $http->on('error', function (\Throwable $e) {
+            $this->error("Daemon error", app_ext_get_error_context($e, true));
         });
 
         if ($this->httpServerConfig->socketServerMode === $this->httpServerConfig::SOCKET_SERVER_MODE_IP) {
