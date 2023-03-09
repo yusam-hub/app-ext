@@ -107,6 +107,7 @@ class RoutesMiddleware
     protected function fetchResponse(ControllerKernel $controllerKernel, int $requestId): Promise
     {
         return new Promise(function ($resolve) use ($controllerKernel, $requestId) {
+
             if ($this->httpServer->getHttpServerConfig()->isDebugging) {
                 $this->httpServer->getConsoleOutput()->writeln('---------------Promise---------------');
                 $this->httpServer->getConsoleOutput()->writeln(sprintf('#%d# Counter Promises: %d', $requestId, $this->httpServer->incCounterPromises()));
@@ -118,12 +119,11 @@ class RoutesMiddleware
 
             } catch (\Throwable $e) {
 
-                $responseStatusCode = 500;
-                $responseStatusMessage = "Internal Server Error";
-
+                $responseStatusCode = \Symfony\Component\HttpFoundation\Response::HTTP_INTERNAL_SERVER_ERROR;
+                $responseStatusMessage = \Symfony\Component\HttpFoundation\Response::$statusTexts[\Symfony\Component\HttpFoundation\Response::HTTP_INTERNAL_SERVER_ERROR];
                 $this->httpServer->error(sprintf("RESPONSE (%d): %s", $responseStatusCode, $responseStatusMessage), app_ext_get_error_context($e));
-
                 $response = Response::plaintext($responseStatusMessage)->withStatus($responseStatusCode);
+
             }
 
             if ($this->httpServer->getHttpServerConfig()->isDebugging) {
