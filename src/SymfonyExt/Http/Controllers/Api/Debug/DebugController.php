@@ -135,7 +135,7 @@ class DebugController extends BaseHttpController implements ControllerMiddleware
      *   tags={"Test"},
      *   path="/test/file",
      *   summary="Post file",
-     *   security={{"XTokenScheme":{}}},
+     *   security={{"XTokenScheme":{}},{"XSignScheme":{}}},
      *   deprecated=false,
      *   @OA\RequestBody(required=true,
      *      @OA\MediaType(
