@@ -56,16 +56,10 @@ class RoutesMiddleware
             $this->httpServer->getConsoleOutput()->writeln(sprintf("#%d# Server params: %s", $requestId, json_encode($serverParams, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)));
         }
 
-        print_r($request->getUploadedFiles());
         $files = [];
         /**
          * @var UploadedFile $file
          */
-       /* [name] => MyFile.txt (comes from the browser, so treat as tainted)
-            [type] => text/plain  (not sure where it gets this from - assume the browser, so treat as tainted)
-            [tmp_name] => /tmp/php/php1h4j1o (could be anywhere on your system, depending on your config settings, but the user has no control, so this isn't tainted)
-            [error] => UPLOAD_ERR_OK  (= 0)
-            [size] => 123   (the size in bytes)*/
         foreach($request->getUploadedFiles() as $key => $file) {
             $tmp_name = $this->httpServer->getHttpServerConfig()->tmpFileDir . DIRECTORY_SEPARATOR . md5(microtime() . $requestId);
             file_put_contents($tmp_name, $file->getStream());
@@ -77,7 +71,7 @@ class RoutesMiddleware
                 'size' => $file->getSize()
             ];
         }
-        var_dump($_FILES);
+        var_dump($files);
         /**
          * todo: нужно файл сохранить в tmp и передать как массив по Request
          */
