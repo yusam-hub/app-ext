@@ -25,7 +25,7 @@ class DbMigrateCommand extends BaseConsoleCommand
                 $migrations = new PdoExtMigrations(
                     db()->{$connectionName},
                     $migrationPath . '/' . $connectionName,
-                    app_ext_config('database.migrations.savedDir') . 'migrations_' . $connectionName . '.lst'
+                    app_ext_config('database.migrations.savedDir') . '/migrations_' . $connectionName . '.lst'
                 );
                 $migrations->setEchoLineClosure(function (string $message) use ($output) {
                     $output->writeln($message);
