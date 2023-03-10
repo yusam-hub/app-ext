@@ -19,17 +19,19 @@ class DbMigrateCommand extends BaseConsoleCommand
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        foreach(db()->getConnectionNames() as $connectionName)
-        {
-            $migrations = new PdoExtMigrations(
-                db()->{$connectionName},
-                app()->getDatabaseDir('/migrations/' . $connectionName),
-                app()->getStorageDir('/app/migrations/migrations_' . $connectionName . '.lst')
-            );
-            $migrations->setEchoLineClosure(function(string $message) use($output){
-                $output->writeln($message);
-            });
-            $migrations->migrate();
+        $paths = (array) app_ext_config('database.migrations.paths');
+        foreach($paths as $migrationPath) {
+            foreach (db()->getConnectionNames() as $connectionName) {
+                $migrations = new PdoExtMigrations(
+                    db()->{$connectionName},
+                    $migrationPath . '/' . $connectionName,
+                    app_ext_config('database.migrations.savedDir') . 'migrations_' . $connectionName . '.lst'
+                );
+                $migrations->setEchoLineClosure(function (string $message) use ($output) {
+                    $output->writeln($message);
+                });
+                $migrations->migrate();
+            }
         }
 
         return self::SUCCESS;

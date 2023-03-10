@@ -12,4 +12,11 @@ return [
             'dbName' => app_ext_env('DATABASE_DBNAME','localhost'),
         ],
     ],
+
+    'migrations' => [
+        'paths' => [
+            app()->getDatabaseDir('/migrations'),
+        ],
+        'savedDir' => app()->getStorageDir('/app/migrations')
+    ],
 ];
