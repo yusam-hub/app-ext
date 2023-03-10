@@ -21,15 +21,25 @@ class DbMigrateCommand extends BaseConsoleCommand
     {
         $paths = (array) app_ext_config('database.migrations.paths');
         foreach($paths as $migrationPath) {
+
             foreach (db()->getConnectionNames() as $connectionName) {
+
+                $output->writeln($this->tagGreen(sprintf("%s/%s", $migrationPath, $connectionName)));
+
                 $migrations = new PdoExtMigrations(
                     db()->{$connectionName},
                     $migrationPath . '/' . $connectionName,
                     app_ext_config('database.migrations.savedDir') . '/migrations_' . $connectionName . '.lst'
                 );
-                $migrations->setEchoLineClosure(function (string $message) use ($output) {
-                    $output->writeln($message);
+
+                $migrations->setEchoLineClosure(function(string $level, string $message) use ($output) {
+                    if ($level === 'ERROR') {
+                        $output->writeln($this->tagRed($message));
+                    } else {
+                        $output->writeln($this->tagGreen($message));
+                    }
                 });
+
                 $migrations->migrate();
             }
         }
