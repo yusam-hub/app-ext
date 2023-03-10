@@ -32,7 +32,7 @@ trait ApiAuthorizeTrait
 
             $signHandle = app_ext_config('api.signHandle');
             if (is_callable($signHandle)) {
-                $signHandle($request, $this->apiAuthorizedId, $apiUser);
+                $signHandle($request, $this->apiAuthorizedId, $apiUser instanceof ApiUserModel ? $apiUser : null);
             }
         }
     }

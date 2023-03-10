@@ -22,7 +22,7 @@
 #### curl
 
     docker exec -it yusam-php74 sh -c "curl --help"
-    docker exec -it yusam-php74 sh -c "curl --unix-socket /tmp/react-http-server-socks/server.worker0.sock -vvv -X GET http://localhost/debug/test"
-    docker exec -it yusam-php74 sh -c "curl --unix-socket /tmp/react-http-server-socks/server.worker0.sock -vvv -X POST http://localhost/debug/test -F foo=test"
-    docker exec -it yusam-php74 sh -c "curl --unix-socket /tmp/react-http-server-socks/server.worker0.sock -vvv -X POST http://localhost/debug/test --data foo=test"
-    docker exec -it yusam-php74 sh -c "curl --unix-socket /tmp/react-http-server-socks/server.worker0.sock -vvv -X POST http://localhost/debug/test --data 'foo=test' -H 'X-Token: testing' -H 'X-Sign: testing'"
+    docker exec -it yusam-php74 sh -c "curl --unix-socket /tmp/react-http-server-socks/server.worker0.sock -vvv -X GET http://localhost/api/debug/test/params"
+    docker exec -it yusam-php74 sh -c "curl --unix-socket /tmp/react-http-server-socks/server.worker0.sock -vvv -X POST http://localhost/api/debug/test/params -F foo=test"
+    docker exec -it yusam-php74 sh -c "curl --unix-socket /tmp/react-http-server-socks/server.worker0.sock -vvv -X POST http://localhost/api/debug/test/params --data foo=test"
+    docker exec -it yusam-php74 sh -c "curl --unix-socket /tmp/react-http-server-socks/server.worker0.sock -vvv -X POST http://localhost/api/debug/test/params --data 'foo=test' -H 'X-Token: testing' -H 'X-Sign: testing'"

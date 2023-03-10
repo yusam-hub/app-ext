@@ -86,9 +86,17 @@ class ControllerKernel implements GetSetLoggerInterface, GetSetConsoleInterface
         $mStart = memory_get_usage(self::$memoryRealUsage);
 
         $requestMessage = "REQUEST: " . $this->request->getMethod() . ' ' . $this->request->getRequestUri();
+        $headers = [];
+        if (app_ext_config_has('api.tokenKeyName')) {
+            $headers[app_ext_config('api.tokenKeyName')] = $this->request->headers->get(app_ext_config('api.tokenKeyName'));
+        }
+        if (app_ext_config_has('api.signKeyName')) {
+            $headers[app_ext_config('api.signKeyName')] = $this->request->headers->get(app_ext_config('api.signKeyName'));
+        }
         $requestContext = [
             'query' => $this->request->query->all(),
             'params' => $this->request->request->all(),
+            'headers' => $headers,
         ];
 
         if ($this->isCorsSuccess($origin)) {

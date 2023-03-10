@@ -92,11 +92,23 @@ if (! function_exists('app_ext_config_set')) {
     /**
      * @param string $dotKey
      * @param mixed $value
-     * @return void
+     * @return bool
      */
     function app_ext_config_set(string $dotKey, $value): bool
     {
         return Config::instance()->set($dotKey, $value);
+    }
+}
+
+if (! function_exists('app_ext_config_has')) {
+
+    /**
+     * @param string $dotKey
+     * @return bool
+     */
+    function app_ext_config_has(string $dotKey): bool
+    {
+        return Config::instance()->has($dotKey);
     }
 }
 

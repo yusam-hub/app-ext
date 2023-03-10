@@ -71,4 +71,13 @@ class Config
         return $this->dotList[$fileKey]->set($key, $value);
     }
 
+    /**
+     * @param string $dotKey
+     * @return bool
+     */
+    public function has(string $dotKey): bool
+    {
+        $this->initDotList($dotKey, $fileKey, $key);
+        return $this->dotList[$fileKey]->has($key);
+    }
 }
