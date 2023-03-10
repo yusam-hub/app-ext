@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS `:table` (
     `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Дата создания записи',
     `modifiedAt` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT 'Дата изменения записи',
     PRIMARY KEY (`id`),
-    KEY `idx_apiToken` (`apiToken`) USING BTREE,
+    UNIQUE KEY `idx_apiToken` (`apiToken`) USING BTREE,
     KEY `idx_id_apiToken` (`id`,`apiToken`) USING BTREE    
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='API пользователи';
 MYSQL;

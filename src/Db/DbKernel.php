@@ -56,8 +56,8 @@ class DbKernel
         if (isset($this->config['connections'][$name])) {
             $this->dbInstances[$name] = pdo_ext($name);
             $this->dbInstances[$name]->isDebugging = true;
-            $this->dbInstances[$name]->onDebugLogCallback(function(string $sql, array $bindings){
-                app_ext_logger()->debug($sql, $bindings);
+            $this->dbInstances[$name]->onDebugLogCallback(function(string $message, array $context){
+                app_ext_logger()->debug($message, $context);
             });
             return $this->dbInstances[$name];
         }
