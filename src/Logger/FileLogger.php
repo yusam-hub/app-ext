@@ -48,7 +48,7 @@ class FileLogger extends Logger
      */
     private function createFileName(int $rotatorId): string
     {
-        return $this->logDir . DIRECTORY_SEPARATOR . sprintf("%s-%s",$this->name, date("Y-m-d")) . ($rotatorId ? '.'.$rotatorId : '') . '.log';
+        return $this->logDir . DIRECTORY_SEPARATOR . sprintf("%s-%s",$this->name, date(DATE_APP_EXT_FORMAT)) . ($rotatorId ? '.'.$rotatorId : '') . '.log';
     }
 
     /**
@@ -99,7 +99,7 @@ class FileLogger extends Logger
             $line =
                 json_encode(
                     [
-                        'dateTime' => date("Y-m-d H:i:s"),
+                        'dateTime' => date(DATE_TIME_APP_EXT_FORMAT),
                         'level' => $level,
                         'message' => $level,
                         'context' => $context,
@@ -108,7 +108,7 @@ class FileLogger extends Logger
             $line =
                 sprintf(
                     "[%s][%s] %s%s",
-                    date("Y-m-d H:i:s"),
+                    date(DATE_TIME_APP_EXT_FORMAT),
                     strtoupper($level),
                     $message,
                     empty($context) ? '' : ' ' . json_encode($context, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)

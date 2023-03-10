@@ -21,9 +21,9 @@ class DbCheckCommand extends BaseConsoleCommand
     {
         $output->writeln("");
 
-        $phpDt = date("Y-m-d H:i:s");
+        $phpDt = date(DATE_TIME_APP_EXT_FORMAT);
         $output->writeln($this->tagGreen(sprintf('PHP: %s',$phpDt)));
-
+        $output->writeln($this->tagGreen(sprintf('CONNECTION DEFAULT: %s', db()->getDefaultConnectionName())));
         $out = [];
 
         foreach(db()->getConnectionNames() as $connectionName)

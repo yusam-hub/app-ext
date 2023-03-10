@@ -37,7 +37,7 @@ trait GetSetLoggerTrait
             $this->consoleOutput->writeln(
                 sprintf(
                     "[%s][%s] %s%s",
-                    date("Y-m-d H:i:s"),
+                    date(DATE_TIME_APP_EXT_FORMAT),
                     strtoupper($level),
                     $message,
                     (!empty($context) ? ' ' . json_encode($context, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT) : '')

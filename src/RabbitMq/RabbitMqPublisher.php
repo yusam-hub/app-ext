@@ -27,7 +27,7 @@ class RabbitMqPublisher extends BaseRabbitMq
      */
     public function send(string $message, array $headers = []): void
     {
-        $this->info(sprintf('Client [%s] started at [%s]', get_class($this), date("Y-m-d H:i:s")));
+        $this->info(sprintf('Client [%s] started at [%s]', get_class($this), date(DATE_TIME_APP_EXT_FORMAT)));
 
         $this->info('Config: host: ' . $this->connectionConfig['host']);
         $this->info('Config: port: ' . $this->connectionConfig['port']);

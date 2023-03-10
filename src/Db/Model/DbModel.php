@@ -108,7 +108,8 @@ abstract class DbModel extends JsonObject
          * INSERT
          */
         if (empty($this->{$this->primaryKey})) {
-            $this->originalValues = [];
+
+            $this->triggerBeforeInsert();
 
             $primaryValue = db()
                 ->connection($this->connectionName)
@@ -141,6 +142,8 @@ abstract class DbModel extends JsonObject
             return true;
         }
 
+        $this->triggerBeforeUpdate();
+
         $result = db()
             ->connection($this->connectionName)
             ->update(
@@ -157,5 +160,15 @@ abstract class DbModel extends JsonObject
         }
 
         return $result;
+    }
+
+    protected function triggerBeforeUpdate(): void
+    {
+
+    }
+
+    protected function triggerBeforeInsert(): void
+    {
+
     }
 }

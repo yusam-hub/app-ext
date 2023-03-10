@@ -3,7 +3,7 @@
 require __DIR__ . '/../global-inc.php';
 
 try {
-    $userModel = \YusamHub\AppExt\Db\Model\UserModel::findModelByAttributesOrFail([
+    $userModel = \YusamHub\AppExt\Db\Model\ApiUserModel::findModelByAttributesOrFail([
         'id' => 1,
     ]);
     /*$userModel = new \YusamHub\AppExt\Db\Model\UserModel();

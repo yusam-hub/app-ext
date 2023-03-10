@@ -66,7 +66,7 @@ class RabbitMqConsumer extends BaseRabbitMq
      */
     public function daemon(): void
     {
-        $this->info(sprintf('Daemon [%s] started at [%s]', get_class($this), date("Y-m-d H:i:s")));
+        $this->info(sprintf('Daemon [%s] started at [%s]', get_class($this), date(DATE_TIME_APP_EXT_FORMAT)));
         $this->info('--worker-number: ' . $this->workerNumber);
         $this->info('MemoryUsageStart: ' . $this->memoryUsageStart);
         $this->info('MemoryUsageRealStart: ' . $this->memoryUsageRealStart);
@@ -183,7 +183,7 @@ class RabbitMqConsumer extends BaseRabbitMq
         $stop_func = function (int $signal) use (&$channelRef, &$consumerTagRef) {
             $this->info(sprintf('Daemon received unix signal [%d]', $signal));
             $channelRef->cancel($consumerTagRef)->done(function() {
-                $this->info(sprintf('Daemon [%s] finished at [%s]', get_class($this), date("Y-m-d H:i:s")));
+                $this->info(sprintf('Daemon [%s] finished at [%s]', get_class($this), date(DATE_TIME_APP_EXT_FORMAT)));
                 exit();
             });
         };
@@ -198,7 +198,7 @@ class RabbitMqConsumer extends BaseRabbitMq
                 ->cancel($consumerTagRef)
                 ->done(
                     function() {
-                        $this->info(sprintf('Daemon [%s] finished at [%s]', get_class($this), date("Y-m-d H:i:s")));
+                        $this->info(sprintf('Daemon [%s] finished at [%s]', get_class($this), date(DATE_TIME_APP_EXT_FORMAT)));
                         exit();
                     });
         };

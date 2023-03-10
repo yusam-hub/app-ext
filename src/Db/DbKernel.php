@@ -86,6 +86,14 @@ class DbKernel
     }
 
     /**
+     * @return string
+     */
+    public function getDefaultConnectionName(): string
+    {
+        return $this->config['default'];
+    }
+
+    /**
      * @return array
      */
     public function getConnectionNames(): array
