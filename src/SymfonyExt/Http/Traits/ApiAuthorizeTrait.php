@@ -3,6 +3,7 @@
 namespace YusamHub\AppExt\SymfonyExt\Http\Traits;
 
 use Symfony\Component\HttpFoundation\Request;
+use YusamHub\AppExt\Db\Model\ApiUserModel;
 
 trait ApiAuthorizeTrait
 {
@@ -17,16 +18,22 @@ trait ApiAuthorizeTrait
         }
 
         $tokenHandle = app_ext_config('api.tokenHandle');
-        if (is_callable($tokenHandle)) {
-            $this->apiAuthorizedId = $tokenHandle($request);
-            if (is_null($this->apiAuthorizedId)) {
-                return;
-            }
-        }
 
-        $signHandle = app_ext_config('api.signHandle');
-        if (is_callable($signHandle)) {
-            $signHandle($request, $this->apiAuthorizedId);
+        if (is_callable($tokenHandle)) {
+            $apiUser = $tokenHandle($request);
+
+            if (is_null($apiUser)) {
+                return;
+            } elseif (is_int($apiUser)) {
+                $this->apiAuthorizedId = $apiUser;
+            } elseif ($apiUser instanceof ApiUserModel) {
+                $this->apiAuthorizedId = $apiUser->id;
+            }
+
+            $signHandle = app_ext_config('api.signHandle');
+            if (is_callable($signHandle)) {
+                $signHandle($request, $this->apiAuthorizedId, $apiUser);
+            }
         }
     }
 
