@@ -24,7 +24,8 @@ class DbMigrateCommand extends BaseConsoleCommand
 
             foreach (db()->getConnectionNames() as $connectionName) {
 
-                $output->writeln($this->tagGreen(sprintf("%s/%s", $migrationPath, $connectionName)));
+                $output->writeln($this->tagYellow(sprintf("%s/%s", $migrationPath, $connectionName)));
+                $output->writeln('');
 
                 $migrations = new PdoExtMigrations(
                     db()->{$connectionName},
