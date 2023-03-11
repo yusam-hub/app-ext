@@ -29,9 +29,9 @@ class RedisKernel implements GetSetLoggerInterface, GetSetConsoleInterface
 
     /**
      * @param string|null $connectionName
-     * @return RedisExt|null
+     * @return RedisExt
      */
-    public function newRedisExt(?string $connectionName = null): ?RedisExt
+    public function redisExt(?string $connectionName = null): RedisExt
     {
         if (is_null($connectionName)) {
             $connectionName = $this->getDefaultConnectionName();

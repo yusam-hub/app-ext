@@ -237,7 +237,7 @@ class DebugController extends BaseHttpController implements ControllerMiddleware
     public function actionTestDb(Request $request): array
     {
         return [
-            'dbNow' => $this->getDbKernel()->newPdoExt()->fetchOneColumn("SELECT NOW() as dt", 'dt'),
+            'dbNow' => $this->getDbKernel()->pdoExt()->fetchOneColumn("SELECT NOW() as dt", 'dt'),
         ];
     }
 }

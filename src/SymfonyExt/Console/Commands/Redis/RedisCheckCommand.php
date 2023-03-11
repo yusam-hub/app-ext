@@ -28,7 +28,7 @@ class RedisCheckCommand extends BaseConsoleCommand
         {
             try {
 
-                $isConnected = app_ext_redis_global()->newRedisExt($connectionName)->redis()->isConnected();
+                $isConnected = app_ext_redis_global()->redisExt($connectionName)->redis()->isConnected();
 
                 $out[] = [
                     $connectionName, $isConnected ? $this->tagGreen('SUCCESS') : $this->tagRed('FAIL')

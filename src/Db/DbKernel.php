@@ -30,9 +30,9 @@ class DbKernel implements GetSetLoggerInterface, GetSetConsoleInterface
 
     /**
      * @param string|null $connectionName
-     * @return PdoExt|null
+     * @return PdoExt
      */
-    public function newPdoExt(?string $connectionName = null): ?PdoExt
+    public function pdoExt(?string $connectionName = null): PdoExt
     {
         if (is_null($connectionName)) {
             $connectionName = $this->getDefaultConnectionName();

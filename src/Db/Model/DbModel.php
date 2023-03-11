@@ -31,7 +31,7 @@ abstract class DbModel
     public static function findModel(DbKernel $dbKernel, $pk)
     {
         $model = new static();
-        $row = $dbKernel->newPdoExt($model->connectionName)
+        $row = $dbKernel->pdoExt($model->connectionName)
             ->findModel(get_class($model), $model->tableName, $model->primaryKey, $pk);
         if ($row instanceof DbModel) {
             $row->setDbKernel($dbKernel);
@@ -50,7 +50,7 @@ abstract class DbModel
     public static function findModelByAttributes(DbKernel $dbKernel, array $attributes)
     {
         $model = new static();
-        $row = $dbKernel->newPdoExt($model->connectionName)
+        $row = $dbKernel->pdoExt($model->connectionName)
             ->findModelByAttributes(get_class($model), $model->tableName, $attributes);
         if ($row instanceof DbModel) {
             $row->setDbKernel($dbKernel);
@@ -121,7 +121,7 @@ abstract class DbModel
 
             $this->triggerBeforeInsert();
 
-            $primaryValue = $this->getDbKernel()->newPdoExt($this->connectionName)->insertReturnId(
+            $primaryValue = $this->getDbKernel()->pdoExt($this->connectionName)->insertReturnId(
                     $this->tableName,
                     $this->toArray()
                 );
@@ -130,7 +130,7 @@ abstract class DbModel
                 $this->{$this->primaryKey} = $primaryValue;
             }
 
-            if (app_ext_db_global()->newPdoExt($this->connectionName)->affectedRows() === 1) {
+            if (app_ext_db_global()->pdoExt($this->connectionName)->affectedRows() === 1) {
 
                 $this->originalValues = $this->toArray();
 
@@ -158,7 +158,7 @@ abstract class DbModel
 
         $this->triggerBeforeUpdate();
 
-        $result = $this->getDbKernel()->newPdoExt($this->connectionName)->update(
+        $result = $this->getDbKernel()->pdoExt($this->connectionName)->update(
                 $this->tableName,
                 $changedValues,
                 [

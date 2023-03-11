@@ -30,7 +30,7 @@ class DbCheckCommand extends BaseConsoleCommand
         {
             try {
 
-                $row = app_ext_db_global()->newPdoExt($connectionName)->fetchOne('SELECT NOW() as dt, DATABASE() as dbName');
+                $row = app_ext_db_global()->pdoExt($connectionName)->fetchOne('SELECT NOW() as dt, DATABASE() as dbName');
 
                 $out[] = [
                     $connectionName, $row['dbName'], ($row['dt'] != $phpDt) ? $this->tagYellow($row['dt']) : $row['dt'], ($row['dt'] != $phpDt) ? "Invalid date time between mysql & php" : $this->tagGreen('SUCCESS')

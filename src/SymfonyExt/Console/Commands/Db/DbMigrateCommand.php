@@ -28,7 +28,7 @@ class DbMigrateCommand extends BaseConsoleCommand
                 $output->writeln('');
 
                 $migrations = new PdoExtMigrations(
-                    app_ext_db_global()->newPdoExt($connectionName),
+                    app_ext_db_global()->pdoExt($connectionName),
                     $migrationPath . '/' . $connectionName,
                     app_ext_config('database.migrations.savedDir') . '/migrations_' . $connectionName . '.lst'
                 );
