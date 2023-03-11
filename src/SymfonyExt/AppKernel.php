@@ -14,7 +14,6 @@ class AppKernel
 {
     use GetSetConsoleTrait;
     use GetSetLoggerTrait;
-    public static bool $RUN_IN_REACT_HTTP = false;
 
     protected static ?AppKernel $instance = null;
 

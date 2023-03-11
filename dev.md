@@ -5,15 +5,15 @@
 
     docker exec -it yusam-php74 sh -c "cd /var/www/data/yusam/github/yusam-hub/app-ext && composer update"
 
-    docker exec -it yusam-php74 sh -c "cd /var/www/data/yusam/github/yusam-hub/app-ext && php ./bin/console"
+    docker exec -it yusam-php74 sh -c "cd /var/www/data/yusam/github/yusam-hub/app-ext && php console"
 
-    docker exec -it yusam-php74 sh -c "cd /var/www/data/yusam/github/yusam-hub/app-ext && php ./bin/console db:check"
-    docker exec -it yusam-php74 sh -c "cd /var/www/data/yusam/github/yusam-hub/app-ext && php ./bin/console db:migrate"
+    docker exec -it yusam-php74 sh -c "cd /var/www/data/yusam/github/yusam-hub/app-ext && php console db:check"
+    docker exec -it yusam-php74 sh -c "cd /var/www/data/yusam/github/yusam-hub/app-ext && php console db:migrate"
 
-    docker exec -it yusam-php74 sh -c "cd /var/www/data/yusam/github/yusam-hub/app-ext && php ./bin/console daemon:react-http-server"
+    docker exec -it yusam-php74 sh -c "cd /var/www/data/yusam/github/yusam-hub/app-ext && php console daemon:react-http-server"
 
-    docker exec -it yusam-php74 sh -c "cd /var/www/data/yusam/github/yusam-hub/app-ext && php ./bin/console daemon:rabbit-mq-consumer"
-    docker exec -it yusam-php74 sh -c "cd /var/www/data/yusam/github/yusam-hub/app-ext && php ./bin/console client:rabbit-mq-publisher"
+    docker exec -it yusam-php74 sh -c "cd /var/www/data/yusam/github/yusam-hub/app-ext && php console daemon:rabbit-mq-consumer"
+    docker exec -it yusam-php74 sh -c "cd /var/www/data/yusam/github/yusam-hub/app-ext && php console client:rabbit-mq-publisher"
 
     docker exec -it yusam-php74 sh -c "ps | grep 'daemon:react-http-server'"
     docker exec -it yusam-php74 sh -c "ps | grep 'daemon:rabbit-mq-consumer'"
@@ -26,3 +26,4 @@
     docker exec -it yusam-php74 sh -c "curl --unix-socket /tmp/react-http-server-socks/server.worker0.sock -vvv -X POST http://localhost/api/debug/test/params -F foo=test"
     docker exec -it yusam-php74 sh -c "curl --unix-socket /tmp/react-http-server-socks/server.worker0.sock -vvv -X POST http://localhost/api/debug/test/params --data foo=test"
     docker exec -it yusam-php74 sh -c "curl --unix-socket /tmp/react-http-server-socks/server.worker0.sock -vvv -X POST http://localhost/api/debug/test/params --data 'foo=test' -H 'X-Token: testing' -H 'X-Sign: testing'"
+    docker exec -it yusam-php74 sh -c "curl --unix-socket /tmp/react-http-server-socks/server.worker0.sock -vvv -X GET http://localhost/api/debug/test/db -H 'X-Token: testing' -H 'X-Sign: testing'"

@@ -37,16 +37,20 @@ class ControllerKernel
     protected Router $router;
     private HttpKernel $httpKernel;
 
+    private bool $runInReactHttp;
+
     /**
      * @param string $routeDir
      * @param Request $request
      * @param string $phpFile
+     * @param bool $runInReactHttp
      */
-    public function __construct(string $routeDir, Request $request, string $phpFile)
+    public function __construct(string $routeDir, Request $request, string $phpFile, bool $runInReactHttp = false)
     {
         $this->routeDir = $routeDir;
         $this->request = $request;
         $this->phpFile = $phpFile;
+        $this->runInReactHttp = $runInReactHttp;
         $this->requestContext = new RequestContext();
         $this->requestContext->fromRequest($request);
     }
@@ -185,7 +189,7 @@ class ControllerKernel
             ]
         ]);
 
-        if (app()::$RUN_IN_REACT_HTTP) {
+        if ($this->runInReactHttp) {
             return new \React\Http\Message\Response(
                 $response->getStatusCode(),
                 $response->headers->all(),

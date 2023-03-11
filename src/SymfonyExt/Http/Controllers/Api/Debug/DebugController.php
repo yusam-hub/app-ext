@@ -28,9 +28,12 @@ class DebugController extends BaseHttpController implements ControllerMiddleware
 
         static::routesAdd($routes, ['OPTIONS', 'GET', 'POST'], '/api/debug/test/params', 'actionTestParams');
 
+        static::routesAdd($routes, ['OPTIONS', 'GET'], '/api/debug/test/db', 'actionTestDb');
+
         static::routesAdd($routes, ['OPTIONS', 'GET'], '/api/debug/test/exception', 'actionTestException');
 
         static::routesAdd($routes, ['OPTIONS', 'POST'], '/api/debug/test/file', 'actionTestFile');
+
     }
 
     /**
@@ -126,6 +129,7 @@ class DebugController extends BaseHttpController implements ControllerMiddleware
             'attributes' => $request->attributes->all(),
             'server' => $request->server->all(),
             'cookies' => $request->cookies->all(),
+            'headers' => $request->headers->all(),
         ];
     }
 
@@ -211,6 +215,29 @@ class DebugController extends BaseHttpController implements ControllerMiddleware
             'server' => $request->server->all(),
             'cookies' => $request->cookies->all(),
             'files' => app_ext_get_files($request),
+        ];
+    }
+
+    /**
+     * @OA\Get(
+     *   tags={"Test"},
+     *   path="/test/db",
+     *   summary="GET db",
+     *   security={{"XTokenScheme":{}},{"XSignScheme":{}}},
+     *   deprecated=false,
+     *   @OA\Response(response=200, description="OK", @OA\MediaType(mediaType="application/json", @OA\Schema(
+     *        @OA\Property(property="status", type="string", example="ok"),
+     *        @OA\Property(property="data", type="array", example="array", @OA\Items(
+     *        )),
+     *        example={"status":"ok","data":{}},
+     *   ))),
+     *   @OA\Response(response=401, description="Unauthorized", @OA\MediaType(mediaType="application/json", @OA\Schema(ref="#/components/schemas/ResponseErrorDefault"))),
+     * );
+     */
+    public function actionTestDb(Request $request): array
+    {
+        return [
+            'dbNow' => $this->getDbKernel()->newPdoExt()->fetchOneColumn("SELECT NOW() as dt", 'dt'),
         ];
     }
 }

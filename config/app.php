@@ -5,7 +5,7 @@ return [
     'rootDir' => realpath(__DIR__ .'/../'),
     'appDir' => realpath(__DIR__ .'/../src'),
     'databaseDir' => realpath(__DIR__ .'/../database'),
-    'publicDir' => realpath(__DIR__ .'/../tmp/public'),
-    'storageDir' => realpath(__DIR__ .'/../tmp'),
+    'publicDir' => realpath(__DIR__ .'/../public'),
+    'storageDir' => realpath(__DIR__ .'/../storage'),
     'routesDir' => realpath(__DIR__ .'/../routes'),
 ];

@@ -90,7 +90,8 @@ class RoutesMiddleware
         $controllerKernel = new ControllerKernel(
             dirname($this->httpServer->getRoutesConfigFile()),
             $symphonyRequest,
-            basename($this->httpServer->getRoutesConfigFile())
+            basename($this->httpServer->getRoutesConfigFile()),
+            true
         );
         $controllerKernel->setConsoleOutput($this->httpServer->getConsoleOutput());
         $controllerKernel->setLoggerConsoleOutputEnabled($this->httpServer->getLoggerConsoleOutputEnabled());

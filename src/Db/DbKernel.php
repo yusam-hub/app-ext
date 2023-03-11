@@ -2,10 +2,17 @@
 
 namespace YusamHub\AppExt\Db;
 
+use YusamHub\AppExt\Traits\GetSetConsoleTrait;
+use YusamHub\AppExt\Traits\GetSetLoggerTrait;
+use YusamHub\AppExt\Traits\Interfaces\GetSetConsoleInterface;
+use YusamHub\AppExt\Traits\Interfaces\GetSetLoggerInterface;
 use YusamHub\DbExt\PdoExt;
 
-class DbKernel
+class DbKernel implements GetSetLoggerInterface, GetSetConsoleInterface
 {
+    use GetSetLoggerTrait;
+    use GetSetConsoleTrait;
+
     protected static ?DbKernel $instance = null;
     protected array $dbConnections = [];
 
@@ -16,6 +23,7 @@ class DbKernel
     {
         if (is_null(self::$instance)) {
             self::$instance = new static();
+            self::$instance->setLogger(app_ext_logger('app'));
         }
         return self::$instance;
     }
@@ -35,9 +43,9 @@ class DbKernel
         }
 
         $pdo_ext = app_ext_pdo_ext($connectionName, true);
-        $pdo_ext->isDebugging = app()->hasLogger();
-        $pdo_ext->onDebugLogCallback(function(string $message, array $context){
-            app()->getLogger()->debug($message, $context);
+        $pdo_ext->isDebugging = $this->hasLogger();
+        $pdo_ext->onDebugLogCallback(function(string $message, array $context) use($connectionName) {
+            $this->debug(sprintf('[DB:%s] %s', $connectionName, $message), $context);
         });
         return $this->dbConnections[$connectionName] = $pdo_ext;
     }

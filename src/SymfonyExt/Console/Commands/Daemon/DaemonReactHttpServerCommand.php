@@ -34,8 +34,6 @@ class DaemonReactHttpServerCommand extends BaseConsoleCommand
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        app()::$RUN_IN_REACT_HTTP = true;
-
         $socketMode = intval($input->getOption('socket-mode'));
         $workerNumber = abs(intval($input->getOption('worker-number')));
 

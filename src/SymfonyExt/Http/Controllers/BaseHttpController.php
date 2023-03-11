@@ -4,25 +4,14 @@ namespace YusamHub\AppExt\SymfonyExt\Http\Controllers;
 
 use Symfony\Component\Routing\Loader\Configurator\RouteConfigurator;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
-use YusamHub\AppExt\Db\DbKernel;
-use YusamHub\AppExt\Traits\GetSetConsoleTrait;
-use YusamHub\AppExt\Traits\GetSetDbKernelTrait;
-use YusamHub\AppExt\Traits\GetSetLoggerTrait;
-use YusamHub\AppExt\Traits\Interfaces\GetSetConsoleInterface;
-use YusamHub\AppExt\Traits\Interfaces\GetSetDbKernelInterface;
+use YusamHub\AppExt\Traits\GetSetHttpControllerTrait;
 use YusamHub\AppExt\Traits\Interfaces\GetSetHttpControllerInterface;
-use YusamHub\AppExt\Traits\Interfaces\GetSetLoggerInterface;
 
 abstract class BaseHttpController
     implements
-    GetSetHttpControllerInterface,
-    GetSetConsoleInterface,
-    GetSetLoggerInterface,
-    GetSetDbKernelInterface
+    GetSetHttpControllerInterface
 {
-    use GetSetConsoleTrait;
-    use GetSetLoggerTrait;
-    use GetSetDbKernelTrait;
+    use GetSetHttpControllerTrait;
 
     /**
      * @param RoutingConfigurator $routes
@@ -48,10 +37,5 @@ abstract class BaseHttpController
             ->methods($methods)
             ->requirements($requirements)
             ;
-    }
-
-    public function __construct()
-    {
-        $this->setDbKernel(new DbKernel());
     }
 }
