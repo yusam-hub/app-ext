@@ -7,7 +7,10 @@ use YusamHub\AppExt\SymfonyExt\Http\Interfaces\ApiAuthorizeModelInterface;
 
 trait ApiAuthorizeTrait
 {
-    private ?int $apiAuthorizedId = null;
+    /**
+     * @var null|int|string
+     */
+    private $apiAuthorizedIdentifier = null;
 
     protected function apiAuthorizeHandle(Request $request): void
     {
@@ -20,19 +23,21 @@ trait ApiAuthorizeTrait
         $tokenHandle = app_ext_config('api.tokenHandle');
 
         if (is_callable($tokenHandle)) {
-            $apiUser = $tokenHandle($this, $request);
+            $v = $tokenHandle($this, $request);
 
-            if (is_null($apiUser)) {
+            if (is_null($v)) {
                 return;
-            } elseif (is_int($apiUser)) {
-                $this->apiAuthorizedId = $apiUser;
-            } elseif ($apiUser instanceof ApiAuthorizeModelInterface) {
-                $this->apiAuthorizedId = $apiUser->getAuthorizeIdentifierAsInt();
+            } elseif (is_int($v)) {
+                $this->apiAuthorizedIdentifier = $v;
+            } elseif (is_string($v)) {
+                $this->apiAuthorizedIdentifier = $v;
+            } elseif ($v instanceof ApiAuthorizeModelInterface) {
+                $this->apiAuthorizedIdentifier = $v->getAuthorizeIdentifierAsInt();
             }
 
             $signHandle = app_ext_config('api.signHandle');
             if (is_callable($signHandle)) {
-                $signHandle($this, $request, $this->apiAuthorizedId, $apiUser instanceof ApiAuthorizeModelInterface ? $apiUser : null);
+                $signHandle($this, $request, $this->apiAuthorizedIdentifier, $v instanceof ApiAuthorizeModelInterface ? $v : null);
             }
         }
     }
@@ -40,9 +45,17 @@ trait ApiAuthorizeTrait
     /**
      * @return int|null
      */
-    public function apiAuthorizedId():?int
+    public function apiAuthorizedIdentifierAsInt():?int
     {
-        return $this->apiAuthorizedId;
+        return is_null($this->apiAuthorizedIdentifier) ? null : (int) $this->apiAuthorizedIdentifier;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function apiAuthorizedIdentifierAsString():?string
+    {
+        return is_null($this->apiAuthorizedIdentifier) ? null : (string) $this->apiAuthorizedIdentifier;
     }
 
     /**
@@ -50,6 +63,6 @@ trait ApiAuthorizeTrait
      */
     public function apiAuthorizedHas():bool
     {
-        return !is_null($this->apiAuthorizedId);
+        return !is_null($this->apiAuthorizedIdentifier);
     }
 }
