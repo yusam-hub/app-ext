@@ -13,5 +13,5 @@ $controllerKernel = new \YusamHub\AppExt\SymfonyExt\ControllerKernel(
     $symfonyRequest,
     app_ext_config('routes.default')
 );
-$controllerKernel->setLogger(app_ext_logger('app'));
+$controllerKernel->setLogger(app_ext_logger());
 $controllerKernel->runIndex();

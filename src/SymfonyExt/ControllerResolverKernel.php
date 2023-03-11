@@ -5,12 +5,12 @@ namespace YusamHub\AppExt\SymfonyExt;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ControllerResolver;
 use YusamHub\AppExt\Db\DbKernel;
+use YusamHub\AppExt\Redis\RedisKernel;
 use YusamHub\AppExt\SymfonyExt\Http\Controllers\BaseHttpController;
 use YusamHub\AppExt\SymfonyExt\Http\Interfaces\ControllerMiddlewareInterface;
 use YusamHub\AppExt\Traits\GetSetConsoleTrait;
 use YusamHub\AppExt\Traits\GetSetLoggerTrait;
 use YusamHub\AppExt\Traits\Interfaces\GetSetConsoleInterface;
-use YusamHub\AppExt\Traits\Interfaces\GetSetDbKernelInterface;
 use YusamHub\AppExt\Traits\Interfaces\GetSetHttpControllerInterface;
 use YusamHub\AppExt\Traits\Interfaces\GetSetLoggerInterface;
 
@@ -49,6 +49,12 @@ class ControllerResolverKernel
             $dbKernel->setLoggerConsoleOutputEnabled($this->controllerKernel->getLoggerConsoleOutputEnabled());
             $dbKernel->setConsoleOutput($this->controllerKernel->getConsoleOutput());
             $controller->setDbKernel($dbKernel);
+
+            $redisKernel = new RedisKernel();
+            $redisKernel->setLogger($this->controllerKernel->getLogger());
+            $redisKernel->setLoggerConsoleOutputEnabled($this->controllerKernel->getLoggerConsoleOutputEnabled());
+            $redisKernel->setConsoleOutput($this->controllerKernel->getConsoleOutput());
+            $controller->setRedisKernel($redisKernel);
 
             $controller->setLogger($this->controllerKernel->getLogger());
             $controller->setLoggerConsoleOutputEnabled($this->controllerKernel->getLoggerConsoleOutputEnabled());

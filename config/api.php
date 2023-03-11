@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'publicSwaggerUiDir' => app()->getPublicDir('/swagger-ui'),
+    'publicSwaggerUiDir' => app_ext()->getPublicDir('/swagger-ui'),
     'publicSwaggerUiUri' => '/swagger-ui',
     'apiBaseUri' => '/api',
     'tokenKeyName' => 'X-Token',

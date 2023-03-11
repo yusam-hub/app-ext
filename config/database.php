@@ -15,8 +15,8 @@ return [
 
     'migrations' => [
         'paths' => [
-            app()->getDatabaseDir('/migrations'),
+            app_ext()->getDatabaseDir('/migrations'),
         ],
-        'savedDir' => app()->getStorageDir('/app/migrations')
+        'savedDir' => app_ext()->getStorageDir('/app/migrations')
     ],
 ];

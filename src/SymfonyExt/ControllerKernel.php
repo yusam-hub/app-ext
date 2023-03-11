@@ -113,7 +113,7 @@ class ControllerKernel
                     ),
                     $this->phpFile,
                     [
-                        // 'cache_dir' => app()->getRootDir() . '/storage/app/caches/routes'
+                        // 'cache_dir' => app_ext()->getRootDir() . '/storage/app/caches/routes'
                     ],
                     $this->requestContext
                 );

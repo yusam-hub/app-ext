@@ -109,7 +109,7 @@ abstract class DbModel
                 $this->{$this->primaryKey} = $primaryValue;
             }
 
-            if (dbKernelGlobal()->newPdoExt($this->connectionName)->affectedRows() === 1) {
+            if (app_ext_db_global()->newPdoExt($this->connectionName)->affectedRows() === 1) {
 
                 $this->originalValues = $this->toArray();
 

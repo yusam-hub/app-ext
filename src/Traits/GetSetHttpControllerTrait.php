@@ -7,4 +7,5 @@ trait GetSetHttpControllerTrait
     use GetSetConsoleTrait;
     use GetSetLoggerTrait;
     use GetSetDbKernelTrait;
+    use GetSetRedisKernelTrait;
 }

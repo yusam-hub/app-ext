@@ -1,25 +1,24 @@
 <?php
 
-namespace YusamHub\AppExt\Db;
+namespace YusamHub\AppExt\Redis;
 
 use YusamHub\AppExt\Traits\GetSetConsoleTrait;
 use YusamHub\AppExt\Traits\GetSetLoggerTrait;
 use YusamHub\AppExt\Traits\Interfaces\GetSetConsoleInterface;
 use YusamHub\AppExt\Traits\Interfaces\GetSetLoggerInterface;
-use YusamHub\DbExt\PdoExt;
-
-class DbKernel implements GetSetLoggerInterface, GetSetConsoleInterface
+use YusamHub\RedisExt\RedisExt;
+class RedisKernel implements GetSetLoggerInterface, GetSetConsoleInterface
 {
     use GetSetLoggerTrait;
     use GetSetConsoleTrait;
 
-    protected static ?DbKernel $instance = null;
+    protected static ?RedisKernel $instance = null;
     protected array $dbConnections = [];
 
     /**
-     * @return DbKernel
+     * @return RedisKernel
      */
-    public static function global(): DbKernel
+    public static function global(): RedisKernel
     {
         if (is_null(self::$instance)) {
             self::$instance = new static();
@@ -30,9 +29,9 @@ class DbKernel implements GetSetLoggerInterface, GetSetConsoleInterface
 
     /**
      * @param string|null $connectionName
-     * @return PdoExt|null
+     * @return RedisExt|null
      */
-    public function newPdoExt(?string $connectionName = null): ?PdoExt
+    public function newRedisExt(?string $connectionName = null): ?RedisExt
     {
         if (is_null($connectionName)) {
             $connectionName = $this->getDefaultConnectionName();
@@ -42,12 +41,12 @@ class DbKernel implements GetSetLoggerInterface, GetSetConsoleInterface
             return $this->dbConnections[$connectionName];
         }
 
-        $pdo_ext = app_ext_pdo_ext($connectionName, true);
-        $pdo_ext->isDebugging = $this->hasLogger();
-        $pdo_ext->onDebugLogCallback(function(string $message, array $context) use($connectionName) {
-            $this->debug(sprintf('[DB:%s] %s', $connectionName, $message), $context);
+        $redisExt = new RedisExt((array) app_ext_config('redis.connections.' . $connectionName, []));
+        $redisExt->isDebugging = $this->hasLogger();
+        $redisExt->onDebugLogCallback(function(string $message, array $context) use($connectionName) {
+            $this->debug(sprintf('[REDIS:%s] %s', $connectionName, $message), $context);
         });
-        return $this->dbConnections[$connectionName] = $pdo_ext;
+        return $this->dbConnections[$connectionName] = $redisExt;
     }
 
     /**
@@ -55,7 +54,7 @@ class DbKernel implements GetSetLoggerInterface, GetSetConsoleInterface
      */
     public function getDefaultConnectionName(): string
     {
-        return (string) app_ext_config('database.default');
+        return (string) app_ext_config('redis.default');
     }
 
     /**
@@ -63,7 +62,6 @@ class DbKernel implements GetSetLoggerInterface, GetSetConsoleInterface
      */
     public function getConnectionNames(): array
     {
-        return array_keys((array) app_ext_config('database.connections'));
+        return array_keys((array) app_ext_config('redis.connections'));
     }
-
 }

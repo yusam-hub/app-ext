@@ -22,13 +22,13 @@ class DbMigrateCommand extends BaseConsoleCommand
         $paths = (array) app_ext_config('database.migrations.paths');
         foreach($paths as $migrationPath) {
 
-            foreach (dbKernelGlobal()->getConnectionNames() as $connectionName) {
+            foreach (app_ext_db_global()->getConnectionNames() as $connectionName) {
 
                 $output->writeln($this->tagYellow(sprintf("%s/%s", $migrationPath, $connectionName)));
                 $output->writeln('');
 
                 $migrations = new PdoExtMigrations(
-                    dbKernelGlobal()->newPdoExt($connectionName),
+                    app_ext_db_global()->newPdoExt($connectionName),
                     $migrationPath . '/' . $connectionName,
                     app_ext_config('database.migrations.savedDir') . '/migrations_' . $connectionName . '.lst'
                 );

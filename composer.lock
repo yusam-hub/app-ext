@@ -3990,9 +3990,10 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/yusam-hub/redis-ext.git",
-                "reference": "2134e5ac51d02df703138103ebf4906c9bf81e6d"
+                "reference": "c72c8c0c882e8ff628dd7184e73e63a2b8bbffd3"
             },
             "require": {
+                "ext-json": "*",
                 "ext-redis": "*",
                 "php": "^7.4|^8.0|^8.1|^8.2"
             },
@@ -4014,7 +4015,7 @@
                 "files": []
             },
             "description": "yusam-hub/redis-ext",
-            "time": "2023-03-03T04:39:06+00:00"
+            "time": "2023-03-11T10:36:34+00:00"
         },
         {
             "name": "zircote/swagger-php",

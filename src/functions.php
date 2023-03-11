@@ -1,32 +1,46 @@
 <?php
 
 use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpFoundation\Request;
 use YusamHub\AppExt\Config;
 use YusamHub\AppExt\Db\DbKernel;
 use YusamHub\AppExt\DotArray;
 use YusamHub\AppExt\Env;
+use YusamHub\AppExt\Exceptions\Interfaces\AppExtRuntimeExceptionInterface;
+use YusamHub\AppExt\Redis\RedisKernel;
 use YusamHub\AppExt\SymfonyExt\AppKernel;
 use YusamHub\DbExt\PdoExt;
 
-if (! function_exists('app')) {
+if (! function_exists('app_ext')) {
 
     /**
      * @return AppKernel
      */
-    function app(): AppKernel
+    function app_ext(): AppKernel
     {
         return AppKernel::instance(app_ext_config('app'));
     }
 }
 
-if (! function_exists('dbKernelGlobal')) {
+if (! function_exists('app_ext_db_global')) {
 
     /**
      * @return DbKernel
      */
-    function dbKernelGlobal(): DbKernel
+    function app_ext_db_global(): DbKernel
     {
         return DbKernel::global();
+    }
+}
+
+if (! function_exists('app_ext_redis_global')) {
+
+    /**
+     * @return RedisKernel
+     */
+    function app_ext_redis_global(): RedisKernel
+    {
+        return RedisKernel::global();
     }
 }
 
@@ -181,7 +195,7 @@ if (! function_exists('app_ext_get_error_context')) {
             'file' => $e->getFile() . ":" . $e->getLine(),
             'class' => get_class($e),
         ];
-        if ($e instanceof \YusamHub\AppExt\Exceptions\Interfaces\AppExtRuntimeExceptionInterface) {
+        if ($e instanceof AppExtRuntimeExceptionInterface) {
             $out = array_merge($out, ['data' => $e->getData()]);
         }
         if ($includeTrace) {
@@ -194,10 +208,10 @@ if (! function_exists('app_ext_get_error_context')) {
 if (! function_exists('app_ext_get_files')) {
 
     /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param Request $request
      * @return array
      */
-    function app_ext_get_files(\Symfony\Component\HttpFoundation\Request $request): array
+    function app_ext_get_files(Request $request): array
     {
         return (array) $request->attributes->get('_files');
     }
