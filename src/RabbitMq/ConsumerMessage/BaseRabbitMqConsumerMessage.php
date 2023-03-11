@@ -1,6 +1,6 @@
 <?php
 
-namespace YusamHub\AppExt\RabbitMq;
+namespace YusamHub\AppExt\RabbitMq\ConsumerMessage;
 
 use Bunny\Async\Client;
 use Bunny\Channel;

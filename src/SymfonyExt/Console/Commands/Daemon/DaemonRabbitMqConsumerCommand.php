@@ -6,11 +6,9 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use YusamHub\AppExt\RabbitMq\BaseRabbitMqConsumerMessage;
+use YusamHub\AppExt\RabbitMq\ConsumerMessage\BaseRabbitMqConsumerMessage;
 use YusamHub\AppExt\RabbitMq\RabbitMqConsumer;
 use YusamHub\AppExt\RabbitMq\RabbitMqConsumerConfigModel;
-use YusamHub\AppExt\ReactHttpServer\HttpServerConfigModel;
-use YusamHub\AppExt\ReactHttpServer\ReactHttpServer;
 use YusamHub\AppExt\SymfonyExt\Console\Commands\BaseConsoleCommand;
 
 class DaemonRabbitMqConsumerCommand extends BaseConsoleCommand
