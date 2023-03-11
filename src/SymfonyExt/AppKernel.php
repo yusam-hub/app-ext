@@ -2,18 +2,8 @@
 
 namespace YusamHub\AppExt\SymfonyExt;
 
-use YusamHub\AppExt\Traits\GetSetConsoleTrait;
-use YusamHub\AppExt\Traits\GetSetLoggerTrait;
-use YusamHub\AppExt\Traits\Interfaces\GetSetConsoleInterface;
-use YusamHub\AppExt\Traits\Interfaces\GetSetLoggerInterface;
-
 class AppKernel
-    implements
-    GetSetLoggerInterface,
-    GetSetConsoleInterface
 {
-    use GetSetConsoleTrait;
-    use GetSetLoggerTrait;
 
     protected static ?AppKernel $instance = null;
 
