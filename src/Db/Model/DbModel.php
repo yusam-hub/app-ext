@@ -7,6 +7,8 @@ use YusamHub\AppExt\Exceptions\AppExtRuntimeException;
 use YusamHub\AppExt\Traits\GetSetDbKernelTrait;
 use YusamHub\AppExt\Traits\Interfaces\GetSetDbKernelInterface;
 use YusamHub\JsonExt\JsonObject;
+use YusamHub\Validator\Validator;
+
 abstract class DbModel
     extends JsonObject
     implements GetSetDbKernelInterface
@@ -16,6 +18,9 @@ abstract class DbModel
     protected string $tableName;
     protected string $primaryKey = 'id';
     protected array $originalValues = [];
+
+    protected array $rules = [];
+    protected array $ruleMessages = [];
 
     /**
      * @param DbKernel $dbKernel
@@ -85,6 +90,22 @@ abstract class DbModel
             throw new AppExtRuntimeException("Model not found", $attributes);
         }
         return $model;
+    }
+
+    /**
+     * @param $errors
+     * @return bool
+     * @throws \ReflectionException
+     */
+    public function validate(&$errors): bool
+    {
+        $validator = new Validator();
+        $validator->setAttributes($this->toArray());
+        $validator->setRules($this->rules);
+        $validator->setRuleMessages($this->ruleMessages);
+        $result = $validator->validate();
+        $errors = $validator->getErrors();
+        return $result;
     }
 
     /**

@@ -18,7 +18,6 @@ class ApiUserModel extends DbModel
     public int $id;
     public string $apiToken;
     public string $apiSign;
-
     public string $description;
     public ?string $blockedAt = null;
     public ?string $blockedDescription = null;

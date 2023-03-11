@@ -38,10 +38,14 @@
             "type": "git",
             "url": "https://github.com/yusam-hub/redis-ext.git"
         },
+        "yusam-hub/validator": {
+            "type": "git",
+            "url": "https://github.com/yusam-hub/validator.git"
+        },
         "yusam-hub/app-ext": {
             "type": "git",
             "url": "https://github.com/yusam-hub/app-ext.git"
-        }
+        },
         ...
     },
     "require": {
