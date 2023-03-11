@@ -7,82 +7,39 @@ use YusamHub\DbExt\PdoExt;
 class DbKernel
 {
     protected static ?DbKernel $instance = null;
-
-    protected array $config;
-    protected array $dbInstances = [];
+    protected array $dbConnections = [];
 
     /**
-     * @param array $config
      * @return DbKernel
      */
-    public static function instance(array $config = []): DbKernel
+    public static function global(): DbKernel
     {
         if (is_null(self::$instance)) {
-            self::$instance = new static($config);
+            self::$instance = new static();
         }
-
-        return self::$instance ;
+        return self::$instance;
     }
 
     /**
-     * @param array $config
-     */
-    public function __construct(array $config = [])
-    {
-        $this->config = $config;
-    }
-
-    /**
-     * @param $name
+     * @param string|null $connectionName
      * @return PdoExt|null
      */
-    public function __get($name): ?PdoExt
+    public function newPdoExt(?string $connectionName = null): ?PdoExt
     {
-       return $this->connection($name);
-    }
+        if (is_null($connectionName)) {
+            $connectionName = $this->getDefaultConnectionName();
+        }
 
-    /**
-     * @param string|null $name
-     * @return PdoExt|null
-     */
-    public function connection(?string $name = null): ?PdoExt
-    {
-        if (empty($name)) {
-            $name = $this->config['default'];
+        if (isset($this->dbConnections[$connectionName])) {
+            return $this->dbConnections[$connectionName];
         }
-        if (isset($this->dbInstances[$name])) {
-            return $this->dbInstances[$name];
-        }
-        if (isset($this->config['connections'][$name])) {
-            $this->dbInstances[$name] = pdo_ext($name);
-            $this->dbInstances[$name]->isDebugging = true;
-            $this->dbInstances[$name]->onDebugLogCallback(function(string $message, array $context){
-                app_ext_logger()->debug($message, $context);
-            });
-            return $this->dbInstances[$name];
-        }
-        throw new \RuntimeException(sprintf("Unable to find database connection name [%s]", $name));
-    }
 
-    /**
-     * @param $name
-     * @return void
-     */
-    public function destroyConnection($name): void
-    {
-        if (isset($this->dbInstances[$name])) {
-            unset($this->dbInstances[$name]);
-        }
-    }
-
-    /**
-     * @return void
-     */
-    public function destroyAllConnections(): void
-    {
-        foreach($this->getConnectionNames() as $name) {
-            $this->destroyConnection($name);
-        }
+        $pdo_ext = app_ext_pdo_ext($connectionName, true);
+        $pdo_ext->isDebugging = app()->hasLogger();
+        $pdo_ext->onDebugLogCallback(function(string $message, array $context){
+            app()->getLogger()->debug($message, $context);
+        });
+        return $this->dbConnections[$connectionName] = $pdo_ext;
     }
 
     /**
@@ -90,7 +47,7 @@ class DbKernel
      */
     public function getDefaultConnectionName(): string
     {
-        return $this->config['default'];
+        return (string) app_ext_config('database.default');
     }
 
     /**
@@ -98,7 +55,7 @@ class DbKernel
      */
     public function getConnectionNames(): array
     {
-        return array_keys($this->config['connections']);
+        return array_keys((array) app_ext_config('database.connections'));
     }
 
 }

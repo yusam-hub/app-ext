@@ -32,6 +32,7 @@ class TableApiUserAddCommand extends BaseConsoleCommand
 
         try {
             $apiUserModel = new ApiUserModel();
+            $apiUserModel->setDbKernel(dbKernelGlobal());
             $apiUserModel->apiToken = md5(microtime() . random_int(100000, 999999));
             $apiUserModel->apiSign = md5($apiUserModel->apiToken . microtime() . random_int(100000, 999999));
             $apiUserModel->description = $input->getArgument('description');

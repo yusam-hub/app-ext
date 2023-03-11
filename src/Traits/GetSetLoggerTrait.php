@@ -5,11 +5,17 @@ namespace YusamHub\AppExt\Traits;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use Symfony\Component\Console\Output\Output;
+use YusamHub\AppExt\Traits\Interfaces\GetSetConsoleInterface;
 
 trait GetSetLoggerTrait
 {
     private ?LoggerInterface $logger = null;
     private bool $consoleOutputEnabled = false;
+
+    public function hasLogger(): bool
+    {
+        return !is_null($this->logger);
+    }
 
     public function getLogger(): ?LoggerInterface
     {
@@ -21,20 +27,20 @@ trait GetSetLoggerTrait
         $this->logger = $logger;
     }
 
-    public function getConsoleOutputEnabled(): bool
+    public function getLoggerConsoleOutputEnabled(): bool
     {
         return $this->consoleOutputEnabled;
     }
 
-    public function setConsoleOutputEnabled(bool $value): void
+    public function setLoggerConsoleOutputEnabled(bool $value): void
     {
         $this->consoleOutputEnabled = $value;
     }
 
     private function doConsoleOutput($level, $message, array $context = array()): void
     {
-        if ($this->consoleOutputEnabled && isset($this->consoleOutput) &&  $this->consoleOutput instanceof Output) {
-            $this->consoleOutput->writeln(
+        if ($this->getLoggerConsoleOutputEnabled()) {
+            $this->getConsoleOutput()->writeln(
                 sprintf(
                     "[%s][%s] %s%s",
                     date(DATE_TIME_APP_EXT_FORMAT),
@@ -48,72 +54,72 @@ trait GetSetLoggerTrait
 
     public function emergency($message, array $context = array())
     {
-        if (!is_null($this->logger)) {
-            $this->logger->emergency($message, $context);
+        if ($this->hasLogger()) {
+            $this->getLogger()->emergency($message, $context);
         }
         $this->doConsoleOutput(LogLevel::EMERGENCY, $message, $context);
     }
 
     public function alert($message, array $context = array())
     {
-        if (!is_null($this->logger)) {
-            $this->logger->alert($message, $context);
+        if ($this->hasLogger()) {
+            $this->getLogger()->alert($message, $context);
         }
         $this->doConsoleOutput(LogLevel::ALERT, $message, $context);
     }
 
     public function critical($message, array $context = array())
     {
-        if (!is_null($this->logger)) {
-            $this->logger->critical($message, $context);
+        if ($this->hasLogger()) {
+            $this->getLogger()->critical($message, $context);
         }
         $this->doConsoleOutput(LogLevel::CRITICAL, $message, $context);
     }
 
     public function error($message, array $context = array())
     {
-        if (!is_null($this->logger)) {
-            $this->logger->error($message, $context);
+        if ($this->hasLogger()) {
+            $this->getLogger()->error($message, $context);
         }
         $this->doConsoleOutput(LogLevel::ERROR, $message, $context);
     }
 
     public function warning($message, array $context = array())
     {
-        if (!is_null($this->logger)) {
-            $this->logger->warning($message, $context);
+        if ($this->hasLogger()) {
+            $this->getLogger()->warning($message, $context);
         }
         $this->doConsoleOutput(LogLevel::WARNING, $message, $context);
     }
 
     public function notice($message, array $context = array())
     {
-        if (!is_null($this->logger)) {
-            $this->logger->notice($message, $context);
+        if ($this->hasLogger()) {
+            $this->getLogger()->notice($message, $context);
         }
         $this->doConsoleOutput(LogLevel::NOTICE, $message, $context);
     }
 
     public function info($message, array $context = array())
     {
-        if (!is_null($this->logger)) {
-            $this->logger->info($message, $context);
+        if ($this->hasLogger()) {
+            $this->getLogger()->info($message, $context);
         }
         $this->doConsoleOutput(LogLevel::INFO, $message, $context);
     }
 
     public function debug($message, array $context = array())
     {
-        if (!is_null($this->logger)) {
-            $this->logger->debug($message, $context);
+        if ($this->hasLogger()) {
+            $this->getLogger()->debug($message, $context);
         }
         $this->doConsoleOutput(LogLevel::DEBUG, $message, $context);
     }
 
     public function log($level, $message, array $context = array())
     {
-        if (!is_null($this->logger)) {
-            $this->logger->log($level, $message, $context);
+        if ($this->hasLogger()) {
+            $this->getLogger()->log($level, $message, $context);
         }
         $this->doConsoleOutput($level, $message, $context);
     }

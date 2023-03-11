@@ -47,7 +47,7 @@ class ClientRabbitMqPublisherCommand extends BaseConsoleCommand
         );
 
         $rabbitMqPublisher->setConsoleOutput($output);
-        $rabbitMqPublisher->setConsoleOutputEnabled(true);
+        $rabbitMqPublisher->setLoggerConsoleOutputEnabled(true);
 
         $rabbitMqPublisher->send($input->getArgument('message'));
 

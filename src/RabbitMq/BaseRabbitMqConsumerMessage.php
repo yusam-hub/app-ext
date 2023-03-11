@@ -5,7 +5,7 @@ namespace YusamHub\AppExt\RabbitMq;
 use Bunny\Async\Client;
 use Bunny\Channel;
 use Bunny\Message;
-use YusamHub\AppExt\Interfaces\RabbitMqConsumerMessageInterface;
+use YusamHub\AppExt\RabbitMq\Interfaces\RabbitMqConsumerMessageInterface;
 
 class BaseRabbitMqConsumerMessage implements RabbitMqConsumerMessageInterface
 {

@@ -32,11 +32,10 @@ class DaemonReactHttpServerCommand extends BaseConsoleCommand
         return app_ext_logger('react-http-server-' . $workerNumber);
     }
 
-    /**
-     * @throws \ReflectionException
-     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        app()::$RUN_IN_REACT_HTTP = true;
+
         $socketMode = intval($input->getOption('socket-mode'));
         $workerNumber = abs(intval($input->getOption('worker-number')));
 
@@ -56,7 +55,7 @@ class DaemonReactHttpServerCommand extends BaseConsoleCommand
         );
 
         $httpServer->setConsoleOutput($output);
-        $httpServer->setConsoleOutputEnabled(true);
+        $httpServer->setLoggerConsoleOutputEnabled(true);
         $httpServer->setLogger($this->getLoggerFromConfig($workerNumber));
 
         return $httpServer->run();

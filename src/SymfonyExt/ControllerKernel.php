@@ -2,6 +2,7 @@
 
 namespace YusamHub\AppExt\SymfonyExt;
 
+use Symfony\Component\Config\FileLocator;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -9,18 +10,21 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Controller\ArgumentResolver;
 use Symfony\Component\HttpKernel\EventListener\RouterListener;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Loader\PhpFileLoader;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\Router;
-use Symfony\Component\Config\FileLocator;
-use Symfony\Component\Routing\Loader\PhpFileLoader;
+use YusamHub\AppExt\Db\DbKernel;
 use YusamHub\AppExt\Exceptions\Interfaces\HttpAppExtRuntimeExceptionInterface;
-use YusamHub\AppExt\Interfaces\GetSetConsoleInterface;
-use YusamHub\AppExt\Interfaces\GetSetLoggerInterface;
 use YusamHub\AppExt\Traits\GetSetConsoleTrait;
 use YusamHub\AppExt\Traits\GetSetLoggerTrait;
+use YusamHub\AppExt\Traits\Interfaces\GetSetConsoleInterface;
+use YusamHub\AppExt\Traits\Interfaces\GetSetLoggerInterface;
 
-class ControllerKernel implements GetSetLoggerInterface, GetSetConsoleInterface
+class ControllerKernel
+    implements
+    GetSetLoggerInterface,
+    GetSetConsoleInterface
 {
     use GetSetLoggerTrait;
     use GetSetConsoleTrait;
@@ -29,7 +33,6 @@ class ControllerKernel implements GetSetLoggerInterface, GetSetConsoleInterface
     protected string $routeDir;
     protected Request $request;
     protected string $phpFile;
-    protected bool $runInReactHttp;
     protected RequestContext $requestContext;
     protected Router $router;
     private HttpKernel $httpKernel;
@@ -38,14 +41,12 @@ class ControllerKernel implements GetSetLoggerInterface, GetSetConsoleInterface
      * @param string $routeDir
      * @param Request $request
      * @param string $phpFile
-     * @param bool $runInReactHttp
      */
-    public function __construct(string $routeDir, Request $request, string $phpFile, bool $runInReactHttp = false)
+    public function __construct(string $routeDir, Request $request, string $phpFile)
     {
         $this->routeDir = $routeDir;
         $this->request = $request;
         $this->phpFile = $phpFile;
-        $this->runInReactHttp = $runInReactHttp;
         $this->requestContext = new RequestContext();
         $this->requestContext->fromRequest($request);
     }
@@ -184,7 +185,7 @@ class ControllerKernel implements GetSetLoggerInterface, GetSetConsoleInterface
             ]
         ]);
 
-        if ($this->runInReactHttp) {
+        if (app()::$RUN_IN_REACT_HTTP) {
             return new \React\Http\Message\Response(
                 $response->getStatusCode(),
                 $response->headers->all(),

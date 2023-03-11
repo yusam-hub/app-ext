@@ -20,7 +20,7 @@ trait ApiAuthorizeTrait
         $tokenHandle = app_ext_config('api.tokenHandle');
 
         if (is_callable($tokenHandle)) {
-            $apiUser = $tokenHandle($request);
+            $apiUser = $tokenHandle($this, $request);
 
             if (is_null($apiUser)) {
                 return;
@@ -32,7 +32,7 @@ trait ApiAuthorizeTrait
 
             $signHandle = app_ext_config('api.signHandle');
             if (is_callable($signHandle)) {
-                $signHandle($request, $this->apiAuthorizedId, $apiUser instanceof ApiUserModel ? $apiUser : null);
+                $signHandle($this, $request, $this->apiAuthorizedId, $apiUser instanceof ApiUserModel ? $apiUser : null);
             }
         }
     }

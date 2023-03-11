@@ -23,14 +23,14 @@ class DbCheckCommand extends BaseConsoleCommand
 
         $phpDt = date(DATE_TIME_APP_EXT_FORMAT);
         $output->writeln($this->tagGreen(sprintf('PHP: %s',$phpDt)));
-        $output->writeln($this->tagGreen(sprintf('CONNECTION DEFAULT: %s', db()->getDefaultConnectionName())));
+        $output->writeln($this->tagGreen(sprintf('CONNECTION DEFAULT: %s', dbKernelGlobal()->getDefaultConnectionName())));
         $out = [];
 
-        foreach(db()->getConnectionNames() as $connectionName)
+        foreach(dbKernelGlobal()->getConnectionNames() as $connectionName)
         {
             try {
 
-                $row = db()->{$connectionName}->fetchOne('SELECT NOW() as dt, DATABASE() as dbName');
+                $row = dbKernelGlobal()->newPdoExt($connectionName)->fetchOne('SELECT NOW() as dt, DATABASE() as dbName');
 
                 $out[] = [
                     $connectionName, $row['dbName'], ($row['dt'] != $phpDt) ? $this->tagYellow($row['dt']) : $row['dt'], ($row['dt'] != $phpDt) ? "Invalid date time between mysql & php" : $this->tagGreen('SUCCESS')

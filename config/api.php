@@ -12,7 +12,10 @@ return [
     'debugSigns' => [
         0 => 'testing', //по ID находим ключ подписи для ID
     ],
-    'tokenHandle' => function(\Symfony\Component\HttpFoundation\Request $request)
+    'tokenHandle' => function(
+        \YusamHub\AppExt\Traits\Interfaces\GetSetHttpControllerInterface $httpController,
+        \Symfony\Component\HttpFoundation\Request $request
+    )
     {
         if ($request->getRequestUri() === '/') {
             return null;
@@ -30,7 +33,7 @@ return [
             return intval($debugTokens[$tokenValue]);
         }
 
-        $apiUserModel = \YusamHub\AppExt\Db\Model\ApiUserModel::findModelByAttributes(['apiToken' => $tokenValue]);
+        $apiUserModel = \YusamHub\AppExt\Db\Model\ApiUserModel::findModelByAttributes($httpController->getDbKernel(), ['apiToken' => $tokenValue]);
         if (!is_null($apiUserModel)) {
             return $apiUserModel;
         }
@@ -39,9 +42,13 @@ return [
             'detail' => 'Invalid token value'
         ]);
     },
-    'signHandle' => function(\Symfony\Component\HttpFoundation\Request $request, int $apiAuthorizedId, ?\YusamHub\AppExt\Db\Model\ApiUserModel $apiUserModel)
+    'signHandle' => function(
+        \YusamHub\AppExt\Traits\Interfaces\GetSetHttpControllerInterface $httpController,
+        \Symfony\Component\HttpFoundation\Request $request,
+        int $apiAuthorizedId,
+        ?\YusamHub\AppExt\Db\Model\ApiUserModel $apiUserModel
+    )
     {
-
         $signValue = (string) $request->headers->get(app_ext_config('api.signKeyName'));
 
         if (is_null($apiUserModel)) {

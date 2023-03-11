@@ -2,11 +2,13 @@
 
 namespace YusamHub\AppExt\Db\Model;
 
+use YusamHub\AppExt\Db\DbKernel;
+
 /**
- * @method static ApiUserModel|null findModel($pk)
- * @method static ApiUserModel findModelOrFail($pk)
- * @method static ApiUserModel|null findModelByAttributes(array $attributes)
- * @method static ApiUserModel findModelByAttributesOrFail(array $attributes)
+ * @method static ApiUserModel|null findModel(DbKernel $dbKernel, $pk)
+ * @method static ApiUserModel findModelOrFail(DbKernel $dbKernel, $pk)
+ * @method static ApiUserModel|null findModelByAttributes(DbKernel $dbKernel, array $attributes)
+ * @method static ApiUserModel findModelByAttributesOrFail(DbKernel $dbKernel, array $attributes)
  */
 class ApiUserModel extends DbModel
 {

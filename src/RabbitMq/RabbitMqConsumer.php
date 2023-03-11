@@ -8,7 +8,7 @@ use Bunny\Message;
 use Bunny\Protocol\MethodBasicConsumeOkFrame;
 use React\EventLoop\Loop;
 use React\EventLoop\LoopInterface;
-use YusamHub\AppExt\Interfaces\RabbitMqConsumerMessageInterface;
+use YusamHub\AppExt\RabbitMq\Interfaces\RabbitMqConsumerMessageInterface;
 
 class RabbitMqConsumer extends BaseRabbitMq
 {

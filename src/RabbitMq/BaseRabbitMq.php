@@ -2,13 +2,10 @@
 
 namespace YusamHub\AppExt\RabbitMq;
 
-use Bunny\Async\Client;
-use React\EventLoop\Loop;
-use React\EventLoop\LoopInterface;
-use YusamHub\AppExt\Interfaces\GetSetConsoleInterface;
-use YusamHub\AppExt\Interfaces\GetSetLoggerInterface;
 use YusamHub\AppExt\Traits\GetSetConsoleTrait;
 use YusamHub\AppExt\Traits\GetSetLoggerTrait;
+use YusamHub\AppExt\Traits\Interfaces\GetSetConsoleInterface;
+use YusamHub\AppExt\Traits\Interfaces\GetSetLoggerInterface;
 
 abstract class BaseRabbitMq implements GetSetConsoleInterface, GetSetLoggerInterface
 {

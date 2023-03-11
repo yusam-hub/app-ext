@@ -5,12 +5,16 @@ namespace YusamHub\AppExt\SymfonyExt\Console\Commands;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use YusamHub\AppExt\Interfaces\GetSetConsoleInterface;
-use YusamHub\AppExt\Interfaces\GetSetLoggerInterface;
 use YusamHub\AppExt\Traits\GetSetConsoleTrait;
 use YusamHub\AppExt\Traits\GetSetLoggerTrait;
+use YusamHub\AppExt\Traits\Interfaces\GetSetConsoleInterface;
+use YusamHub\AppExt\Traits\Interfaces\GetSetLoggerInterface;
 
-abstract class BaseConsoleCommand extends \Symfony\Component\Console\Command\Command implements GetSetConsoleInterface, GetSetLoggerInterface
+abstract class BaseConsoleCommand
+    extends \Symfony\Component\Console\Command\Command
+    implements
+    GetSetConsoleInterface,
+    GetSetLoggerInterface
 {
     use GetSetLoggerTrait;
     use GetSetConsoleTrait;
@@ -26,7 +30,6 @@ abstract class BaseConsoleCommand extends \Symfony\Component\Console\Command\Com
         $outputStyle = new OutputFormatterStyle('green', null, ['bold']);
         $output->getFormatter()->setStyle('green', $outputStyle);
 
-        $this->setConsoleInput($input);
         $this->setConsoleOutput($output);
     }
 

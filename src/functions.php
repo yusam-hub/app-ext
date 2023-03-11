@@ -19,15 +19,35 @@ if (! function_exists('app')) {
     }
 }
 
-if (! function_exists('db')) {
+if (! function_exists('dbKernelGlobal')) {
 
     /**
      * @return DbKernel
      */
-    function db(): DbKernel
+    function dbKernelGlobal(): DbKernel
     {
-        return DbKernel::instance(app_ext_config('database'));
+        return DbKernel::global();
     }
+}
+
+if (! function_exists('app_ext_pdo_ext')) {
+
+    /**
+     * @param string|null $connectionName
+     * @param bool $newConnection
+     * @return PdoExt
+     */
+    function app_ext_pdo_ext(?string $connectionName = null, bool $newConnection = false): PdoExt
+    {
+        if (is_null($connectionName)) {
+            $connectionName = app_ext_config("database.default");
+        }
+        if (empty($connectionName)) {
+            throw new \RuntimeException(sprintf("Unable to find database connection name [%s]", $connectionName));
+        }
+        return db_ext_mysql_pdo_ext_create_from_config(app_ext_config("database.connections.{$connectionName}"), $newConnection);
+    }
+
 }
 
 if (! function_exists('app_ext_logger')) {
@@ -147,18 +167,6 @@ if (! function_exists('app_ext_evn_map_value')) {
     }
 }
 
-if (! function_exists('pdo_ext')) {
-
-    function pdo_ext(?string $connectionName = null): PdoExt
-    {
-        if (is_null($connectionName)) {
-            $connectionName = app_ext_config("database.default");
-        }
-        return db_ext_mysql_pdo_ext_create_from_config(app_ext_config("database.connections.{$connectionName}"), true);
-    }
-
-}
-
 if (! function_exists('app_ext_get_error_context')) {
     /**
      * @param Throwable $e
@@ -185,6 +193,10 @@ if (! function_exists('app_ext_get_error_context')) {
 
 if (! function_exists('app_ext_get_files')) {
 
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @return array
+     */
     function app_ext_get_files(\Symfony\Component\HttpFoundation\Request $request): array
     {
         return (array) $request->attributes->get('_files');

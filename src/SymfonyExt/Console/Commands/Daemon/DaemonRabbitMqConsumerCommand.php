@@ -52,7 +52,7 @@ class DaemonRabbitMqConsumerCommand extends BaseConsoleCommand
         );
 
         $rabbitMqConsumer->setConsoleOutput($output);
-        $rabbitMqConsumer->setConsoleOutputEnabled(true);
+        $rabbitMqConsumer->setLoggerConsoleOutputEnabled(true);
         $rabbitMqConsumer->setLogger($this->getLoggerFromConfig($workerNumber));
 
         $rabbitMqConsumer->daemon();

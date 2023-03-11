@@ -2,12 +2,12 @@
 
 namespace YusamHub\AppExt\ReactHttpServer;
 
-use YusamHub\AppExt\Interfaces\GetSetConsoleInterface;
-use YusamHub\AppExt\Interfaces\GetSetLoggerInterface;
 use YusamHub\AppExt\ReactHttpServer\Middleware\RequestBodyParserMiddleware;
 use YusamHub\AppExt\ReactHttpServer\Middleware\RoutesMiddleware;
 use YusamHub\AppExt\Traits\GetSetConsoleTrait;
 use YusamHub\AppExt\Traits\GetSetLoggerTrait;
+use YusamHub\AppExt\Traits\Interfaces\GetSetConsoleInterface;
+use YusamHub\AppExt\Traits\Interfaces\GetSetLoggerInterface;
 
 class ReactHttpServer implements GetSetConsoleInterface, GetSetLoggerInterface
 {

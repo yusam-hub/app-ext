@@ -4,14 +4,25 @@ namespace YusamHub\AppExt\SymfonyExt\Http\Controllers;
 
 use Symfony\Component\Routing\Loader\Configurator\RouteConfigurator;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
-use YusamHub\AppExt\Interfaces\GetSetLoggerInterface;
-use YusamHub\AppExt\SymfonyExt\Http\Traits\HttpMiddlewareInterface;
-use YusamHub\AppExt\SymfonyExt\Http\Traits\HttpMiddlewareTrait;
+use YusamHub\AppExt\Db\DbKernel;
+use YusamHub\AppExt\Traits\GetSetConsoleTrait;
+use YusamHub\AppExt\Traits\GetSetDbKernelTrait;
 use YusamHub\AppExt\Traits\GetSetLoggerTrait;
+use YusamHub\AppExt\Traits\Interfaces\GetSetConsoleInterface;
+use YusamHub\AppExt\Traits\Interfaces\GetSetDbKernelInterface;
+use YusamHub\AppExt\Traits\Interfaces\GetSetHttpControllerInterface;
+use YusamHub\AppExt\Traits\Interfaces\GetSetLoggerInterface;
 
-abstract class BaseHttpController implements GetSetLoggerInterface
+abstract class BaseHttpController
+    implements
+    GetSetHttpControllerInterface,
+    GetSetConsoleInterface,
+    GetSetLoggerInterface,
+    GetSetDbKernelInterface
 {
+    use GetSetConsoleTrait;
     use GetSetLoggerTrait;
+    use GetSetDbKernelTrait;
 
     /**
      * @param RoutingConfigurator $routes
@@ -37,5 +48,10 @@ abstract class BaseHttpController implements GetSetLoggerInterface
             ->methods($methods)
             ->requirements($requirements)
             ;
+    }
+
+    public function __construct()
+    {
+        $this->setDbKernel(new DbKernel());
     }
 }
