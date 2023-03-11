@@ -190,6 +190,17 @@ class ControllerKernel
         ]);
 
         if ($this->runInReactHttp) {
+
+            /**
+             * if file was created in react, we need to destroy them
+             */
+            $_files = (array) $this->request->attributes->get('_files', []);
+            foreach($_files as $key => $fileItem) {
+                if (isset($fileItem['tmp_name']) && file_exists($fileItem['tmp_name'])) {
+                    @unlink($fileItem['tmp_name']);
+                }
+            }
+
             return new \React\Http\Message\Response(
                 $response->getStatusCode(),
                 $response->headers->all(),
