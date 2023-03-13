@@ -8,4 +8,6 @@ trait GetSetHttpControllerTrait
     use GetSetLoggerTrait;
     use GetSetDbKernelTrait;
     use GetSetRedisKernelTrait;
+    use GetSetCookieKernelTrait;
+
 }

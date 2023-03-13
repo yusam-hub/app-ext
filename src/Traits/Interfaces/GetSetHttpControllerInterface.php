@@ -7,7 +7,7 @@ interface GetSetHttpControllerInterface
     GetSetRedisKernelInterface,
     GetSetDbKernelInterface,
     GetSetLoggerInterface,
-    GetSetConsoleInterface
+    GetSetConsoleInterface,
+    GetSetCookieKernelInterface
 {
-
 }

@@ -4,6 +4,7 @@ namespace YusamHub\AppExt\SymfonyExt;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,7 +15,6 @@ use Symfony\Component\Routing\Loader\PhpFileLoader;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\Router;
-use YusamHub\AppExt\Db\DbKernel;
 use YusamHub\AppExt\Exceptions\Interfaces\HttpAppExtRuntimeExceptionInterface;
 use YusamHub\AppExt\Traits\GetSetConsoleTrait;
 use YusamHub\AppExt\Traits\GetSetLoggerTrait;
@@ -130,7 +130,9 @@ class ControllerKernel
                     )
                 );
 
-                $this->httpKernel = new HttpKernel($dispatcher, new ControllerResolverKernel($this, $this->request), new RequestStack(), new ArgumentResolver());
+                $controllerResolverKernel = new ControllerResolverKernel($this, $this->request);
+
+                $this->httpKernel = new HttpKernel($dispatcher, $controllerResolverKernel, new RequestStack(), new ArgumentResolver());
 
                 $this->debug($requestMessage, $requestContext);
 
@@ -138,6 +140,7 @@ class ControllerKernel
                     $response = new Response();
                 } else {
                     $response = $this->httpKernel->handle($this->request);
+                    $controllerResolverKernel->sendCookie($response->headers);
                 }
 
             } catch (NotFoundHttpException $e) {

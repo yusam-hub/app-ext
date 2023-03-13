@@ -34,6 +34,9 @@ class DebugController extends BaseHttpController implements ControllerMiddleware
 
         static::routesAdd($routes, ['OPTIONS', 'POST'], '/api/debug/test/file', 'actionTestFile');
 
+        static::routesAdd($routes, ['OPTIONS', 'GET'], '/api/debug/test/session', 'actionTestSession');
+
+        static::routesAdd($routes, ['OPTIONS', 'GET'], '/api/debug/test/cookie', 'actionTestCookie');
     }
 
     /**
@@ -238,6 +241,55 @@ class DebugController extends BaseHttpController implements ControllerMiddleware
     {
         return [
             'dbNow' => $this->getDbKernel()->pdoExt()->fetchOneColumn("SELECT NOW() as dt", 'dt'),
+        ];
+    }
+
+    /**
+     * @OA\Get(
+     *   tags={"Test"},
+     *   path="/test/session",
+     *   summary="GET session",
+     *   security={{"XTokenScheme":{}},{"XSignScheme":{}}},
+     *   deprecated=false,
+     *   @OA\Response(response=200, description="OK", @OA\MediaType(mediaType="application/json", @OA\Schema(
+     *        @OA\Property(property="status", type="string", example="ok"),
+     *        @OA\Property(property="data", type="array", example="array", @OA\Items(
+     *        )),
+     *        example={"status":"ok","data":{}},
+     *   ))),
+     *   @OA\Response(response=401, description="Unauthorized", @OA\MediaType(mediaType="application/json", @OA\Schema(ref="#/components/schemas/ResponseErrorDefault"))),
+     * );
+     */
+    public function actionTestSession(Request $request): array
+    {
+        return [
+            'hasSession' => $request->hasSession()
+        ];
+    }
+
+    /**
+     * @OA\Get(
+     *   tags={"Test"},
+     *   path="/test/cookie",
+     *   summary="GET cookie",
+     *   security={{"XTokenScheme":{}},{"XSignScheme":{}}},
+     *   deprecated=false,
+     *   @OA\Response(response=200, description="OK", @OA\MediaType(mediaType="application/json", @OA\Schema(
+     *        @OA\Property(property="status", type="string", example="ok"),
+     *        @OA\Property(property="data", type="array", example="array", @OA\Items(
+     *        )),
+     *        example={"status":"ok","data":{}},
+     *   ))),
+     *   @OA\Response(response=401, description="Unauthorized", @OA\MediaType(mediaType="application/json", @OA\Schema(ref="#/components/schemas/ResponseErrorDefault"))),
+     * );
+     */
+    public function actionTestCookie(Request $request): array
+    {
+        $this->getCookieKernel()->set('ts', time());
+        $this->getCookieKernel()->set('dt', date(DATE_TIME_APP_EXT_FORMAT));
+        return [
+            'cookiesRead' => $request->cookies->all(),
+            'cookiesSend' => $this->getCookieKernel()->all()
         ];
     }
 }

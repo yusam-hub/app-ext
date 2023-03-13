@@ -2,6 +2,7 @@
 
 namespace YusamHub\AppExt\SymfonyExt;
 
+use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Exception\RequestExceptionInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -25,6 +26,7 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\TerminableInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use YusamHub\AppExt\Traits\Interfaces\GetSetHttpControllerInterface;
 
 class HttpKernel implements HttpKernelInterface, TerminableInterface
 {
@@ -140,7 +142,7 @@ class HttpKernel implements HttpKernelInterface, TerminableInterface
         // call controller
         $response = $controller(...$arguments);
 
-        /*
+        /**
          * ------------------------------------------------------------------------------------------
          */
         if (is_scalar($response)) {
@@ -156,7 +158,7 @@ class HttpKernel implements HttpKernelInterface, TerminableInterface
                 ]
             );
         }
-        /*
+        /**
          * ------------------------------------------------------------------------------------------
          */
 

@@ -3,6 +3,7 @@
 namespace YusamHub\AppExt\SymfonyExt;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpKernel\Controller\ControllerResolver;
 use YusamHub\AppExt\Db\DbKernel;
 use YusamHub\AppExt\Redis\RedisKernel;
@@ -24,9 +25,11 @@ class ControllerResolverKernel
     use GetSetLoggerTrait;
     protected ControllerKernel $controllerKernel;
     protected Request $request;
+    protected ?object $resolveController = null;
 
     /**
      * @param ControllerKernel $controllerKernel
+     * @param Request $request
      */
     public function __construct(ControllerKernel $controllerKernel, Request $request)
     {
@@ -41,30 +44,47 @@ class ControllerResolverKernel
      */
     protected function instantiateController(string $class)
     {
-        $controller = parent::instantiateController($class);
+        $this->resolveController = parent::instantiateController($class);
 
-        if ($controller instanceof GetSetHttpControllerInterface) {
+        if ($this->resolveController instanceof GetSetHttpControllerInterface) {
+            $this->resolveController->setCookieKernel(new CookieKernel());
+
             $dbKernel = new DbKernel();
             $dbKernel->setLogger($this->controllerKernel->getLogger());
             $dbKernel->setLoggerConsoleOutputEnabled($this->controllerKernel->getLoggerConsoleOutputEnabled());
             $dbKernel->setConsoleOutput($this->controllerKernel->getConsoleOutput());
-            $controller->setDbKernel($dbKernel);
+            $this->resolveController->setDbKernel($dbKernel);
 
             $redisKernel = new RedisKernel();
             $redisKernel->setLogger($this->controllerKernel->getLogger());
             $redisKernel->setLoggerConsoleOutputEnabled($this->controllerKernel->getLoggerConsoleOutputEnabled());
             $redisKernel->setConsoleOutput($this->controllerKernel->getConsoleOutput());
-            $controller->setRedisKernel($redisKernel);
+            $this->resolveController->setRedisKernel($redisKernel);
 
-            $controller->setLogger($this->controllerKernel->getLogger());
-            $controller->setLoggerConsoleOutputEnabled($this->controllerKernel->getLoggerConsoleOutputEnabled());
+            $this->resolveController->setLogger($this->controllerKernel->getLogger());
+            $this->resolveController->setLoggerConsoleOutputEnabled($this->controllerKernel->getLoggerConsoleOutputEnabled());
 
-            $controller->setConsoleOutput($this->controllerKernel->getConsoleOutput());
-        }
-        if ($controller instanceof ControllerMiddlewareInterface) {
-            $controller->controllerMiddlewareHandle($this->request);
+            $this->resolveController->setConsoleOutput($this->controllerKernel->getConsoleOutput());
         }
 
-        return $controller;
+        if ($this->resolveController instanceof ControllerMiddlewareInterface) {
+            $this->resolveController->controllerMiddlewareHandle($this->request);
+        }
+
+        return $this->resolveController;
     }
+
+    /**
+     * @param ResponseHeaderBag $responseHeaderBag
+     * @return void
+     */
+    public function sendCookie(ResponseHeaderBag $responseHeaderBag): void
+    {
+        if ($this->resolveController instanceof GetSetHttpControllerInterface) {
+            if ($this->resolveController->hasCookieKernel()) {
+                $this->resolveController->getCookieKernel()->responseSendCookie($responseHeaderBag);
+            }
+        }
+    }
+
 }
