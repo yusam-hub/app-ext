@@ -3,65 +3,65 @@
 namespace YusamHub\AppExt\Redis\Session;
 
 use Symfony\Component\HttpFoundation\Session\Attribute\AttributeBagInterface;
-use YusamHub\Debug\Debug;
-use YusamHub\RedisExt\RedisExt;
 
 class AttributeBagRedis implements AttributeBagInterface
 {
-    protected RedisExt $redisExt;
+    protected array $attributes;
 
-    public function __construct(RedisExt $redisExt)
+    public function __construct(array $attributes = [])
     {
-        $this->redisExt = $redisExt;
+        $this->attributes = $attributes;
     }
 
-    public function has(string $name)
+    public function has(string $name): bool
     {
-        Debug::instance()->logPrint('debug',__METHOD__, $name);
+        return isset($this->attributes[$name]);
     }
 
     public function get(string $name, $default = null)
     {
-        Debug::instance()->logPrint('debug',__METHOD__, $name, $default);
+        return $this->attributes[$name]??$default;
     }
 
     public function set(string $name, $value)
     {
-        Debug::instance()->logPrint('debug',__METHOD__, $name, $value);
+        $this->attributes[$name] = $value;
     }
 
-    public function all()
+    public function all(): array
     {
-        Debug::instance()->logPrint('debug',__METHOD__);
+        return $this->attributes;
     }
 
     public function replace(array $attributes)
     {
-        Debug::instance()->logPrint('debug',__METHOD__, $attributes);
+        $this->attributes = $attributes;
     }
 
     public function remove(string $name)
     {
-        Debug::instance()->logPrint('debug',__METHOD__, $name);
+        if (isset($this->attributes[$name])) {
+            unset($this->attributes[$name]);
+        }
     }
 
     public function getName()
     {
-        Debug::instance()->logPrint('debug',__METHOD__);
+        return __METHOD__;
     }
 
     public function initialize(array &$array)
     {
-        Debug::instance()->logPrint('debug',__METHOD__, $array);
+        $this->attributes = $array;
     }
 
-    public function getStorageKey()
+    public function getStorageKey(): string
     {
-        Debug::instance()->logPrint('debug',__METHOD__);
+        return __METHOD__;
     }
 
     public function clear()
     {
-        Debug::instance()->logPrint('debug',__METHOD__);
+        $this->attributes = [];
     }
 }
