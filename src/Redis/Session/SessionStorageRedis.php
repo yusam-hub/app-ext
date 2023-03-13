@@ -64,7 +64,7 @@ class SessionStorageRedis implements SessionStorageInterface
         }
     }
 
-    public function getName()
+    public function getName(): string
     {
         return __METHOD__;
     }
@@ -99,7 +99,7 @@ class SessionStorageRedis implements SessionStorageInterface
     {
     }
 
-    public function getMetadataBag()
+    public function getMetadataBag(): MetadataBag
     {
         return new MetadataBag();
     }
