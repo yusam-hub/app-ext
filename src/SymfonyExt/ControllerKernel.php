@@ -189,6 +189,10 @@ class ControllerKernel
             ]
         ]);
 
+        if (empty($response->headers->get('content-type'))) {
+            $response->headers->set('content-type', 'text/html; charset=UTF-8');
+        }
+
         if ($this->runInReactHttp) {
 
             /**
