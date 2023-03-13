@@ -8,6 +8,7 @@ use React\Http\Message\Response;
 use React\Promise\Promise;
 use Symfony\Component\HttpFoundation\Request;
 use YusamHub\AppExt\ReactHttpServer\ReactHttpServer;
+use YusamHub\AppExt\Redis\Session\SessionRedis;
 use YusamHub\AppExt\SymfonyExt\ControllerKernel;
 
 class RoutesMiddleware
@@ -75,7 +76,7 @@ class RoutesMiddleware
             }
         }
 
-        $symphonyRequest = new Request(
+        $symfonyRequest = new Request(
             $request->getQueryParams(),
             (array) $request->getParsedBody(),
             [
@@ -89,7 +90,7 @@ class RoutesMiddleware
 
         $controllerKernel = new ControllerKernel(
             dirname($this->httpServer->getRoutesConfigFile()),
-            $symphonyRequest,
+            $symfonyRequest,
             basename($this->httpServer->getRoutesConfigFile()),
             true
         );

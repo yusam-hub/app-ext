@@ -3,6 +3,7 @@
 require __DIR__ . '/../../global-inc.php';
 
 use Symfony\Component\HttpFoundation\Request;
+use YusamHub\AppExt\Redis\Session\SessionRedis;
 
 $symfonyRequest = Request::createFromGlobals();
 $symfonyRequest->attributes->add([

@@ -263,7 +263,8 @@ class DebugController extends BaseHttpController implements ControllerMiddleware
     public function actionTestSession(Request $request): array
     {
         return [
-            'hasSession' => $request->hasSession()
+            'hasSession' => $request->hasSession(),
+            'getSession' => $request->getSession()->all(),
         ];
     }
 

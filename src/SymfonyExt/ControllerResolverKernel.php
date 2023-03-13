@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpKernel\Controller\ControllerResolver;
 use YusamHub\AppExt\Db\DbKernel;
 use YusamHub\AppExt\Redis\RedisKernel;
+use YusamHub\AppExt\Redis\Session\SessionRedis;
 use YusamHub\AppExt\SymfonyExt\Http\Controllers\BaseHttpController;
 use YusamHub\AppExt\SymfonyExt\Http\Interfaces\ControllerMiddlewareInterface;
 use YusamHub\AppExt\Traits\GetSetConsoleTrait;
@@ -48,6 +49,7 @@ class ControllerResolverKernel
 
         if ($this->resolveController instanceof GetSetHttpControllerInterface) {
             $this->resolveController->setCookieKernel(new CookieKernel());
+            $this->request->setSession(new SessionRedis($this->request));
 
             $dbKernel = new DbKernel();
             $dbKernel->setLogger($this->controllerKernel->getLogger());
