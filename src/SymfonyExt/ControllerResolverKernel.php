@@ -48,8 +48,9 @@ class ControllerResolverKernel
         $this->resolveController = parent::instantiateController($class);
 
         if ($this->resolveController instanceof GetSetHttpControllerInterface) {
-            $this->resolveController->setCookieKernel(new CookieKernel());
-            $this->request->setSession(new SessionRedis($this->request));
+            $cookieKernel = new CookieKernel();
+            $this->resolveController->setCookieKernel($cookieKernel);
+            $this->request->setSession(new SessionRedis($this->request, $cookieKernel));
 
             $dbKernel = new DbKernel();
             $dbKernel->setLogger($this->controllerKernel->getLogger());
