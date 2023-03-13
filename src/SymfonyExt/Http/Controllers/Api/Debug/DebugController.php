@@ -265,6 +265,8 @@ class DebugController extends BaseHttpController implements ControllerMiddleware
         return [
             'hasSession' => $request->hasSession(),
             'getSession' => $request->getSession()->all(),
+            'cookiesRead' => $request->cookies->all(),
+            'cookiesSend' => $this->getCookieKernel()->all(),
         ];
     }
 
