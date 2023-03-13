@@ -4087,7 +4087,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/yusam-hub/redis-ext.git",
-                "reference": "c72c8c0c882e8ff628dd7184e73e63a2b8bbffd3"
+                "reference": "d7497d3560a5889f9062cdfc07b281d093bf3620"
             },
             "require": {
                 "ext-json": "*",
@@ -4112,7 +4112,7 @@
                 "files": []
             },
             "description": "yusam-hub/redis-ext",
-            "time": "2023-03-11T10:36:34+00:00"
+            "time": "2023-03-13T10:38:25+00:00"
         },
         {
             "name": "yusam-hub/smarty-ext",

@@ -16,6 +16,8 @@ class SessionStorageRedis implements SessionStorageInterface
     const REDIS_CONNECTION_NAME = 'session';
     const COOKIE_SESSION_NAME = 'session';
 
+    const COOKIE_SESSION_TTL = 3600 * 24 * 60; // 60 дней
+
     protected Request $request;
     protected CookieKernel $cookieKernel;
     protected RedisKernel $redisKernel;
@@ -62,9 +64,9 @@ class SessionStorageRedis implements SessionStorageInterface
                 $this->redisKernel->redisExt(self::REDIS_CONNECTION_NAME)->del($this->sessionId);
             }
             $this->sessionId = $id;
-            $this->cookieKernel->set(self::COOKIE_SESSION_NAME, $this->sessionId);
+            $this->cookieKernel->set(self::COOKIE_SESSION_NAME, $this->sessionId, time() + self::COOKIE_SESSION_TTL);
             if (!empty($saveAttributes)) {
-                $this->redisKernel->redisExt(self::REDIS_CONNECTION_NAME)->put($this->sessionId, $saveAttributes);
+                $this->redisKernel->redisExt(self::REDIS_CONNECTION_NAME)->put($this->sessionId, $saveAttributes, self::COOKIE_SESSION_TTL);
             }
         }
     }
@@ -87,7 +89,7 @@ class SessionStorageRedis implements SessionStorageInterface
     public function save()
     {
         $attributes = $this->attributeBag->all();
-        $this->redisKernel->redisExt(self::REDIS_CONNECTION_NAME)->put($this->sessionId, $attributes);
+        $this->redisKernel->redisExt(self::REDIS_CONNECTION_NAME)->put($this->sessionId, $attributes, self::COOKIE_SESSION_TTL);
     }
 
     public function clear()
