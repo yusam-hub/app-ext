@@ -48,10 +48,6 @@ class ControllerResolverKernel
         $this->resolveController = parent::instantiateController($class);
 
         if ($this->resolveController instanceof GetSetHttpControllerInterface) {
-            $cookieKernel = new CookieKernel();
-            $this->resolveController->setCookieKernel($cookieKernel);
-            $this->request->setSession(new SessionRedis($this->request, $cookieKernel));
-
             $dbKernel = new DbKernel();
             $dbKernel->setLogger($this->controllerKernel->getLogger());
             $dbKernel->setLoggerConsoleOutputEnabled($this->controllerKernel->getLoggerConsoleOutputEnabled());
@@ -63,6 +59,10 @@ class ControllerResolverKernel
             $redisKernel->setLoggerConsoleOutputEnabled($this->controllerKernel->getLoggerConsoleOutputEnabled());
             $redisKernel->setConsoleOutput($this->controllerKernel->getConsoleOutput());
             $this->resolveController->setRedisKernel($redisKernel);
+
+            $cookieKernel = new CookieKernel();
+            $this->resolveController->setCookieKernel($cookieKernel);
+            $this->request->setSession(new SessionRedis($this->request, $cookieKernel, $redisKernel));
 
             $this->resolveController->setLogger($this->controllerKernel->getLogger());
             $this->resolveController->setLoggerConsoleOutputEnabled($this->controllerKernel->getLoggerConsoleOutputEnabled());

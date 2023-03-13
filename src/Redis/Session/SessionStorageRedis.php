@@ -2,69 +2,90 @@
 
 namespace YusamHub\AppExt\Redis\Session;
 
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionBagInterface;
 use Symfony\Component\HttpFoundation\Session\Storage\SessionStorageInterface;
+use YusamHub\AppExt\Redis\RedisKernel;
+use YusamHub\AppExt\SymfonyExt\CookieKernel;
+use YusamHub\Debug\Debug;
 
 class SessionStorageRedis implements SessionStorageInterface
 {
+    const REDIS_CONNECTION_NAME = 'session';
+
+    protected Request $request;
+    protected CookieKernel $cookieKernel;
+    protected RedisKernel $redisKernel;
+    protected AttributeBagRedis $attributeBag;
+    public function __construct(Request $request, CookieKernel $cookieKernel, RedisKernel $redisKernel)
+    {
+        $this->request = $request;
+        $this->cookieKernel = $cookieKernel;
+        $this->redisKernel = $redisKernel;
+        $this->attributeBag = new AttributeBagRedis($this->redisKernel->redisExt(self::REDIS_CONNECTION_NAME));
+    }
+
     public function start()
     {
-        // TODO: Implement start() method.
+        Debug::instance()->logPrint('debug',__METHOD__);
     }
 
     public function isStarted()
     {
-        // TODO: Implement isStarted() method.
+        Debug::instance()->logPrint('debug',__METHOD__);
+        return true;
     }
 
     public function getId()
     {
-        // TODO: Implement getId() method.
+        Debug::instance()->logPrint('debug',__METHOD__);
+        return __METHOD__;
     }
 
     public function setId(string $id)
     {
-        // TODO: Implement setId() method.
+        Debug::instance()->logPrint('debug',__METHOD__, $id);
     }
 
     public function getName()
     {
-        // TODO: Implement getName() method.
+        Debug::instance()->logPrint('debug',__METHOD__);
+        return __METHOD__;
     }
 
     public function setName(string $name)
     {
-        // TODO: Implement setName() method.
+        Debug::instance()->logPrint('debug',__METHOD__, $name);
     }
 
     public function regenerate(bool $destroy = false, int $lifetime = null)
     {
-        // TODO: Implement regenerate() method.
+        Debug::instance()->logPrint('debug',__METHOD__, $destroy, $lifetime);
     }
 
     public function save()
     {
-        // TODO: Implement save() method.
+        Debug::instance()->logPrint('debug',__METHOD__);
     }
 
     public function clear()
     {
-        // TODO: Implement clear() method.
+        Debug::instance()->logPrint('debug',__METHOD__);
     }
 
     public function getBag(string $name)
     {
-        return new AttributeBagRedis();
+        return $this->attributeBag;
     }
 
     public function registerBag(SessionBagInterface $bag)
     {
-        // TODO: Implement registerBag() method.
+
     }
 
     public function getMetadataBag()
     {
-        // TODO: Implement getMetadataBag() method.
+        //Debug::instance()->logPrint('debug',__METHOD__);
     }
 
 }

@@ -262,11 +262,18 @@ class DebugController extends BaseHttpController implements ControllerMiddleware
      */
     public function actionTestSession(Request $request): array
     {
+        $sessionGet = $request->getSession()->all();
+
+        $request->getSession()->set("ts",time());
+
+        $sessionSet = $request->getSession()->all();
+
+        $request->getSession()->save();
         return [
-            'hasSession' => $request->hasSession(),
-            'getSession' => $request->getSession()->all(),
-            'cookiesRead' => $request->cookies->all(),
-            'cookiesSend' => $this->getCookieKernel()->all(),
+            'sessionGet' => $sessionGet,
+            'sessionSet' => $sessionSet,
+            'cookiesGet' => $request->cookies->all(),
+            'cookiesSet' => $this->getCookieKernel()->all(),
         ];
     }
 
@@ -291,8 +298,8 @@ class DebugController extends BaseHttpController implements ControllerMiddleware
         $this->getCookieKernel()->set('ts', time());
         $this->getCookieKernel()->set('dt', date(DATE_TIME_APP_EXT_FORMAT));
         return [
-            'cookiesRead' => $request->cookies->all(),
-            'cookiesSend' => $this->getCookieKernel()->all()
+            'cookiesGet' => $request->cookies->all(),
+            'cookiesSet' => $this->getCookieKernel()->all()
         ];
     }
 }
