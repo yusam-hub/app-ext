@@ -10,6 +10,10 @@
 
     "repositories": {
         ...
+        "yusam-hub/php-compatibility": {
+            "type": "git",
+            "url": "https://github.com/yusam-hub/php-compatibility.git"
+        },
         "yusam-hub/debug": {
             "type": "git",
             "url": "https://github.com/yusam-hub/debug.git"
@@ -50,6 +54,15 @@
     },
     "require": {
         ...
+        "yusam-hub/php-compatibility": "dev-master",
+        "yusam-hub/debug": "dev-master",
+        "yusam-hub/curl-ext": "dev-master",
+        "yusam-hub/db-ext": "dev-master",
+        "yusam-hub/json-ext": "dev-master",
+        "yusam-hub/captcha": "dev-master",
+        "yusam-hub/daemon": "dev-master",
+        "yusam-hub/redis-ext": "dev-master",
+        "yusam-hub/validator": "dev-master",
         "yusam-hub/app-ext": "dev-master"
         ...
     }

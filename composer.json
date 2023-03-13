@@ -4,6 +4,10 @@
     "type": "package",
     "minimum-stability": "stable",
     "repositories": {
+        "yusam-hub/php-compatibility": {
+            "type": "git",
+            "url": "https://github.com/yusam-hub/php-compatibility.git"
+        },
         "yusam-hub/debug": {
             "type": "git",
             "url": "https://github.com/yusam-hub/debug.git"
@@ -46,6 +50,7 @@
         "ext-pdo": "*",
         "ext-redis": "*",
 
+        "yusam-hub/php-compatibility": "dev-master",
         "yusam-hub/debug": "dev-master",
         "yusam-hub/curl-ext": "dev-master",
         "yusam-hub/db-ext": "dev-master",
@@ -71,7 +76,9 @@
         "clue/mq-react": "^1.5",
 
         "zircote/swagger-php": "^3.3",
-        "swagger-api/swagger-ui": "^3.5"
+        "swagger-api/swagger-ui": "^3.5",
+
+        "smarty/smarty": "^4.3"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.5"
