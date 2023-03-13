@@ -8,7 +8,6 @@ use React\Http\Message\Response;
 use React\Promise\Promise;
 use Symfony\Component\HttpFoundation\Request;
 use YusamHub\AppExt\ReactHttpServer\ReactHttpServer;
-use YusamHub\AppExt\Redis\Session\SessionRedis;
 use YusamHub\AppExt\SymfonyExt\ControllerKernel;
 
 class RoutesMiddleware

@@ -1,6 +1,6 @@
 <?php
 
-namespace YusamHub\AppExt\Redis\Session;
+namespace YusamHub\AppExt\SymfonyExt\Session;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionBagInterface;
@@ -8,8 +8,6 @@ use Symfony\Component\HttpFoundation\Session\Storage\MetadataBag;
 use Symfony\Component\HttpFoundation\Session\Storage\SessionStorageInterface;
 use YusamHub\AppExt\Redis\RedisKernel;
 use YusamHub\AppExt\SymfonyExt\CookieKernel;
-use YusamHub\Debug\Debug;
-use YusamHub\RedisExt\RedisExt;
 
 class SessionStorageRedis implements SessionStorageInterface
 {
@@ -36,6 +34,11 @@ class SessionStorageRedis implements SessionStorageInterface
 
     public function start()
     {
+        /**
+         * todo:
+         *      1) нужно шифровать значения в куки
+         *      2) куки вечные, а сессия меяется, и когда меняется сессия, то меняется и куки
+         */
         $this->sessionId = (string) $this->request->cookies->get(self::COOKIE_SESSION_NAME);
 
         if (empty($this->sessionId)) {

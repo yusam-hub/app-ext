@@ -1,6 +1,6 @@
 <?php
 
-namespace YusamHub\AppExt\Redis\Session;
+namespace YusamHub\AppExt\SymfonyExt\Session;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
