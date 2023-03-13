@@ -1,0 +1,2 @@
+VIEW {ts}
+{debug}

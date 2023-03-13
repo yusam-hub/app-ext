@@ -46,6 +46,10 @@
             "type": "git",
             "url": "https://github.com/yusam-hub/validator.git"
         },
+        "yusam-hub/smarty-ext": {
+            "type": "git",
+            "url": "https://github.com/yusam-hub/smarty-ext.git"
+        },
         "yusam-hub/app-ext": {
             "type": "git",
             "url": "https://github.com/yusam-hub/app-ext.git"
@@ -63,6 +67,7 @@
         "yusam-hub/daemon": "dev-master",
         "yusam-hub/redis-ext": "dev-master",
         "yusam-hub/validator": "dev-master",
+        "yusam-hub/smarty-ext": "dev-master",
         "yusam-hub/app-ext": "dev-master"
         ...
     }

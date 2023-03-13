@@ -8,6 +8,7 @@ use YusamHub\AppExt\DotArray;
 use YusamHub\AppExt\Env;
 use YusamHub\AppExt\Exceptions\Interfaces\AppExtRuntimeExceptionInterface;
 use YusamHub\AppExt\Redis\RedisKernel;
+use YusamHub\AppExt\Smarty\SmartyKernel;
 use YusamHub\AppExt\SymfonyExt\AppKernel;
 use YusamHub\DbExt\PdoExt;
 
@@ -41,6 +42,17 @@ if (! function_exists('app_ext_redis_global')) {
     function app_ext_redis_global(): RedisKernel
     {
         return RedisKernel::global();
+    }
+}
+
+if (! function_exists('app_ext_smarty_global')) {
+
+    /**
+     * @return SmartyKernel
+     */
+    function app_ext_smarty_global(): SmartyKernel
+    {
+        return SmartyKernel::global();
     }
 }
 

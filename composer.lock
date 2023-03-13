@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7d4a448382de8d7f714b04c7708e33e5",
+    "content-hash": "3f809987f55f9f8cf025503a56e71f52",
     "packages": [
         {
             "name": "bunny/bunny",
@@ -1844,29 +1844,29 @@
         },
         {
             "name": "smarty/smarty",
-            "version": "v4.3.0",
+            "version": "v3.1.47",
             "source": {
                 "type": "git",
                 "url": "https://github.com/smarty-php/smarty.git",
-                "reference": "c02e9e135ea719b91f457a0072748ded0e852e7d"
+                "reference": "a09364fe1706cb465e910eb040e592053d7effb8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/smarty-php/smarty/zipball/c02e9e135ea719b91f457a0072748ded0e852e7d",
-                "reference": "c02e9e135ea719b91f457a0072748ded0e852e7d",
+                "url": "https://api.github.com/repos/smarty-php/smarty/zipball/a09364fe1706cb465e910eb040e592053d7effb8",
+                "reference": "a09364fe1706cb465e910eb040e592053d7effb8",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.1 || ^8.0"
+                "php": "^5.2 || ^7.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^8.5 || ^7.5",
+                "phpunit/phpunit": "^7.5 || ^6.5 || ^5.7 || ^4.8",
                 "smarty/smarty-lexer": "^3.1"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "4.0.x-dev"
+                    "dev-master": "3.1.x-dev"
                 }
             },
             "autoload": {
@@ -1890,23 +1890,20 @@
                 {
                     "name": "Rodney Rehm",
                     "email": "rodney.rehm@medialize.de"
-                },
-                {
-                    "name": "Simon Wisselink",
-                    "homepage": "https://www.iwink.nl/"
                 }
             ],
             "description": "Smarty - the compiling PHP template engine",
-            "homepage": "https://smarty-php.github.io/smarty/",
+            "homepage": "http://www.smarty.net",
             "keywords": [
                 "templating"
             ],
             "support": {
-                "forum": "https://github.com/smarty-php/smarty/discussions",
+                "forum": "http://www.smarty.net/forums/",
+                "irc": "irc://irc.freenode.org/smarty",
                 "issues": "https://github.com/smarty-php/smarty/issues",
-                "source": "https://github.com/smarty-php/smarty/tree/v4.3.0"
+                "source": "https://github.com/smarty-php/smarty/tree/v3.1.47"
             },
-            "time": "2022-11-22T21:47:32+00:00"
+            "time": "2022-09-14T11:29:00+00:00"
         },
         {
             "name": "swagger-api/swagger-ui",
@@ -4118,6 +4115,39 @@
             "time": "2023-03-11T10:36:34+00:00"
         },
         {
+            "name": "yusam-hub/smarty-ext",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/yusam-hub/smarty-ext.git",
+                "reference": "5d1650a5a1fe6824858ff20224df5016ef6f66fd"
+            },
+            "require": {
+                "php": "^7.4|^8.0|^8.1|^8.2",
+                "smarty/smarty": "^3.1",
+                "yusam-hub/php-compatibility": "dev-master"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9.5"
+            },
+            "default-branch": true,
+            "type": "package",
+            "autoload": {
+                "psr-4": {
+                    "YusamHub\\SmartyExt\\": "src/"
+                },
+                "files": []
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "YusamHub\\SmartyExt\\Tests\\": "tests/"
+                },
+                "files": []
+            },
+            "description": "yusam-hub/smarty-ext",
+            "time": "2023-03-13T02:22:29+00:00"
+        },
+        {
             "name": "yusam-hub/validator",
             "version": "dev-master",
             "source": {
@@ -5966,6 +5996,7 @@
         "yusam-hub/daemon": 20,
         "yusam-hub/redis-ext": 20,
         "yusam-hub/validator": 20,
+        "yusam-hub/smarty-ext": 20,
         "bunny/bunny": 20
     },
     "prefer-stable": false,
