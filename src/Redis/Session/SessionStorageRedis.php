@@ -56,11 +56,16 @@ class SessionStorageRedis implements SessionStorageInterface
     public function setId(?string $id)
     {
         if ($this->sessionId !== $id) {
+            $saveAttributes = [];
             if (!is_null($this->sessionId) && $this->redisKernel->redisExt(self::REDIS_CONNECTION_NAME)->has($this->sessionId)) {
+                $saveAttributes = (array) $this->redisKernel->redisExt(self::REDIS_CONNECTION_NAME)->get($this->sessionId);
                 $this->redisKernel->redisExt(self::REDIS_CONNECTION_NAME)->del($this->sessionId);
             }
             $this->sessionId = $id;
             $this->cookieKernel->set(self::COOKIE_SESSION_NAME, $this->sessionId);
+            if (!empty($saveAttributes)) {
+                $this->redisKernel->redisExt(self::REDIS_CONNECTION_NAME)->put($this->sessionId, $saveAttributes);
+            }
         }
     }
 

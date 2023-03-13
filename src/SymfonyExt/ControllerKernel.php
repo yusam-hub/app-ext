@@ -140,6 +140,9 @@ class ControllerKernel
                     $response = new Response();
                 } else {
                     $response = $this->httpKernel->handle($this->request);
+                    if ($this->request->hasSession()) {
+                        $this->request->getSession()->save();
+                    }
                     $controllerResolverKernel->sendCookie($response->headers);
                 }
 

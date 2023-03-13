@@ -268,7 +268,6 @@ class DebugController extends BaseHttpController implements ControllerMiddleware
 
         $sessionSet = $request->getSession()->all();
 
-        $request->getSession()->save();
         return [
             'sessionGet' => $sessionGet,
             'sessionSet' => $sessionSet,
