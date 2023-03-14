@@ -47,7 +47,10 @@ class ControllerResolverKernel
     {
         $this->resolveController = parent::instantiateController($class);
 
-        if ($this->resolveController instanceof GetSetHttpControllerInterface) {
+        if ($this->resolveController instanceof GetSetHttpControllerInterface)
+        {
+            $this->resolveController->setRequest($this->request);
+
             $dbKernel = new DbKernel();
             $dbKernel->setLogger($this->controllerKernel->getLogger());
             $dbKernel->setLoggerConsoleOutputEnabled($this->controllerKernel->getLoggerConsoleOutputEnabled());

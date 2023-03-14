@@ -9,5 +9,6 @@ trait GetSetHttpControllerTrait
     use GetSetDbKernelTrait;
     use GetSetRedisKernelTrait;
     use GetSetCookieKernelTrait;
+    use GetSetRequestTrait;
 
 }

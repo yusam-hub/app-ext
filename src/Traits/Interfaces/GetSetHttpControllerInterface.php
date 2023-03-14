@@ -8,6 +8,7 @@ interface GetSetHttpControllerInterface
     GetSetDbKernelInterface,
     GetSetLoggerInterface,
     GetSetConsoleInterface,
-    GetSetCookieKernelInterface
+    GetSetCookieKernelInterface,
+    GetSetRequestInterface
 {
 }
