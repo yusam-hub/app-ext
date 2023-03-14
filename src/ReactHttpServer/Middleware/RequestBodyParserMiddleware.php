@@ -26,6 +26,7 @@ class RequestBodyParserMiddleware
     public function __invoke(ServerRequestInterface $request, $next)
     {
         $type = strtolower($request->getHeaderLine('Content-Type'));
+
         list ($type) = explode(';', $type);
 
         if ($type === 'application/x-www-form-urlencoded') {
