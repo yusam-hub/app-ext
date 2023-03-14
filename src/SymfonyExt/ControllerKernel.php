@@ -163,7 +163,13 @@ class ControllerKernel
                     $response->setContent(json_ext_json_encode_unescaped(json_ext_throwable($e)));
                     $response->headers->set("Content-Type", JSON_EXT_CONTENT_TYPE);
                 }
-
+            } catch (\SmartyException $e) {
+                if (app_ext_config('smarty-ext.debugException', false)) {
+                    $smartyExceptionContent = sprintf('<pre>%s</pre>', print_r(app_ext_get_error_context($e, true), true));
+                    $response = new Response($smartyExceptionContent, Response::HTTP_EXPECTATION_FAILED);
+                } else {
+                    throw $e;
+                }
             } catch (\Throwable $e) {
 
                 $this->error($e->getMessage(), app_ext_get_error_context($e, true));

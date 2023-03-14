@@ -24,4 +24,6 @@ return [
             ],
         ],
     ],
+
+    'debugException' => true,
 ];
