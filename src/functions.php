@@ -120,6 +120,20 @@ if (! function_exists('app_ext_env')) {
     }
 }
 
+if (! function_exists('app_ext_translate')) {
+
+    /**
+     * @param string|null $key
+     * @param array $replace
+     * @param string|null $locale
+     * @return string|array|null
+     */
+    function app_ext_translate(?string $key = null, array $replace = [], ?string $locale = null)
+    {
+        return sprintf("[%s]", $key);
+    }
+}
+
 if (! function_exists('app_ext_config')) {
 
     /**

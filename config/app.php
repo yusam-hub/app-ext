@@ -8,4 +8,6 @@ return [
     'publicDir' => realpath(__DIR__ .'/../public'),
     'storageDir' => realpath(__DIR__ .'/../storage'),
     'routesDir' => realpath(__DIR__ .'/../routes'),
+    'resourceDir' => realpath(__DIR__ .'/../resources'),
+    'translatesDir' => realpath(__DIR__ .'/../translates'),
 ];
