@@ -26,7 +26,7 @@ class DaemonWebSocketServerCommand extends BaseConsoleCommand
     {
         $server = app_ext_config('web-socket.serverDefault');
         $config = app_ext_config('web-socket.servers.' . $server);
-
+        \YusamHub\WebSocket\WebSocketFactory::setWebSocketServerClass($config['class']??'');
         $webSocketDaemon = \YusamHub\WebSocket\WebSocketFactory::newDaemon(
             \YusamHub\WebSocket\WebSocketFactory::newConfig($config['connection']),
             \YusamHub\WebSocket\WebSocketFactory::newOutput()

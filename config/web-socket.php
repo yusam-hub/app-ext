@@ -5,6 +5,7 @@ return [
 
     'servers' => [
         'default' => [
+            'class' =>  \YusamHub\WebSocket\WebSocketServer::class,
             'connection' => [
                 'bindAddress' => app_ext_env('WS_PING_PONG_HOST', '127.0.0.1'),
                 'bindPort' => app_ext_env('WS_PING_PONG_PORT', '8010'),
