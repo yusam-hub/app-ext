@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6ec06f040ba85b25d61da419058912ba",
+    "content-hash": "8eddbe646eac6ea77253c5ba7917f8ae",
     "packages": [
         {
             "name": "bunny/bunny",
@@ -4230,6 +4230,40 @@
             "time": "2023-02-28T00:13:43+00:00"
         },
         {
+            "name": "yusam-hub/helpers",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/yusam-hub/helpers.git",
+                "reference": "aba0752693db79fbc6def70c17824c8320f70bfa"
+            },
+            "require": {
+                "ext-json": "*",
+                "php": "^7.4|^8.0|^8.1|^8.2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9.5"
+            },
+            "default-branch": true,
+            "type": "package",
+            "autoload": {
+                "psr-4": {
+                    "YusamHub\\Helper\\": "src/"
+                },
+                "files": [
+                    "src/functions.php"
+                ]
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "YusamHub\\Helper\\Tests\\": "tests/"
+                },
+                "files": []
+            },
+            "description": "yusam-hub/helpers",
+            "time": "2023-03-16T15:03:34+00:00"
+        },
+        {
             "name": "yusam-hub/json-ext",
             "version": "dev-master",
             "source": {
@@ -4403,7 +4437,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/yusam-hub/web-socket.git",
-                "reference": "31c9cf91ccbdfc7bea22d74889107ec40e94a3fd"
+                "reference": "3d42e2b0cf9500ac82eb4d821b66bc6677676e97"
             },
             "require": {
                 "cboden/ratchet": "^0.4.4",
@@ -4439,7 +4473,7 @@
                 "files": []
             },
             "description": "yusam-hub/web-socket",
-            "time": "2023-03-16T02:26:45+00:00"
+            "time": "2023-03-16T02:29:10+00:00"
         },
         {
             "name": "zircote/swagger-php",
@@ -6261,6 +6295,7 @@
         "yusam-hub/validator": 20,
         "yusam-hub/smarty-ext": 20,
         "yusam-hub/web-socket": 20,
+        "yusam-hub/helpers": 20,
         "bunny/bunny": 20
     },
     "prefer-stable": false,

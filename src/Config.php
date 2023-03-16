@@ -2,6 +2,8 @@
 
 namespace YusamHub\AppExt;
 
+use YusamHub\Helper\DotArray;
+
 class Config
 {
     public static string $CONFIG_DIR = "";
@@ -42,9 +44,9 @@ class Config
         if (!isset($this->dotList[$fileKey])) {
             $fullFilename = realpath(rtrim($this::$CONFIG_DIR, DIRECTORY_SEPARATOR)) . DIRECTORY_SEPARATOR . $fileKey . ".php";
             if (file_exists($fullFilename)) {
-                $this->dotList[$fileKey] = app_ext_dot_array(include $fullFilename);
+                $this->dotList[$fileKey] = helper_dot_array(include $fullFilename);
             } else {
-                $this->dotList[$fileKey] = app_ext_dot_array([]);
+                $this->dotList[$fileKey] = helper_dot_array([]);
             }
         }
     }

@@ -47,6 +47,10 @@
         "yusam-hub/web-socket": {
             "type": "git",
             "url": "https://github.com/yusam-hub/web-socket.git"
+        },
+        "yusam-hub/helpers": {
+            "type": "git",
+            "url": "https://github.com/yusam-hub/helpers.git"
         }
     },
     "require": {
@@ -69,6 +73,7 @@
         "yusam-hub/validator": "dev-master",
         "yusam-hub/smarty-ext": "dev-master",
         "yusam-hub/web-socket": "dev-master",
+        "yusam-hub/helpers": "dev-master",
 
         "psr/log": "^1.1",
 

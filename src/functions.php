@@ -4,7 +4,6 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use YusamHub\AppExt\Config;
 use YusamHub\AppExt\Db\DbKernel;
-use YusamHub\AppExt\DotArray;
 use YusamHub\AppExt\Env;
 use YusamHub\AppExt\Exceptions\Interfaces\AppExtRuntimeExceptionInterface;
 use YusamHub\AppExt\Redis\RedisKernel;
@@ -86,18 +85,6 @@ if (! function_exists('app_ext_logger')) {
     function app_ext_logger(?string $channel = null, array $extra = []): LoggerInterface
     {
         return \YusamHub\AppExt\Logging::instance()->channel($channel, $extra);
-    }
-}
-
-if (! function_exists('app_ext_dot_array')) {
-
-    /**
-     * @param DotArray|array|mixed $value
-     * @return DotArray
-     */
-    function app_ext_dot_array($value): DotArray
-    {
-        return new DotArray($value);
     }
 }
 
