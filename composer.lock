@@ -4403,7 +4403,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/yusam-hub/web-socket.git",
-                "reference": "ac7e1e95e1463d7abd85be3dba52ca1ee240971e"
+                "reference": "31c9cf91ccbdfc7bea22d74889107ec40e94a3fd"
             },
             "require": {
                 "cboden/ratchet": "^0.4.4",
@@ -4416,7 +4416,8 @@
                 "ext-zmq": "*",
                 "php": "^7.4|^8.0|^8.1|^8.2",
                 "ratchet/pawl": "^0.4.1",
-                "react/zmq": "^0.4.0"
+                "react/zmq": "^0.4.0",
+                "yusam-hub/php-compatibility": "dev-master"
             },
             "require-dev": {
                 "phpunit/phpunit": "^9.5"
@@ -4438,7 +4439,7 @@
                 "files": []
             },
             "description": "yusam-hub/web-socket",
-            "time": "2023-03-16T00:28:51+00:00"
+            "time": "2023-03-16T02:26:45+00:00"
         },
         {
             "name": "zircote/swagger-php",
