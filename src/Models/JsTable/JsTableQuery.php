@@ -1,6 +1,6 @@
 <?php
 
-namespace YusamHub\AppExt\JsTable;
+namespace YusamHub\AppExt\Models\JsTable;
 
 use YusamHub\Helper\Numeric;
 use YusamHub\JsonExt\JsonObject;
