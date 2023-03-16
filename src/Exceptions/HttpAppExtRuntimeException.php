@@ -9,9 +9,12 @@ class HttpAppExtRuntimeException extends AppExtRuntimeException implements HttpA
 {
     protected int $statusCode = Response::HTTP_INTERNAL_SERVER_ERROR;
 
-    public function __construct(array $data = [], \Throwable $previous = null)
+    public function __construct(array $data = [], string $message = '', \Throwable $previous = null)
     {
-        parent::__construct(Response::$statusTexts[$this->statusCode], $data, 0, $previous);
+        if (empty($message)) {
+            $message = Response::$statusTexts[$this->statusCode];
+        }
+        parent::__construct($message, $data, 0, $previous);
     }
 
     public function getStatusCode(): int
