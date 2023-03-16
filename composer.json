@@ -43,6 +43,10 @@
         "yusam-hub/smarty-ext": {
             "type": "git",
             "url": "https://github.com/yusam-hub/smarty-ext.git"
+        },
+        "yusam-hub/web-socket": {
+            "type": "git",
+            "url": "https://github.com/yusam-hub/web-socket.git"
         }
     },
     "require": {
@@ -64,6 +68,7 @@
         "yusam-hub/redis-ext": "dev-master",
         "yusam-hub/validator": "dev-master",
         "yusam-hub/smarty-ext": "dev-master",
+        "yusam-hub/web-socket": "dev-master",
 
         "psr/log": "^1.1",
 
