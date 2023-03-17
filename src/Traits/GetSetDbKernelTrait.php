@@ -6,7 +6,7 @@ use YusamHub\AppExt\Db\DbKernel;
 
 trait GetSetDbKernelTrait
 {
-    private ?DbKernel $dbKernel = null;
+    protected ?DbKernel $dbKernel = null;
 
     public function hasDbKernel(): bool
     {

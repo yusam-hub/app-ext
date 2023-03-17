@@ -3,93 +3,31 @@
 namespace YusamHub\AppExt\Db\Model;
 
 use YusamHub\AppExt\Db\DbKernel;
-use YusamHub\AppExt\Exceptions\AppExtRuntimeException;
 use YusamHub\AppExt\Traits\GetSetDbKernelTrait;
 use YusamHub\AppExt\Traits\Interfaces\GetSetDbKernelInterface;
+use YusamHub\DbExt\Interfaces\PdoExtModelInterface;
+use YusamHub\DbExt\Traits\PdoExtModelTrait;
 use YusamHub\JsonExt\JsonObject;
 use YusamHub\Validator\Validator;
 
 abstract class DbModel
     extends JsonObject
-    implements GetSetDbKernelInterface
+    implements GetSetDbKernelInterface, PdoExtModelInterface
 {
+    use PdoExtModelTrait;
     use GetSetDbKernelTrait;
+
     protected ?string $connectionName = null;
-    protected string $tableName;
-    protected string $primaryKey = 'id';
-    protected array $originalValues = [];
 
     protected array $rules = [];
     protected array $ruleMessages = [];
 
-    /**
-     * @param DbKernel $dbKernel
-     * @param $pk
-     * @return DbModel|null|object
-     * @throws \ReflectionException
-     */
-    public static function findModel(DbKernel $dbKernel, $pk)
+    public function setDbKernel(?DbKernel $dbKernel): void
     {
-        $model = new static();
-        $row = $dbKernel->pdoExt($model->connectionName)
-            ->findModel(get_class($model), $model->tableName, $model->primaryKey, $pk);
-        if ($row instanceof DbModel) {
-            $row->setDbKernel($dbKernel);
-            $row->triggerAfterLoad();
-            return $row;
+        $this->dbKernel = $dbKernel;
+        if (!is_null($this->dbKernel)) {
+            $this->pdoExt = $this->dbKernel->pdoExt($this->connectionName);
         }
-        return null;
-    }
-
-    /**
-     * @param DbKernel $dbKernel
-     * @param array $attributes
-     * @return DbModel|null|object
-     * @throws \ReflectionException
-     */
-    public static function findModelByAttributes(DbKernel $dbKernel, array $attributes)
-    {
-        $model = new static();
-        $row = $dbKernel->pdoExt($model->connectionName)
-            ->findModelByAttributes(get_class($model), $model->tableName, $attributes);
-        if ($row instanceof DbModel) {
-            $row->setDbKernel($dbKernel);
-            $row->triggerAfterLoad();
-            return $row;
-        }
-        return null;
-    }
-
-    /**
-     * @param DbKernel $dbKernel
-     * @param $pk
-     * @return object|DbModel
-     * @throws \ReflectionException
-     */
-    public static function findModelOrFail(DbKernel $dbKernel, $pk)
-    {
-        $model = static::findModel($dbKernel, $pk);
-        if (is_null($model)) {
-            throw new AppExtRuntimeException("Model not found", [
-                (new static())->primaryKey => $pk,
-            ]);
-        }
-        return $model;
-    }
-
-    /**
-     * @param DbKernel $dbKernel
-     * @param array $attributes
-     * @return DbModel|null|object
-     * @throws \ReflectionException
-     */
-    public static function findModelByAttributesOrFail(DbKernel $dbKernel, array $attributes)
-    {
-        $model = static::findModelByAttributes($dbKernel, $attributes);
-        if (is_null($model)) {
-            throw new AppExtRuntimeException("Model not found", $attributes);
-        }
-        return $model;
     }
 
     /**
@@ -100,7 +38,7 @@ abstract class DbModel
     public function validate(&$errors): bool
     {
         $validator = new Validator();
-        $validator->setAttributes($this->toArray());
+        $validator->setAttributes($this->getAttributes());
         $validator->setRules($this->rules);
         $validator->setRuleMessages($this->ruleMessages);
         $result = $validator->validate();
@@ -108,94 +46,18 @@ abstract class DbModel
         return $result;
     }
 
-    /**
-     * @return bool
-     * @throws \ReflectionException
-     */
-    public function save(): bool
+    public function import($source, array $filterKeys = []): void
     {
-        /**
-         * INSERT
-         */
-        if (empty($this->{$this->primaryKey})) {
-
-            $this->triggerBeforeInsert();
-
-            $primaryValue = $this->getDbKernel()->pdoExt($this->connectionName)->insertReturnId(
-                    $this->tableName,
-                    $this->toArray()
-                );
-
-            if (!empty($primaryValue)) {
-                $this->{$this->primaryKey} = $primaryValue;
-            }
-
-            if (app_ext_db_global()->pdoExt($this->connectionName)->affectedRows() === 1) {
-
-                $this->originalValues = $this->toArray();
-
-                $this->triggerAfterSave(true);
-
-                return true;
-            }
-
-            $this->triggerAfterSave(false);
-
-            return false;
-        }
-        /**
-         * UPDATE
-         */
-        $changedValues = array_diff_assoc($this->toArray(), $this->originalValues);
-
-        if (isset($changedValues[$this->primaryKey])) {
-            unset($changedValues[$this->primaryKey]);
-        }
-
-        if (empty($changedValues)) {
-            return true;
-        }
-
-        $this->triggerBeforeUpdate();
-
-        $result = $this->getDbKernel()->pdoExt($this->connectionName)->update(
-                $this->tableName,
-                $changedValues,
-                [
-                    $this->primaryKey => $this->{$this->primaryKey}
-                ],
-                1
-            );
-
-        if ($result) {
-            $this->originalValues = $this->toArray();
-        }
-
-        $this->triggerAfterSave($result);
-
-        return $result;
-    }
-
-    protected function triggerBeforeUpdate(): void
-    {
-
-    }
-
-    protected function triggerBeforeInsert(): void
-    {
-
-    }
-
-    protected function triggerAfterSave(bool $saveResult): void
-    {
-
+        $this->savedAttributes = [];
+        parent::import($source, $filterKeys);
     }
 
     /**
+     * @return array
      * @throws \ReflectionException
      */
-    protected function triggerAfterLoad(): void
+    public function getAttributes(): array
     {
-        $this->originalValues = $this->toArray();
+        return $this->toArray();
     }
 }

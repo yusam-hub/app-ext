@@ -25,9 +25,11 @@ class ApiUserModel extends DbModel implements ApiAuthorizeModelInterface
     public string $createdAt;
     public ?string $modifiedAt = null;
 
-    protected function triggerBeforeInsert(): void
+    protected function triggerBeforeSave(int $triggerType): void
     {
-        $this->createdAt = date(DATE_TIME_APP_EXT_FORMAT);
+        if ($triggerType === self::TRIGGER_TYPE_SAVE_ON_INSERT) {
+            $this->createdAt = date(DATE_TIME_APP_EXT_FORMAT);
+        }
     }
 
     public function getAuthorizeIdentifierAsInt(): int
