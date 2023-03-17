@@ -2,33 +2,29 @@
 
 namespace YusamHub\AppExt\Db\Model;
 
-use YusamHub\AppExt\Db\DbKernel;
-use YusamHub\AppExt\Traits\GetSetDbKernelTrait;
-use YusamHub\AppExt\Traits\Interfaces\GetSetDbKernelInterface;
+use YusamHub\DbExt\Interfaces\PdoExtKernelInterface;
 use YusamHub\DbExt\Interfaces\PdoExtModelInterface;
+use YusamHub\DbExt\Traits\GetSetPdoExtKernelTrait;
 use YusamHub\DbExt\Traits\PdoExtModelTrait;
 use YusamHub\JsonExt\JsonObject;
 use YusamHub\Validator\Validator;
 
-abstract class DbModel
-    extends JsonObject
-    implements GetSetDbKernelInterface, PdoExtModelInterface
+/**
+ * @method static PdoExtModel|null findModel(PdoExtKernelInterface $pdoExtKernel, $pk)
+ * @method static PdoExtModel findModelOrFail(PdoExtKernelInterface $pdoExtKernel, $pk)
+ * @method static PdoExtModel|null findModelByAttributes(PdoExtKernelInterface $pdoExtKernel, array $attributes)
+ * @method static PdoExtModel findModelByAttributesOrFail(PdoExtKernelInterface $pdoExtKernel, array $attributes)
+ */
+abstract class PdoExtModel extends JsonObject implements \YusamHub\DbExt\Interfaces\GetSetPdoExtKernelInterface, PdoExtModelInterface
 {
+    use GetSetPdoExtKernelTrait;
     use PdoExtModelTrait;
-    use GetSetDbKernelTrait;
+
 
     protected ?string $connectionName = null;
 
     protected array $rules = [];
     protected array $ruleMessages = [];
-
-    public function setDbKernel(?DbKernel $dbKernel): void
-    {
-        $this->dbKernel = $dbKernel;
-        if (!is_null($this->dbKernel)) {
-            $this->pdoExt = $this->dbKernel->pdoExt($this->connectionName);
-        }
-    }
 
     /**
      * @param $errors

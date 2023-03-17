@@ -5,7 +5,7 @@ namespace YusamHub\AppExt\SymfonyExt;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpKernel\Controller\ControllerResolver;
-use YusamHub\AppExt\Db\DbKernel;
+use YusamHub\AppExt\Db\PdoExtKernel;
 use YusamHub\AppExt\Redis\RedisKernel;
 use YusamHub\AppExt\SymfonyExt\Http\Controllers\BaseHttpController;
 use YusamHub\AppExt\SymfonyExt\Http\Interfaces\ControllerMiddlewareInterface;
@@ -51,11 +51,11 @@ class ControllerResolverKernel
         {
             $this->resolveController->setRequest($this->request);
 
-            $dbKernel = new DbKernel();
-            $dbKernel->setLogger($this->controllerKernel->getLogger());
-            $dbKernel->setLoggerConsoleOutputEnabled($this->controllerKernel->getLoggerConsoleOutputEnabled());
-            $dbKernel->setConsoleOutput($this->controllerKernel->getConsoleOutput());
-            $this->resolveController->setDbKernel($dbKernel);
+            $pdoExtKernel = new PdoExtKernel();
+            $pdoExtKernel->setLogger($this->controllerKernel->getLogger());
+            $pdoExtKernel->setLoggerConsoleOutputEnabled($this->controllerKernel->getLoggerConsoleOutputEnabled());
+            $pdoExtKernel->setConsoleOutput($this->controllerKernel->getConsoleOutput());
+            $this->resolveController->setPdoExtKernel($pdoExtKernel);
 
             $redisKernel = new RedisKernel();
             $redisKernel->setLogger($this->controllerKernel->getLogger());

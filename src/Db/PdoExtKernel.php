@@ -8,9 +8,8 @@ use YusamHub\AppExt\Traits\Interfaces\GetSetConsoleInterface;
 use YusamHub\AppExt\Traits\Interfaces\GetSetLoggerInterface;
 use YusamHub\DbExt\Interfaces\PdoExtInterface;
 use YusamHub\DbExt\Interfaces\PdoExtKernelInterface;
-use YusamHub\DbExt\PdoExtKernel;
 
-class DbKernel extends PdoExtKernel implements GetSetLoggerInterface, GetSetConsoleInterface
+class PdoExtKernel extends \YusamHub\DbExt\PdoExtKernel implements GetSetLoggerInterface, GetSetConsoleInterface
 {
     use GetSetLoggerTrait;
     use GetSetConsoleTrait;

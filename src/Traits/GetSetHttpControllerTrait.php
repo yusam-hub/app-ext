@@ -2,11 +2,13 @@
 
 namespace YusamHub\AppExt\Traits;
 
+use YusamHub\DbExt\Traits\GetSetPdoExtKernelTrait;
+
 trait GetSetHttpControllerTrait
 {
     use GetSetConsoleTrait;
     use GetSetLoggerTrait;
-    use GetSetDbKernelTrait;
+    use GetSetPdoExtKernelTrait;
     use GetSetRedisKernelTrait;
     use GetSetCookieKernelTrait;
     use GetSetRequestTrait;

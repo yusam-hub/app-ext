@@ -2,10 +2,12 @@
 
 namespace YusamHub\AppExt\Traits\Interfaces;
 
+use YusamHub\DbExt\Interfaces\GetSetPdoExtKernelInterface;
+
 interface GetSetHttpControllerInterface
     extends
     GetSetRedisKernelInterface,
-    GetSetDbKernelInterface,
+    GetSetPdoExtKernelInterface,
     GetSetLoggerInterface,
     GetSetConsoleInterface,
     GetSetCookieKernelInterface,

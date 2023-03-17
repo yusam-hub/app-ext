@@ -3,12 +3,13 @@
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use YusamHub\AppExt\Config;
-use YusamHub\AppExt\Db\DbKernel;
+use YusamHub\AppExt\Db\PdoExtKernel;
 use YusamHub\AppExt\Env;
 use YusamHub\AppExt\Exceptions\Interfaces\AppExtRuntimeExceptionInterface;
 use YusamHub\AppExt\Redis\RedisKernel;
 use YusamHub\AppExt\Smarty\SmartyKernel;
 use YusamHub\AppExt\SymfonyExt\AppKernel;
+use YusamHub\DbExt\Interfaces\PdoExtKernelInterface;
 use YusamHub\DbExt\PdoExt;
 
 if (! function_exists('app_ext')) {
@@ -25,11 +26,11 @@ if (! function_exists('app_ext')) {
 if (! function_exists('app_ext_db_global')) {
 
     /**
-     * @return DbKernel
+     * @return PdoExtKernelInterface
      */
-    function app_ext_db_global(): DbKernel
+    function app_ext_db_global(): PdoExtKernelInterface
     {
-        return DbKernel::global();
+        return PdoExtKernel::global();
     }
 }
 

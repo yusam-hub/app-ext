@@ -33,7 +33,7 @@ return [
             return intval($debugTokens[$tokenValue]);
         }
 
-        $apiUserModel = \YusamHub\AppExt\Db\Model\ApiUserModel::findModelByAttributes($httpController->getDbKernel(), ['apiToken' => $tokenValue]);
+        $apiUserModel = \YusamHub\AppExt\Db\Model\ApiUserModel::findModelByAttributes($httpController->getPdoExtKernel(), ['apiToken' => $tokenValue]);
         if (!is_null($apiUserModel)) {
             return $apiUserModel;
         }
