@@ -111,39 +111,25 @@ if (! function_exists('app_ext_env')) {
 if (! function_exists('app_ext_locale')) {
 
     /**
-     * @return string
+     * @return \YusamHub\AppExt\Locale
      */
-    function app_ext_locale(): string
+    function app_ext_locale(): \YusamHub\AppExt\Locale
     {
-        return app_ext_config('locales.default');
-    }
-}
-
-if (! function_exists('app_ext_locales')) {
-
-    /**
-     * @return array
-     */
-    function app_ext_locales(): array
-    {
-        return app_ext_config('locales.locales');
+        return \YusamHub\AppExt\Locale::instance();
     }
 }
 
 if (! function_exists('app_ext_translate')) {
 
     /**
-     * @param string|null $key
+     * @param string $dotKey
      * @param array $replace
      * @param string|null $locale
-     * @return string|array|null
+     * @return string
      */
-    function app_ext_translate(?string $key = null, array $replace = [], ?string $locale = null)
+    function app_ext_translate(string $dotKey, array $replace = [], ?string $locale = null)
     {
-        if (empty($locale) || !in_array($locale, app_ext_locales())) {
-            $locale = app_ext_locale();
-        }
-        return sprintf("%s:[%s]", $locale, $key);
+        return \YusamHub\AppExt\Translate::instance()->translate($dotKey, $replace, $locale);
     }
 }
 

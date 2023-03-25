@@ -7,6 +7,8 @@ use Dotenv\Repository\RepositoryInterface;
 class Env
 {
     protected static ?Env $instance = null;
+    protected static ?string $envFile = null;
+    protected static ?string $envDir = null;
 
     /**
      * @param string|null $envDir
@@ -28,8 +30,6 @@ class Env
      */
     protected ?RepositoryInterface $repository = null;
 
-    protected ?string $envFile = null;
-    protected ?string $envDir = null;
 
     /**
      * @param string|null $envDir
@@ -38,10 +38,10 @@ class Env
     public function __construct(?string $envDir = null, ?string $envFile = '.env')
     {
         if (!is_null($envDir)) {
-            $this->envDir = $envDir;
+            $this::$envDir = $envDir;
         }
         if (!is_null($envFile)) {
-            $this->envFile = $envFile;
+            $this::$envFile = $envFile;
         }
     }
 
@@ -55,7 +55,7 @@ class Env
                 ->immutable()
                 ->make();
 
-            \Dotenv\Dotenv::create($this->repository, realpath(rtrim($this->envDir, DIRECTORY_SEPARATOR)), $this->envFile)->safeLoad();
+            \Dotenv\Dotenv::create($this->repository, realpath(rtrim($this::$envDir, DIRECTORY_SEPARATOR)), $this::$envFile)->safeLoad();
         }
     }
 

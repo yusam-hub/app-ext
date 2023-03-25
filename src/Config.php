@@ -8,6 +8,7 @@ class Config
 {
 
     protected static ?Config $instance = null;
+    protected static ?string $configDir = null;
 
     /**
      * @param string|null $configDir
@@ -23,8 +24,6 @@ class Config
         return self::$instance ;
     }
 
-    protected ?string $configDir = null;
-
     /**
      * @var DotArray[]
      */
@@ -36,7 +35,7 @@ class Config
     public function __construct(?string $configDir = null)
     {
         if (!is_null($configDir)) {
-            $this->configDir = $configDir;
+            $this::$configDir = $configDir;
         }
     }
 
@@ -55,7 +54,7 @@ class Config
             throw new \RuntimeException(sprintf("FileKey [%s] not found", $fileKey));
         }
         if (!isset($this->dotList[$fileKey])) {
-            $fullFilename = realpath(rtrim($this->configDir, DIRECTORY_SEPARATOR)) . DIRECTORY_SEPARATOR . $fileKey . ".php";
+            $fullFilename = realpath(rtrim($this::$configDir, DIRECTORY_SEPARATOR)) . DIRECTORY_SEPARATOR . $fileKey . ".php";
             if (file_exists($fullFilename)) {
                 $this->dotList[$fileKey] = helper_dot_array(include $fullFilename);
             } else {
