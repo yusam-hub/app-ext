@@ -6,18 +6,18 @@ use Dotenv\Repository\RepositoryInterface;
 
 class Env
 {
-    public static string $ENV_DIR = '';
-    public static string $ENV_FILE = '.env';
     protected static ?Env $instance = null;
 
     /**
+     * @param string|null $envDir
+     * @param string|null $envFile
      * @return Env
      */
-    public static function instance(): Env
+    public static function instance(?string $envDir = null, ?string $envFile = '.env'): Env
     {
         if (is_null(self::$instance)) {
 
-            self::$instance = new static();
+            self::$instance = new static($envDir, $envFile);
         }
 
         return self::$instance ;
@@ -27,6 +27,23 @@ class Env
      * @var RepositoryInterface|null
      */
     protected ?RepositoryInterface $repository = null;
+
+    protected ?string $envFile = null;
+    protected ?string $envDir = null;
+
+    /**
+     * @param string|null $envDir
+     * @param string|null $envFile
+     */
+    public function __construct(?string $envDir = null, ?string $envFile = '.env')
+    {
+        if (!is_null($envDir)) {
+            $this->envDir = $envDir;
+        }
+        if (!is_null($envFile)) {
+            $this->envFile = $envFile;
+        }
+    }
 
     /**
      * @return void
@@ -38,7 +55,7 @@ class Env
                 ->immutable()
                 ->make();
 
-            \Dotenv\Dotenv::create($this->repository, realpath(rtrim($this::$ENV_DIR, DIRECTORY_SEPARATOR)), $this::$ENV_FILE)->safeLoad();
+            \Dotenv\Dotenv::create($this->repository, realpath(rtrim($this->envDir, DIRECTORY_SEPARATOR)), $this->envFile)->safeLoad();
         }
     }
 

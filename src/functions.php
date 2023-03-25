@@ -108,6 +108,28 @@ if (! function_exists('app_ext_env')) {
     }
 }
 
+if (! function_exists('app_ext_locale')) {
+
+    /**
+     * @return string
+     */
+    function app_ext_locale(): string
+    {
+        return app_ext_config('locales.default');
+    }
+}
+
+if (! function_exists('app_ext_locales')) {
+
+    /**
+     * @return array
+     */
+    function app_ext_locales(): array
+    {
+        return app_ext_config('locales.locales');
+    }
+}
+
 if (! function_exists('app_ext_translate')) {
 
     /**
@@ -118,7 +140,10 @@ if (! function_exists('app_ext_translate')) {
      */
     function app_ext_translate(?string $key = null, array $replace = [], ?string $locale = null)
     {
-        return sprintf("[%s]", $key);
+        if (empty($locale) || !in_array($locale, app_ext_locales())) {
+            $locale = app_ext_locale();
+        }
+        return sprintf("%s:[%s]", $locale, $key);
     }
 }
 

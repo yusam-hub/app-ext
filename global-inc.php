@@ -10,5 +10,5 @@ if (!defined('YUSAM_HUB_DEBUG_LOG_DIR')) {
 
 require __DIR__ . '/vendor/autoload.php';
 
-\YusamHub\AppExt\Config::$CONFIG_DIR = __DIR__ . '/config';
-\YusamHub\AppExt\Env::$ENV_DIR = __DIR__ . '/env';
+\YusamHub\AppExt\Config::instance(__DIR__ . '/config');
+\YusamHub\AppExt\Env::instance(__DIR__ . '/env');

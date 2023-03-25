@@ -6,26 +6,39 @@ use YusamHub\Helper\DotArray;
 
 class Config
 {
-    public static string $CONFIG_DIR = "";
+
     protected static ?Config $instance = null;
 
     /**
+     * @param string|null $configDir
      * @return Config
      */
-    public static function instance(): Config
+    public static function instance(?string $configDir = null): Config
     {
         if (is_null(self::$instance)) {
 
-            self::$instance = new static();
+            self::$instance = new static($configDir);
         }
 
         return self::$instance ;
     }
 
+    protected ?string $configDir = null;
+
     /**
      * @var DotArray[]
      */
     protected array $dotList = [];
+
+    /**
+     * @param string|null $configDir
+     */
+    public function __construct(?string $configDir = null)
+    {
+        if (!is_null($configDir)) {
+            $this->configDir = $configDir;
+        }
+    }
 
     /**
      * @param string $dotKey
@@ -42,7 +55,7 @@ class Config
             throw new \RuntimeException(sprintf("FileKey [%s] not found", $fileKey));
         }
         if (!isset($this->dotList[$fileKey])) {
-            $fullFilename = realpath(rtrim($this::$CONFIG_DIR, DIRECTORY_SEPARATOR)) . DIRECTORY_SEPARATOR . $fileKey . ".php";
+            $fullFilename = realpath(rtrim($this->configDir, DIRECTORY_SEPARATOR)) . DIRECTORY_SEPARATOR . $fileKey . ".php";
             if (file_exists($fullFilename)) {
                 $this->dotList[$fileKey] = helper_dot_array(include $fullFilename);
             } else {
