@@ -27,7 +27,6 @@ class RoutesMiddleware
     {
         $requestId = $this->httpServer->incCounterRequests();
 
-        var_dump();
         $serverParams = [];
         foreach($request->getHeaders() as $key => $values)
         {
