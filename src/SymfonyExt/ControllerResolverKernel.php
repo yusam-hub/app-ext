@@ -53,8 +53,9 @@ class ControllerResolverKernel
         {
             $this->resolveController->setRequest($this->request);
 
-            $this->resolveController->setLocale(new Locale());
-            $this->resolveController->setTranslate(new Translate($this->resolveController->getLocale()));
+            $locale = new Locale();
+            $this->resolveController->setLocale($locale);
+            $this->resolveController->setTranslate(new Translate($locale));
 
             $pdoExtKernel = new PdoExtKernel();
             $pdoExtKernel->setLogger($this->controllerKernel->getLogger());
@@ -76,6 +77,14 @@ class ControllerResolverKernel
             $this->resolveController->setLoggerConsoleOutputEnabled($this->controllerKernel->getLoggerConsoleOutputEnabled());
 
             $this->resolveController->setConsoleOutput($this->controllerKernel->getConsoleOutput());
+
+            /**
+             * searching locale
+             * 1) from accept-language
+             * 2) from session
+             */
+            $locale->setLocale($this->request->headers->get('Accept-Language'));
+            $locale->setLocale($this->request->getSession()->get('locale'));
         }
 
         if ($this->resolveController instanceof ControllerMiddlewareInterface) {
