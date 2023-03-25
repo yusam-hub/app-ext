@@ -127,7 +127,7 @@ if (! function_exists('app_ext_translate')) {
      * @param string|null $locale
      * @return string
      */
-    function app_ext_translate(string $dotKey, array $replace = [], ?string $locale = null)
+    function app_ext_translate(string $dotKey, array $replace = [], ?string $locale = null): string
     {
         return \YusamHub\AppExt\Translate::instance()->translate($dotKey, $replace, $locale);
     }

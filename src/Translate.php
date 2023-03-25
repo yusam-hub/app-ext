@@ -55,6 +55,10 @@ class Translate
     public function translate(string $dotKey, array $replace = [], ?string $locale = null): string
     {
         $translate = $this->getTranslate($locale);
-        return strtr((string) $translate->get($dotKey,''), $replace);
+        $data = $translate->get($dotKey,'');
+        if (is_array($data)) {
+            return $dotKey;
+        }
+        return strtr(strval($data), $replace);
     }
 }
