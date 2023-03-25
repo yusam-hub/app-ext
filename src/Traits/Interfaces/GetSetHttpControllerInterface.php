@@ -11,6 +11,8 @@ interface GetSetHttpControllerInterface
     GetSetLoggerInterface,
     GetSetConsoleInterface,
     GetSetCookieKernelInterface,
-    GetSetRequestInterface
+    GetSetRequestInterface,
+    GetSetLocaleInterface,
+    GetSetTranslateInterface
 {
 }

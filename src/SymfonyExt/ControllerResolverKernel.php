@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpKernel\Controller\ControllerResolver;
 use YusamHub\AppExt\Db\PdoExtKernel;
+use YusamHub\AppExt\Locale;
 use YusamHub\AppExt\Redis\RedisKernel;
 use YusamHub\AppExt\SymfonyExt\Http\Controllers\BaseHttpController;
 use YusamHub\AppExt\SymfonyExt\Http\Interfaces\ControllerMiddlewareInterface;
@@ -15,6 +16,7 @@ use YusamHub\AppExt\Traits\GetSetLoggerTrait;
 use YusamHub\AppExt\Traits\Interfaces\GetSetConsoleInterface;
 use YusamHub\AppExt\Traits\Interfaces\GetSetHttpControllerInterface;
 use YusamHub\AppExt\Traits\Interfaces\GetSetLoggerInterface;
+use YusamHub\AppExt\Translate;
 
 class ControllerResolverKernel
     extends ControllerResolver
@@ -50,6 +52,9 @@ class ControllerResolverKernel
         if ($this->resolveController instanceof GetSetHttpControllerInterface)
         {
             $this->resolveController->setRequest($this->request);
+
+            $this->resolveController->setLocale(new Locale());
+            $this->resolveController->setTranslate(new Translate());
 
             $pdoExtKernel = new PdoExtKernel();
             $pdoExtKernel->setLogger($this->controllerKernel->getLogger());

@@ -12,5 +12,6 @@ trait GetSetHttpControllerTrait
     use GetSetRedisKernelTrait;
     use GetSetCookieKernelTrait;
     use GetSetRequestTrait;
-
+    use GetSetLocaleTrait;
+    use GetSetTranslateTrait;
 }
