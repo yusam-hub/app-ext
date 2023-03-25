@@ -26,9 +26,10 @@ class Translate
 
     public function __construct(?Locale $locale = null)
     {
-        $this->locale = $locale;
         if (is_null($locale)) {
             $this->locale = new Locale();
+        } else {
+            $this->locale = $locale;
         }
         $this->localePaths = app_ext_config('translates.localePaths');
     }
