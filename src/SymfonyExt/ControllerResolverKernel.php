@@ -82,9 +82,17 @@ class ControllerResolverKernel
              * searching locale
              * 1) from accept-language
              * 2) from session
+             * 3) from cookie
              */
-            $locale->setLocale($this->request->headers->get('Accept-Language'));
-            $locale->setLocale($this->request->getSession()->get('locale'));
+            if (app_ext_config('locales.setup.fromHeaderAcceptLanguageEnabled', false)) {
+                $locale->setLocale(substr($this->request->headers->get('Accept-Language',''), 0,2));
+            }
+            if (app_ext_config('locales.setup.fromSession.enabled', false)) {
+                $locale->setLocale($this->request->getSession()->get(app_ext_config('locales.setup.fromSession.keyName', 'locale')));
+            }
+            if (app_ext_config('locales.setup.fromCookie.enabled', false)) {
+                $locale->setLocale($this->request->cookies->get(app_ext_config('locales.setup.fromSession.keyName', 'locale')));
+            }
         }
 
         if ($this->resolveController instanceof ControllerMiddlewareInterface) {
