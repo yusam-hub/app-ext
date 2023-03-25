@@ -33,6 +33,7 @@ class SmartyKernel implements GetSetLoggerInterface, GetSetConsoleInterface
     /**
      * @param string|null $templateScheme
      * @return SmartyExt
+     * @throws \SmartyException
      */
     public function smartyExt(?string $templateScheme = null): SmartyExt
     {

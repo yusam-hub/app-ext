@@ -108,31 +108,6 @@ if (! function_exists('app_ext_env')) {
     }
 }
 
-if (! function_exists('app_ext_locale')) {
-
-    /**
-     * @return \YusamHub\AppExt\Locale
-     */
-    function app_ext_locale(): \YusamHub\AppExt\Locale
-    {
-        return \YusamHub\AppExt\Locale::instance();
-    }
-}
-
-if (! function_exists('app_ext_translate')) {
-
-    /**
-     * @param string $dotKey
-     * @param array $replace
-     * @param string|null $locale
-     * @return string
-     */
-    function app_ext_translate(string $dotKey, array $replace = [], ?string $locale = null): string
-    {
-        return \YusamHub\AppExt\Translate::instance()->translate($dotKey, $replace, $locale);
-    }
-}
-
 if (! function_exists('app_ext_config')) {
 
     /**
