@@ -34,6 +34,13 @@ class Translate
         $this->localePaths = app_ext_config('translates.localePaths');
     }
 
+    /**
+     * @return Locale
+     */
+    public function getLocale(): Locale
+    {
+        return $this->locale;
+    }
 
     /**
      * @param string|null $locale
