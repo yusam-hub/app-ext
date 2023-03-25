@@ -54,7 +54,7 @@ class ControllerResolverKernel
             $this->resolveController->setRequest($this->request);
 
             $this->resolveController->setLocale(new Locale());
-            $this->resolveController->setTranslate(new Translate());
+            $this->resolveController->setTranslate(new Translate($this->resolveController->getLocale()));
 
             $pdoExtKernel = new PdoExtKernel();
             $pdoExtKernel->setLogger($this->controllerKernel->getLogger());
