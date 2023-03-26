@@ -21,7 +21,6 @@ class AppKernel
     }
     protected bool $isDebugging;
     protected string $rootDir;
-    protected string $appDir;
     protected string $storageDir;
     protected string $publicDir;
     protected string $databaseDir;
@@ -51,15 +50,6 @@ class AppKernel
     public function getRootDir(string $path = ''): string
     {
         return $this->rootDir . $path;
-    }
-
-    /**
-     * @param string $path
-     * @return string
-     */
-    public function getAppDir(string $path = ''): string
-    {
-        return $this->appDir . $path;
     }
 
     /**
