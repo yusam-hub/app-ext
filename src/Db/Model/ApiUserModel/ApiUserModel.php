@@ -4,15 +4,13 @@ namespace YusamHub\AppExt\Db\Model\ApiUserModel;
 
 use YusamHub\AppExt\Db\Model\PdoExtModel;
 use YusamHub\AppExt\SymfonyExt\Http\Interfaces\ApiAuthorizeModelInterface;
-use YusamHub\DbExt\Interfaces\PdoExtKernelInterface;
 
-/**
- * @method static ApiUserModel|null findModel(PdoExtKernelInterface $pdoExtKernel, $pk)
- * @method static ApiUserModel findModelOrFail(PdoExtKernelInterface $pdoExtKernel, $pk)
- * @method static ApiUserModel|null findModelByAttributes(PdoExtKernelInterface $pdoExtKernel, array $attributes)
- * @method static ApiUserModel findModelByAttributesOrFail(PdoExtKernelInterface $pdoExtKernel, array $attributes)
- */
-class ApiUserModel extends PdoExtModel implements ApiAuthorizeModelInterface, ApiUserModelInterface
+class ApiUserModel
+    extends
+    PdoExtModel
+    implements
+    ApiAuthorizeModelInterface,
+    ApiUserModelInterface
 {
     protected ?string $connectionName = DB_APP_EXT_CONNECTION_DEFAULT;
     protected string $tableName = TABLE_APP_EXT_API_USERS;

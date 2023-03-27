@@ -16,7 +16,12 @@ use YusamHub\Validator\Validator;
  * @method static PdoExtModel|null findModelByAttributes(PdoExtKernelInterface $pdoExtKernel, array $attributes)
  * @method static PdoExtModel findModelByAttributesOrFail(PdoExtKernelInterface $pdoExtKernel, array $attributes)
  */
-abstract class PdoExtModel extends ModelExt implements GetSetPdoExtKernelInterface, PdoExtModelInterface
+abstract class PdoExtModel
+    extends
+    ModelExt
+    implements
+    GetSetPdoExtKernelInterface,
+    PdoExtModelInterface
 {
     use GetSetPdoExtKernelTrait;
     use PdoExtModelTrait;

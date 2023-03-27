@@ -2,6 +2,10 @@
 
 namespace YusamHub\AppExt\Db\Model\ApiUserModel;
 
+use YusamHub\DbExt\Interfaces\GetSetPdoExtKernelInterface;
+use YusamHub\DbExt\Interfaces\PdoExtKernelInterface;
+use YusamHub\DbExt\Interfaces\PdoExtModelInterface;
+
 /**
  * @property int $id
  * @property string $apiToken
@@ -11,8 +15,16 @@ namespace YusamHub\AppExt\Db\Model\ApiUserModel;
  * @property string|null $blockedDescription
  * @property string $createdAt
  * @property string|null $modifiedAt
+ *
+ * @method static ApiUserModel|null findModel(PdoExtKernelInterface $pdoExtKernel, $pk)
+ * @method static ApiUserModel findModelOrFail(PdoExtKernelInterface $pdoExtKernel, $pk)
+ * @method static ApiUserModel|null findModelByAttributes(PdoExtKernelInterface $pdoExtKernel, array $attributes)
+ * @method static ApiUserModel findModelByAttributesOrFail(PdoExtKernelInterface $pdoExtKernel, array $attributes)
  */
 interface ApiUserModelInterface
+    extends
+    GetSetPdoExtKernelInterface,
+    PdoExtModelInterface
 {
     const ATTRIBUTE_NAME_ID = 'id';
     const ATTRIBUTE_NAME_API_TOKEN = 'apiToken';
