@@ -26,8 +26,6 @@ abstract class PdoExtModel
     use GetSetPdoExtKernelTrait;
     use PdoExtModelTrait;
 
-    protected ?string $connectionName = null;
-
     protected array $rules = [];
     protected array $ruleMessages = [];
 

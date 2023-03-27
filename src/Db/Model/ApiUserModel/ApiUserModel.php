@@ -13,6 +13,7 @@ class ApiUserModel
     ApiUserModelInterface
 {
     protected ?string $connectionName = DB_APP_EXT_CONNECTION_DEFAULT;
+    protected string $databaseName = '';
     protected string $tableName = TABLE_APP_EXT_API_USERS;
 
     protected function triggerBeforeSave(int $triggerType): void
