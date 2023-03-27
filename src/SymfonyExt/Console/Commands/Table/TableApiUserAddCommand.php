@@ -7,7 +7,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use YusamHub\AppExt\Db\Model\ApiUserModel;
+use YusamHub\AppExt\Db\Model\ApiUserModel\ApiUserModel;
 use YusamHub\AppExt\SymfonyExt\Console\Commands\BaseConsoleCommand;
 
 class TableApiUserAddCommand extends BaseConsoleCommand
@@ -43,7 +43,7 @@ class TableApiUserAddCommand extends BaseConsoleCommand
             if ($apiUserModel->save()) {
                 $out = [];
 
-                $fields = $apiUserModel->toArray();
+                $fields = $apiUserModel->getAttributes();
                 foreach ($fields as $k => $v) {
                     $out[] = [$k, $v];
                 }

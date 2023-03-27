@@ -54,6 +54,10 @@
             "type": "git",
             "url": "https://github.com/yusam-hub/web-socket.git"
         },
+        "yusam-hub/model-ext": {
+            "type": "git",
+            "url": "https://github.com/yusam-hub/model-ext.git"
+        },
         "yusam-hub/app-ext": {
             "type": "git",
             "url": "https://github.com/yusam-hub/app-ext.git"
@@ -73,7 +77,8 @@
         "yusam-hub/redis-ext": "dev-master",
         "yusam-hub/validator": "dev-master",
         "yusam-hub/smarty-ext": "dev-master",
-        "yusam-hub/web-socket": "dev-master"
-        "yusam-hub/app-ext": "dev-master"
+        "yusam-hub/web-socket": "dev-master",
+        "yusam-hub/model-ext": "dev-master",
+        "yusam-hub/app-ext": "dev-master",
         ...
     }

@@ -51,6 +51,10 @@
         "yusam-hub/helpers": {
             "type": "git",
             "url": "https://github.com/yusam-hub/helpers.git"
+        },
+        "yusam-hub/model-ext": {
+            "type": "git",
+            "url": "https://github.com/yusam-hub/model-ext.git"
         }
     },
     "require": {
@@ -74,6 +78,7 @@
         "yusam-hub/smarty-ext": "dev-master",
         "yusam-hub/web-socket": "dev-master",
         "yusam-hub/helpers": "dev-master",
+        "yusam-hub/model-ext": "dev-master",
 
         "psr/log": "^1.1",
 

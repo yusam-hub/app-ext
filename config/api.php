@@ -33,7 +33,7 @@ return [
             return intval($debugTokens[$tokenValue]);
         }
 
-        $apiUserModel = \YusamHub\AppExt\Db\Model\ApiUserModel::findModelByAttributes($httpController->getPdoExtKernel(), ['apiToken' => $tokenValue]);
+        $apiUserModel = \YusamHub\AppExt\Db\Model\ApiUserModel\ApiUserModel::findModelByAttributes($httpController->getPdoExtKernel(), ['apiToken' => $tokenValue]);
         if (!is_null($apiUserModel)) {
             return $apiUserModel;
         }
@@ -46,7 +46,7 @@ return [
         \YusamHub\AppExt\Traits\Interfaces\GetSetHttpControllerInterface $httpController,
         \Symfony\Component\HttpFoundation\Request $request,
         int $apiAuthorizedId,
-        ?\YusamHub\AppExt\Db\Model\ApiUserModel $apiUserModel
+        ?\YusamHub\AppExt\Db\Model\ApiUserModel\ApiUserModel $apiUserModel
     )
     {
         $signValue = (string) $request->headers->get(app_ext_config('api.signKeyName'));

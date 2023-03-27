@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8eddbe646eac6ea77253c5ba7917f8ae",
+    "content-hash": "f585100e2e3c2a6fe78b7658dcd91aa5",
     "packages": [
         {
             "name": "bunny/bunny",
@@ -4168,7 +4168,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/yusam-hub/db-ext.git",
-                "reference": "7c92bd5845f7cdeaa857b863a50fa8cfd80e8727"
+                "reference": "61e0d8af34755a5d287011bba0aca882a2bfd458"
             },
             "require": {
                 "ext-json": "*",
@@ -4196,7 +4196,7 @@
                 "files": []
             },
             "description": "yusam-hub/db-ext",
-            "time": "2023-03-23T07:42:45+00:00"
+            "time": "2023-03-27T01:09:24+00:00"
         },
         {
             "name": "yusam-hub/debug",
@@ -4300,6 +4300,38 @@
             },
             "description": "yusam-hub/json-ext",
             "time": "2023-03-09T12:42:07+00:00"
+        },
+        {
+            "name": "yusam-hub/model-ext",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/yusam-hub/model-ext.git",
+                "reference": "31cfd600727d977e633d6c5763d10e6f9d380278"
+            },
+            "require": {
+                "php": "^7.4|^8.0|^8.1|^8.2",
+                "yusam-hub/php-compatibility": "dev-master"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9.5"
+            },
+            "default-branch": true,
+            "type": "package",
+            "autoload": {
+                "psr-4": {
+                    "YusamHub\\ModelExt\\": "src/"
+                },
+                "files": []
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "YusamHub\\ModelExt\\Tests\\": "tests/"
+                },
+                "files": []
+            },
+            "description": "yusam-hub/model-ext",
+            "time": "2023-03-27T02:49:12+00:00"
         },
         {
             "name": "yusam-hub/php-compatibility",
@@ -6296,6 +6328,7 @@
         "yusam-hub/smarty-ext": 20,
         "yusam-hub/web-socket": 20,
         "yusam-hub/helpers": 20,
+        "yusam-hub/model-ext": 20,
         "bunny/bunny": 20
     },
     "prefer-stable": false,
