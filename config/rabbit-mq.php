@@ -2,7 +2,6 @@
 
 return [
     'connectionDefault' => 'default',
-
     'connections' => [
         'default' => [
             "host" => app_ext_env("RABBIT_MQ_HOST",'rabbit-host'),
@@ -11,5 +10,17 @@ return [
             "user" => app_ext_env("RABBIT_MQ_USER",'root'),
             "password" => app_ext_env("RABBIT_MQ_PASSWORD",'Qwertyu1'),
         ],
-    ]
+    ],
+
+    'destinationDefault' => 'default',
+    'destinations' => [
+        'default' => [
+            'queueName' => 'default',
+            'exchangeName' => 'default',
+            'routingKey' => 'default',
+            'prefetchSize' => 0,
+            'prefetchCount' => 0,
+            'consumerTag' => 'default',
+        ],
+    ],
 ];

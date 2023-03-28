@@ -1,18 +1,13 @@
 <?php
 
 namespace YusamHub\AppExt\RabbitMq;
-class RabbitMqPublisherConfigModel
+use YusamHub\AppExt\Models\ConfigModel;
+
+class RabbitMqPublisherConfigModel extends ConfigModel
 {
+    protected static string $dotKeyAsConfigItemDefault = 'rabbit-mq.destinationDefault';
+    protected static string $dotKeyAsConfigItems = 'rabbit-mq.destinations.%s';
     public string $queueName = 'default';
     public string $exchangeName = 'default';
     public string $routingKey = 'default';
-
-    public function __construct(array $config = [])
-    {
-        foreach($config as $key => $value) {
-            if (property_exists($this, $key)) {
-                $this->{$key} = $value;
-            }
-        }
-    }
 }
