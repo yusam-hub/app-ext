@@ -34,7 +34,7 @@ class Logging
     public function channel(?string $channel = null, array $extra = []): LoggerInterface
     {
         if (is_null($channel)) {
-            $channel = app_ext_config('logging.default');
+            $channel = app_ext_config('logging.channelDefault');
         }
 
         if (!isset($this->channels[$channel])) {

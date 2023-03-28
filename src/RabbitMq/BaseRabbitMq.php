@@ -17,7 +17,7 @@ abstract class BaseRabbitMq implements GetSetConsoleInterface, GetSetLoggerInter
     public function __construct(?string $connectionName = null)
     {
         if (is_null($connectionName)) {
-            $connectionName = app_ext_config("rabbit-mq.default");
+            $connectionName = app_ext_config("rabbit-mq.connectionDefault");
         }
         $this->connectionName = $connectionName;
         $this->connectionConfig = app_ext_config("rabbit-mq.connections." . $connectionName);

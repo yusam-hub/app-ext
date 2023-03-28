@@ -54,7 +54,7 @@ class SmartyKernel implements GetSetLoggerInterface, GetSetConsoleInterface
      */
     public function getDefaultTemplateScheme(): string
     {
-        return (string) app_ext_config('smarty-ext.default');
+        return (string) app_ext_config('smarty-ext.templateDefault');
     }
 
     /**

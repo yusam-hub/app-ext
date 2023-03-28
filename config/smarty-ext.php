@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'default' => 'front',
+    'templateDefault' => 'front',
 
     'templates' => [
         'front' => [

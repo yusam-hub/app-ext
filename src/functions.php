@@ -66,7 +66,7 @@ if (! function_exists('app_ext_pdo_ext')) {
     function app_ext_pdo_ext(?string $connectionName = null, bool $newConnection = false): PdoExt
     {
         if (is_null($connectionName)) {
-            $connectionName = app_ext_config("database.default");
+            $connectionName = app_ext_config("database.connectionDefault");
         }
         if (empty($connectionName)) {
             throw new \RuntimeException(sprintf("Unable to find database connection name [%s]", $connectionName));

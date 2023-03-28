@@ -41,7 +41,7 @@ class PdoExtKernel extends \YusamHub\DbExt\PdoExtKernel implements GetSetLoggerI
      */
     public function getDefaultConnectionName(): string
     {
-        return (string) app_ext_config('database.default');
+        return (string) app_ext_config('database.connectionDefault');
     }
 
     /**

@@ -54,7 +54,7 @@ class RedisKernel implements GetSetLoggerInterface, GetSetConsoleInterface
      */
     public function getDefaultConnectionName(): string
     {
-        return (string) app_ext_config('redis.default');
+        return (string) app_ext_config('redis.connectionDefault');
     }
 
     /**

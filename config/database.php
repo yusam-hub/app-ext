@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'default' => 'default',
+    'connectionDefault' => 'default',
 
     'connections' => [
         'default' => [
