@@ -114,13 +114,13 @@ class RabbitMqConsumer extends BaseRabbitMq
                 return $channel
                     ->exchangeDeclare(
                         $this->rabbitMqConsumerConfigModel->exchangeName,
-                        'topic',
+                        $this->rabbitMqConsumerConfigModel->exchangeType,
                         false,
                         true,
                         false,
                         false,
                         false,
-                        []
+                        $this->rabbitMqConsumerConfigModel->exchangeArgs
                     )
                     ->then(function () use ($channel) {
                         $this->debug('Exchange declare success', [
@@ -152,7 +152,7 @@ class RabbitMqConsumer extends BaseRabbitMq
                         $this->rabbitMqConsumerConfigModel->exchangeName,
                         $this->rabbitMqConsumerConfigModel->routingKey,
                         false,
-                        []
+                        $this->rabbitMqConsumerConfigModel->queueBindArgs
                     )
                     ->then(function () use ($channel) {
                         $this->debug('Queue bind success', [

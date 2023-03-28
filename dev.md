@@ -21,7 +21,7 @@
     docker exec -it yusam-php74 sh -c "cd /var/www/data/yusam/github/yusam-hub/app-ext && php console daemon:react-http-server"
 
     docker exec -it yusam-php74 sh -c "cd /var/www/data/yusam/github/yusam-hub/app-ext && php console daemon:rabbit-mq-consumer"
-    docker exec -it yusam-php74 sh -c "cd /var/www/data/yusam/github/yusam-hub/app-ext && php console client:rabbit-mq-publisher"
+    docker exec -it yusam-php74 sh -c "cd /var/www/data/yusam/github/yusam-hub/app-ext && php console client:rabbit-mq-publisher hello-message"
 
     docker exec -it yusam-php74 sh -c "cd /var/www/data/yusam/github/yusam-hub/app-ext && php console smarty:check"
 
