@@ -54,6 +54,10 @@ class RabbitMqPublisher extends BaseRabbitMq
 
                 $channel = $client->channel();
 
+                /**
+                 * todo: queueDeclare можно убрать, так как консюмер декларирует очередь и связывает эту очередь с exchangeName + routingKey
+                 *       нужно проверить сразу отправку на $channel->publish
+                 */
                 if ($channel->queueDeclare($this->rabbitMqPublisherConfigModel->queueName, false,true,false,false)) {
 
                     $this->debug('Queue declare success');
