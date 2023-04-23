@@ -19,7 +19,6 @@ class ClientRabbitMqPublisherCommand extends BaseConsoleCommand
             ->setDescription('client:daemon:rabbit-mq-publisher:description')
             ->setHelp('client:daemon:rabbit-mq-publisher:help')
             ->addArgument('message', InputArgument::REQUIRED)
-            ->addOption('queueName', null,InputOption::VALUE_OPTIONAL, '', 'default')
             ->addOption('exchangeName', null,InputOption::VALUE_OPTIONAL, '', 'default')
             ->addOption('routingKey', null,InputOption::VALUE_OPTIONAL, '', 'default')
         ;
@@ -29,12 +28,12 @@ class ClientRabbitMqPublisherCommand extends BaseConsoleCommand
      * @param InputInterface $input
      * @param OutputInterface $output
      * @return int
+     * @throws \Exception
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $rabbitMqPublisher = new RabbitMqPublisher(
             new RabbitMqPublisherConfigModel([
-                'queueName' => $input->getOption('queueName'),
                 'exchangeName' => $input->getOption('exchangeName'),
                 'routingKey' => $input->getOption('routingKey'),
             ]),
@@ -44,6 +43,8 @@ class ClientRabbitMqPublisherCommand extends BaseConsoleCommand
         $rabbitMqPublisher->setLoggerConsoleOutputEnabled(true);
 
         $rabbitMqPublisher->send($input->getArgument('message'));
+
+        $rabbitMqPublisher = null;
 
         return self::SUCCESS;
     }

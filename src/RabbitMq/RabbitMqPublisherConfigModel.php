@@ -7,7 +7,6 @@ class RabbitMqPublisherConfigModel extends ConfigModel
 {
     protected static string $dotKeyAsConfigItemDefault = 'rabbit-mq.destinationDefault';
     protected static string $dotKeyAsConfigItems = 'rabbit-mq.destinations.%s';
-    public string $queueName = 'default';
     public string $exchangeName = 'default';
     public string $routingKey = 'default';
 }

@@ -14,4 +14,6 @@ class RabbitMqConsumerConfigModel extends RabbitMqPublisherConfigModel
         //'x-delayed-type' => self::EXCHANGE_TYPE_TOPIC,
     ];
     public array $queueBindArgs = [];
+
+    public string $queueName = 'default';
 }
