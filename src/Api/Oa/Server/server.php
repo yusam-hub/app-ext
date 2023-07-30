@@ -2,7 +2,7 @@
 
 /**
  * @OA\Server(
- *      url="{schema}://__OA_SERVER_HOSTNAME____OA_SERVER_PATH__",
+ *      url="{schema}://__OA_SERVER_HOSTNAME__/__OA_SERVER_PATH__",
  *      description="Server parameters",
  *      @OA\ServerVariable(
  *          serverVariable="schema",
