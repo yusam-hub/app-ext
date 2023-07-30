@@ -66,7 +66,7 @@ abstract class ApiSwaggerController extends BaseHttpController
      */
     protected function getReplaceKeyValuePairForModule(Request $request, string $module): array
     {
-        $port = (int) $request->getPort();
+        $port = (int) ($request->server->get('SERVER_PORT') ?? $request->getPort());
         if (in_array($port, [80,443])) {
             $port = 0;
         }
