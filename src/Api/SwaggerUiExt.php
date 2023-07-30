@@ -69,7 +69,7 @@ class SwaggerUiExt
         $search = 'url: "https://petstore.swagger.io/v2/swagger.json",';
         $html = str_replace($search, $search . "\nvalidatorUrl: null,\n", $html);
 
-        $replaceWith = 'window.location.protocol + "//" + window.location.hostname + "'. $swaggerUri . $fileUri . '"';
+        $replaceWith = 'window.location.protocol + "//" + window.location.hostname + ((window.location.port.toString() !== "80" && window.location.port.toString() !== "443") ? ":" + window.location.port : "") + "'. $swaggerUri . $fileUri . '"';
 
         return str_replace('"https://petstore.swagger.io/v2/swagger.json"', $replaceWith, $html);
     }
