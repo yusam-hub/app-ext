@@ -9,6 +9,7 @@ use YusamHub\DbExt\Traits\GetSetPdoExtKernelTrait;
 use YusamHub\DbExt\Traits\PdoExtModelTrait;
 use YusamHub\ModelExt\ModelExt;
 use YusamHub\Validator\Validator;
+use YusamHub\Validator\ValidatorException;
 
 /**
  * @method static PdoExtModel|null findModel(PdoExtKernelInterface $pdoExtKernel, $pk)
@@ -32,6 +33,7 @@ abstract class PdoExtModel
     /**
      * @param $errors
      * @return bool
+     * @throws ValidatorException
      */
     public function validate(&$errors): bool
     {
@@ -42,6 +44,18 @@ abstract class PdoExtModel
         $result = $validator->validate();
         $errors = $validator->getErrors();
         return $result;
+    }
+
+    /**
+     * @throws ValidatorException
+     */
+    public function validateOrFail(): void
+    {
+        $validator = new Validator();
+        $validator->setAttributes($this->getAttributes());
+        $validator->setRules($this->rules);
+        $validator->setRuleMessages($this->ruleMessages);
+        $validator->validateOrFail();
     }
 
     public function modelExtImportAttributes(array $attributes, bool $exceptionNotExists = true): void
