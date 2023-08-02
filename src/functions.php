@@ -216,3 +216,17 @@ if (! function_exists('app_ext_get_files')) {
         return (array) $request->attributes->get('_files');
     }
 }
+
+if (! function_exists('app_ext_date')) {
+
+    /**
+     * @param int|null $timestamp
+     * @param string $format
+     * @return false|string
+     */
+    function app_ext_date(?int $timestamp, string $format = DATE_TIME_APP_EXT_FORMAT)
+    {
+        return date($format, $timestamp);
+    }
+}
+

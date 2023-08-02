@@ -4118,7 +4118,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/yusam-hub/model-ext.git",
-                "reference": "31cfd600727d977e633d6c5763d10e6f9d380278"
+                "reference": "e9762fff7100ff2cdf24bbc3e98e7084df0e0b82"
             },
             "require": {
                 "php": "^7.4|^8.0|^8.1|^8.2",
@@ -4142,7 +4142,7 @@
                 "files": []
             },
             "description": "yusam-hub/model-ext",
-            "time": "2023-03-27T02:49:12+00:00"
+            "time": "2023-08-02T20:41:15+00:00"
         },
         {
             "name": "yusam-hub/php-compatibility",
