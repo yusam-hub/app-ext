@@ -224,7 +224,7 @@ if (! function_exists('app_ext_date')) {
      * @param string $format
      * @return false|string
      */
-    function app_ext_date(?int $timestamp, string $format = DATE_TIME_APP_EXT_FORMAT)
+    function app_ext_date(?int $timestamp = null, string $format = DATE_TIME_APP_EXT_FORMAT)
     {
         return date($format, $timestamp);
     }
