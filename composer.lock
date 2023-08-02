@@ -4248,7 +4248,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/yusam-hub/validator.git",
-                "reference": "ffad42a4827baedeaef4c52694f5f37b02bdc3c2"
+                "reference": "7ea9da8cfe09ebaf776644adb454db17cf654e6b"
             },
             "require": {
                 "php": "^7.4|^8.0|^8.1|^8.2"
@@ -4271,7 +4271,7 @@
                 "files": []
             },
             "description": "yusam-hub/validator",
-            "time": "2023-08-02T02:06:33+00:00"
+            "time": "2023-08-02T02:30:00+00:00"
         },
         {
             "name": "yusam-hub/web-socket",
