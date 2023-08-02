@@ -220,11 +220,11 @@ if (! function_exists('app_ext_get_files')) {
 if (! function_exists('app_ext_date')) {
 
     /**
-     * @param int|null $timestamp
      * @param string $format
+     * @param int|null $timestamp
      * @return false|string
      */
-    function app_ext_date(?int $timestamp = null, string $format = DATE_TIME_APP_EXT_FORMAT)
+    function app_ext_date(string $format = DATE_TIME_APP_EXT_FORMAT, ?int $timestamp = null)
     {
         return date($format, $timestamp);
     }
