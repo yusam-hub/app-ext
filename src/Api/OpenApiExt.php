@@ -37,19 +37,71 @@ class OpenApiExt
     }
 
     /**
+     * @param array $excludePaths
+     * @param array $excludeReplaceKeys
      * @return string
      */
-    public function generateOpenApi(): string
+    public function generateOpenApi(array $excludePaths = [], array $excludeReplaceKeys = []): string
     {
-        $openApi = \OpenApi\Generator::scan($this->paths);
+        $openApi = \OpenApi\Generator::scan($this->getPaths($excludePaths));
 
         $json = $openApi->toJson();
 
-        $localReplaceKeyValuePair = $this->replaceKeyValuePair;
+        $localReplaceKeyValuePair = $this->getReplaceKeyValuePair($excludeReplaceKeys);
         foreach($localReplaceKeyValuePair as $key => $value) {
             $json = str_replace($key, $value, $json);
         }
 
         return $json;
     }
+
+    /**
+     * @param array $excludePaths
+     * @return array
+     */
+    public function getPaths(array $excludePaths = []): array
+    {
+        return array_filter($this->paths, function($v) use($excludePaths) {
+            foreach($excludePaths as $subV) {
+                if (str_contains($v, $subV)) {
+                    return false;
+                }
+            }
+            return true;
+        });
+    }
+
+    /**
+     * @param array $paths
+     */
+    public function setPaths(array $paths): void
+    {
+        $this->paths = $paths;
+    }
+
+    /**
+     * @param array $excludeReplaceKeys
+     * @return array
+     */
+    public function getReplaceKeyValuePair(array $excludeReplaceKeys = []): array
+    {
+        return array_filter($this->replaceKeyValuePair, function($v,$k) use($excludeReplaceKeys) {
+            foreach($excludeReplaceKeys as $subV) {
+                if (str_contains($k, $subV)) {
+                    return false;
+                }
+            }
+            return true;
+        }, ARRAY_FILTER_USE_BOTH);
+    }
+
+    /**
+     * @param array $replaceKeyValuePair
+     */
+    public function setReplaceKeyValuePair(array $replaceKeyValuePair): void
+    {
+        $this->replaceKeyValuePair = $replaceKeyValuePair;
+    }
+
+
 }
