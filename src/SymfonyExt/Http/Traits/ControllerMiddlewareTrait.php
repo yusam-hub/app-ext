@@ -3,17 +3,12 @@
 namespace YusamHub\AppExt\SymfonyExt\Http\Traits;
 
 use Symfony\Component\HttpFoundation\Request;
-use YusamHub\AppExt\SymfonyExt\Http\Interfaces\ControllerMiddlewareInterface;
-
 trait ControllerMiddlewareTrait
 {
     private static array $methodNames = [];
 
     public static function controllerMiddlewareRegister(string $class, string $methodName): void
     {
-        if (!($class instanceof ControllerMiddlewareInterface)) {
-            throw new \RuntimeException(sprintf("Method register fail, missing instance of [ %s ] for class [ %s ]", ControllerMiddlewareInterface::class, $class));
-        }
         static::$methodNames[] = $methodName;
     }
 
