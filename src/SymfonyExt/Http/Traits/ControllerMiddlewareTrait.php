@@ -9,10 +9,10 @@ trait ControllerMiddlewareTrait
 {
     private static array $methodNames = [];
 
-    public static function controllerMiddlewareRegister(string $methodName): void
+    public static function controllerMiddlewareRegister(string $class, string $methodName): void
     {
-        if (!(static::class instanceof ControllerMiddlewareInterface)) {
-            throw new \RuntimeException(sprintf("Method register fail, missing instance of [ %s ] for class [ %s ]", ControllerMiddlewareInterface::class, static::class));
+        if (!($class instanceof ControllerMiddlewareInterface)) {
+            throw new \RuntimeException(sprintf("Method register fail, missing instance of [ %s ] for class [ %s ]", ControllerMiddlewareInterface::class, $class));
         }
         static::$methodNames[] = $methodName;
     }

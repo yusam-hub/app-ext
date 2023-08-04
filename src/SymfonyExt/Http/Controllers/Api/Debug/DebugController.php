@@ -22,7 +22,7 @@ class DebugController extends BaseHttpController implements ControllerMiddleware
 
     public static function routesRegister(RoutingConfigurator $routes): void
     {
-        static::controllerMiddlewareRegister('apiAuthorizeHandle');
+        static::controllerMiddlewareRegister(static::class, 'apiAuthorizeHandle');
 
         static::routesAdd($routes, ['OPTIONS', 'GET'],'/api/debug', 'getApiHome');
 
