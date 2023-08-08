@@ -52,4 +52,26 @@ class PdoExtKernel extends \YusamHub\DbExt\PdoExtKernel implements GetSetLoggerI
         return array_keys((array) app_ext_config('database.connections'));
     }
 
+    /**
+     * @param string|null $connectionName
+     * @return void
+     */
+    public function connectionClose(?string $connectionName = null): void
+    {
+        if (is_null($connectionName)) {
+            $connectionName = $this->getDefaultConnectionName();
+        }
+
+        if (isset($this->pdoExtConnections[$connectionName])) {
+            unset($this->pdoExtConnections[$connectionName]);
+        }
+    }
+
+    /**
+     * @return array|PdoExtInterface[]
+     */
+    public function getConnections(): array
+    {
+        return $this->pdoExtConnections;
+    }
 }

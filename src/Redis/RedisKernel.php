@@ -13,7 +13,11 @@ class RedisKernel implements GetSetLoggerInterface, GetSetConsoleInterface
     use GetSetConsoleTrait;
 
     protected static ?RedisKernel $instance = null;
-    protected array $dbConnections = [];
+
+    /**
+     * @var array|RedisExt[]
+     */
+    protected array $connections = [];
 
     /**
      * @return RedisKernel
@@ -31,14 +35,14 @@ class RedisKernel implements GetSetLoggerInterface, GetSetConsoleInterface
      * @param string|null $connectionName
      * @return RedisExt
      */
-    public function redisExt(?string $connectionName = null): RedisExt
+    public function connection(?string $connectionName = null): RedisExt
     {
         if (is_null($connectionName)) {
             $connectionName = $this->getDefaultConnectionName();
         }
 
-        if (isset($this->dbConnections[$connectionName])) {
-            return $this->dbConnections[$connectionName];
+        if (isset($this->connections[$connectionName])) {
+            return $this->connections[$connectionName];
         }
 
         $redisExt = new RedisExt((array) app_ext_config('redis.connections.' . $connectionName, []));
@@ -46,21 +50,23 @@ class RedisKernel implements GetSetLoggerInterface, GetSetConsoleInterface
         $redisExt->onDebugLogCallback(function(string $message, array $context) use($connectionName) {
             $this->debug(sprintf('[REDIS:%s] %s', $connectionName, $message), $context);
         });
-        return $this->dbConnections[$connectionName] = $redisExt;
+        return $this->connections[$connectionName] = $redisExt;
     }
 
     /**
      * @param string|null $connectionName
      * @return void
+     * @throws \RedisException
      */
-    public function redisExtClose(?string $connectionName = null): void
+    public function connectionClose(?string $connectionName = null): void
     {
         if (is_null($connectionName)) {
             $connectionName = $this->getDefaultConnectionName();
         }
 
-        if (isset($this->dbConnections[$connectionName])) {
-            unset($this->dbConnections[$connectionName]);
+        if (isset($this->connections[$connectionName])) {
+            $this->connections[$connectionName]->redis()->close();
+            unset($this->connections[$connectionName]);
         }
     }
 
@@ -78,5 +84,13 @@ class RedisKernel implements GetSetLoggerInterface, GetSetConsoleInterface
     public function getConnectionNames(): array
     {
         return array_keys((array) app_ext_config('redis.connections'));
+    }
+
+    /**
+     * @return array|RedisExt[]
+     */
+    public function getConnections(): array
+    {
+        return $this->connections;
     }
 }

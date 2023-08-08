@@ -45,7 +45,7 @@ class SessionStorageRedis implements SessionStorageInterface
             $this->regenerate();
         }
 
-        $this->attributeBag->replace((array) $this->redisKernel->redisExt(self::REDIS_CONNECTION_NAME)->get($this->sessionId, []));
+        $this->attributeBag->replace((array) $this->redisKernel->connection(self::REDIS_CONNECTION_NAME)->get($this->sessionId, []));
     }
 
     public function isStarted(): bool
@@ -62,14 +62,14 @@ class SessionStorageRedis implements SessionStorageInterface
     {
         if ($this->sessionId !== $id) {
             $saveAttributes = [];
-            if (!is_null($this->sessionId) && $this->redisKernel->redisExt(self::REDIS_CONNECTION_NAME)->has($this->sessionId)) {
-                $saveAttributes = (array) $this->redisKernel->redisExt(self::REDIS_CONNECTION_NAME)->get($this->sessionId);
-                $this->redisKernel->redisExt(self::REDIS_CONNECTION_NAME)->del($this->sessionId);
+            if (!is_null($this->sessionId) && $this->redisKernel->connection(self::REDIS_CONNECTION_NAME)->has($this->sessionId)) {
+                $saveAttributes = (array) $this->redisKernel->connection(self::REDIS_CONNECTION_NAME)->get($this->sessionId);
+                $this->redisKernel->connection(self::REDIS_CONNECTION_NAME)->del($this->sessionId);
             }
             $this->sessionId = $id;
             $this->cookieKernel->set(self::COOKIE_SESSION_NAME, $this->sessionId, time() + self::COOKIE_SESSION_TTL);
             if (!empty($saveAttributes)) {
-                $this->redisKernel->redisExt(self::REDIS_CONNECTION_NAME)->put($this->sessionId, $saveAttributes, self::COOKIE_SESSION_TTL);
+                $this->redisKernel->connection(self::REDIS_CONNECTION_NAME)->put($this->sessionId, $saveAttributes, self::COOKIE_SESSION_TTL);
             }
         }
     }
@@ -92,7 +92,7 @@ class SessionStorageRedis implements SessionStorageInterface
     public function save()
     {
         $attributes = $this->attributeBag->all();
-        $this->redisKernel->redisExt(self::REDIS_CONNECTION_NAME)->put($this->sessionId, $attributes, self::COOKIE_SESSION_TTL);
+        $this->redisKernel->connection(self::REDIS_CONNECTION_NAME)->put($this->sessionId, $attributes, self::COOKIE_SESSION_TTL);
     }
 
     public function clear()

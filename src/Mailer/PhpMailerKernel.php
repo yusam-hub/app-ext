@@ -14,6 +14,9 @@ class PhpMailerKernel implements GetSetLoggerInterface, GetSetConsoleInterface
     use GetSetConsoleTrait;
 
     protected static ?PhpMailerKernel $instance = null;
+    /**
+     * @var array|PHPMailerExt[]
+     */
     protected array $connections = [];
 
     /**
@@ -23,6 +26,7 @@ class PhpMailerKernel implements GetSetLoggerInterface, GetSetConsoleInterface
     {
         if (is_null(self::$instance)) {
             self::$instance = new static();
+            self::$instance->setLogger(app_ext_logger());
         }
         return self::$instance;
     }
@@ -60,5 +64,28 @@ class PhpMailerKernel implements GetSetLoggerInterface, GetSetConsoleInterface
     public function getConnectionNames(): array
     {
         return array_keys((array) app_ext_config('php-mailer.connections'));
+    }
+
+    /**
+     * @param string|null $connectionName
+     * @return void
+     */
+    public function connectionClose(?string $connectionName = null): void
+    {
+        if (is_null($connectionName)) {
+            $connectionName = $this->getDefaultConnectionName();
+        }
+
+        if (isset($this->connections[$connectionName])) {
+            unset($this->connections[$connectionName]);
+        }
+    }
+
+    /**
+     * @return array|PHPMailerExt[]
+     */
+    public function getConnections(): array
+    {
+        return $this->connections;
     }
 }

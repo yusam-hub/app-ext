@@ -24,13 +24,13 @@ class SmartyCheckCommand extends BaseConsoleCommand
         $output->writeln($this->tagGreen(sprintf('TEMPLATE SCHEME DEFAULT: %s', app_ext_smarty_global()->getDefaultTemplateScheme())));
         $out = [];
 
-        foreach(app_ext_smarty_global()->getTemplateSchemes() as $templateScheme)
+        foreach(app_ext_smarty_global()->getTemplateSchemeNames() as $templateScheme)
         {
-            $dir = app_ext_smarty_global()->smartyExt($templateScheme)->getTemplateDir();
+            $dir = app_ext_smarty_global()->template($templateScheme)->getTemplateDir();
             try {
 
                 $out[] = [
-                    $templateScheme, $dir, $this->tagGreen(app_ext_smarty_global()->smartyExt($templateScheme)->view('check',['check' => time()]))
+                    $templateScheme, $dir, $this->tagGreen(app_ext_smarty_global()->template($templateScheme)->view('check',['check' => time()]))
                 ];
 
             } catch (\Throwable $e) {

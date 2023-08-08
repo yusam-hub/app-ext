@@ -16,7 +16,11 @@ class SmartyKernel implements GetSetLoggerInterface, GetSetConsoleInterface
     use GetSetConsoleTrait;
 
     protected static ?SmartyKernel $instance = null;
-    protected array $templatesSchemes = [];
+
+    /**
+     * @var array|SmartyExt[]
+     */
+    protected array $templateSchemes = [];
 
     /**
      * @return SmartyKernel
@@ -35,18 +39,18 @@ class SmartyKernel implements GetSetLoggerInterface, GetSetConsoleInterface
      * @return SmartyExt
      * @throws \SmartyException
      */
-    public function smartyExt(?string $templateScheme = null): SmartyExt
+    public function template(?string $templateScheme = null): SmartyExt
     {
         if (is_null($templateScheme)) {
             $templateScheme = $this->getDefaultTemplateScheme();
         }
 
-        if (isset($this->templatesSchemes[$templateScheme])) {
-            return $this->templatesSchemes[$templateScheme];
+        if (isset($this->templateSchemes[$templateScheme])) {
+            return $this->templateSchemes[$templateScheme];
         }
 
         $smartyExt = new SmartyExt((array) app_ext_config('smarty-ext.templates.' . $templateScheme, []));
-        return $this->templatesSchemes[$templateScheme] = $smartyExt;
+        return $this->templateSchemes[$templateScheme] = $smartyExt;
     }
 
     /**
@@ -60,8 +64,31 @@ class SmartyKernel implements GetSetLoggerInterface, GetSetConsoleInterface
     /**
      * @return array
      */
-    public function getTemplateSchemes(): array
+    public function getTemplateSchemeNames(): array
     {
         return array_keys((array) app_ext_config('smarty-ext.templates'));
+    }
+
+    /**
+     * @param string|null $templateScheme
+     * @return void
+     */
+    public function templateClose(?string $templateScheme = null): void
+    {
+        if (is_null($templateScheme)) {
+            $templateScheme = $this->getDefaultTemplateScheme();
+        }
+
+        if (isset($this->templateSchemes[$templateScheme])) {
+            unset($this->templateSchemes[$templateScheme]);
+        }
+    }
+
+    /**
+     * @return array|SmartyExt[]
+     */
+    public function getTemplateSchemes(): array
+    {
+        return $this->templateSchemes;
     }
 }

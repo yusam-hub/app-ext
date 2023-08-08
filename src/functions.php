@@ -6,6 +6,7 @@ use YusamHub\AppExt\Config;
 use YusamHub\AppExt\Db\PdoExtKernel;
 use YusamHub\AppExt\Env;
 use YusamHub\AppExt\Exceptions\Interfaces\AppExtRuntimeExceptionInterface;
+use YusamHub\AppExt\Mailer\PhpMailerKernel;
 use YusamHub\AppExt\Redis\RedisKernel;
 use YusamHub\AppExt\Smarty\SmartyKernel;
 use YusamHub\AppExt\SymfonyExt\AppKernel;
@@ -92,11 +93,11 @@ if (! function_exists('app_ext_logger')) {
 if (! function_exists('app_ext_php_mailer_global')) {
 
     /**
-     * @return \YusamHub\AppExt\Mailer\PhpMailerKernel
+     * @return PhpMailerKernel
      */
-    function app_ext_php_mailer_global(): \YusamHub\AppExt\Mailer\PhpMailerKernel
+    function app_ext_php_mailer_global(): PhpMailerKernel
     {
-        return \YusamHub\AppExt\Mailer\PhpMailerKernel::global();
+        return PhpMailerKernel::global();
     }
 }
 
