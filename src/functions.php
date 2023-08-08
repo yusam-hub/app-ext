@@ -89,6 +89,17 @@ if (! function_exists('app_ext_logger')) {
     }
 }
 
+if (! function_exists('app_ext_php_mailer_global')) {
+
+    /**
+     * @return \YusamHub\AppExt\Mailer\PhpMailerKernel
+     */
+    function app_ext_php_mailer_global(): \YusamHub\AppExt\Mailer\PhpMailerKernel
+    {
+        return \YusamHub\AppExt\Mailer\PhpMailerKernel::global();
+    }
+}
+
 if (! function_exists('app_ext_env')) {
 
     /**
