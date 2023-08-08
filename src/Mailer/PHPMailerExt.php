@@ -27,6 +27,15 @@ class PHPMailerExt extends PHPMailer implements GetSetLoggerInterface
         $this->SMTPSecure = $config['secure']??'';
         $this->setFrom($config['fromAddress']??'',$config['fromName']??'');
 
+        $this->CharSet = self::CHARSET_UTF8;
+        $this->SMTPOptions = [
+            'ssl' => [
+                'verify_peer' => false,
+                'verify_peer_name' => false,
+                'allow_self_signed' => true,
+            ]
+        ];
+
         parent::__construct(true);
     }
 
