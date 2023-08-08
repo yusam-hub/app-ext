@@ -50,6 +50,21 @@ class RedisKernel implements GetSetLoggerInterface, GetSetConsoleInterface
     }
 
     /**
+     * @param string|null $connectionName
+     * @return void
+     */
+    public function redisExtClose(?string $connectionName = null): void
+    {
+        if (is_null($connectionName)) {
+            $connectionName = $this->getDefaultConnectionName();
+        }
+
+        if (isset($this->dbConnections[$connectionName])) {
+            unset($this->dbConnections[$connectionName]);
+        }
+    }
+
+    /**
      * @return string
      */
     public function getDefaultConnectionName(): string

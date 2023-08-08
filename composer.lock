@@ -408,28 +408,28 @@
         },
         {
             "name": "evenement/evenement",
-            "version": "v3.0.1",
+            "version": "v3.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/igorw/evenement.git",
-                "reference": "531bfb9d15f8aa57454f5f0285b18bec903b8fb7"
+                "reference": "0a16b0d71ab13284339abb99d9d2bd813640efbc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/igorw/evenement/zipball/531bfb9d15f8aa57454f5f0285b18bec903b8fb7",
-                "reference": "531bfb9d15f8aa57454f5f0285b18bec903b8fb7",
+                "url": "https://api.github.com/repos/igorw/evenement/zipball/0a16b0d71ab13284339abb99d9d2bd813640efbc",
+                "reference": "0a16b0d71ab13284339abb99d9d2bd813640efbc",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^6.0"
+                "phpunit/phpunit": "^9 || ^6"
             },
             "type": "library",
             "autoload": {
-                "psr-0": {
-                    "Evenement": "src"
+                "psr-4": {
+                    "Evenement\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -449,9 +449,9 @@
             ],
             "support": {
                 "issues": "https://github.com/igorw/evenement/issues",
-                "source": "https://github.com/igorw/evenement/tree/master"
+                "source": "https://github.com/igorw/evenement/tree/v3.0.2"
             },
-            "time": "2017-07-23T21:35:13+00:00"
+            "time": "2023-08-08T05:53:35+00:00"
         },
         {
             "name": "fig/http-message-util",
@@ -573,16 +573,16 @@
         },
         {
             "name": "guzzlehttp/psr7",
-            "version": "2.5.0",
+            "version": "2.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/psr7.git",
-                "reference": "b635f279edd83fc275f822a1188157ffea568ff6"
+                "reference": "8bd7c33a0734ae1c5d074360512beb716bef3f77"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/psr7/zipball/b635f279edd83fc275f822a1188157ffea568ff6",
-                "reference": "b635f279edd83fc275f822a1188157ffea568ff6",
+                "url": "https://api.github.com/repos/guzzle/psr7/zipball/8bd7c33a0734ae1c5d074360512beb716bef3f77",
+                "reference": "8bd7c33a0734ae1c5d074360512beb716bef3f77",
                 "shasum": ""
             },
             "require": {
@@ -669,7 +669,7 @@
             ],
             "support": {
                 "issues": "https://github.com/guzzle/psr7/issues",
-                "source": "https://github.com/guzzle/psr7/tree/2.5.0"
+                "source": "https://github.com/guzzle/psr7/tree/2.6.0"
             },
             "funding": [
                 {
@@ -685,7 +685,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-04-17T16:11:26+00:00"
+            "time": "2023-08-03T15:06:02+00:00"
         },
         {
             "name": "phpoption/phpoption",
@@ -3978,7 +3978,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/yusam-hub/db-ext.git",
-                "reference": "3e839bcc9275f951c3f2daebd1d8e34ccb487803"
+                "reference": "d733dc479a7f4debced13cdcb7ebfa73f81a3218"
             },
             "require": {
                 "ext-json": "*",
@@ -4006,7 +4006,7 @@
                 "files": []
             },
             "description": "yusam-hub/db-ext",
-            "time": "2023-08-02T20:18:15+00:00"
+            "time": "2023-08-08T11:18:25+00:00"
         },
         {
             "name": "yusam-hub/debug",
@@ -4045,7 +4045,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/yusam-hub/helpers.git",
-                "reference": "2d8f2b589d38ecb983f2638933dd41d332e988d5"
+                "reference": "159e9a99db2fc72a13d1c6bea295d5bbcef713aa"
             },
             "require": {
                 "ext-json": "*",
@@ -4072,7 +4072,7 @@
                 "files": []
             },
             "description": "yusam-hub/helpers",
-            "time": "2023-08-02T10:19:25+00:00"
+            "time": "2023-08-03T22:03:52+00:00"
         },
         {
             "name": "yusam-hub/json-ext",
@@ -4080,7 +4080,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/yusam-hub/json-ext.git",
-                "reference": "8b66d7c45e4eee0c2bcbb0655097becf5a7792df"
+                "reference": "7c06b51a888ded34e94e89566017540eae58311c"
             },
             "require": {
                 "ext-curl": "*",
@@ -4110,7 +4110,7 @@
                 "files": []
             },
             "description": "yusam-hub/json-ext",
-            "time": "2023-03-09T12:42:07+00:00"
+            "time": "2023-08-07T00:27:58+00:00"
         },
         {
             "name": "yusam-hub/model-ext",
